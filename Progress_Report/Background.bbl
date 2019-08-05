@@ -1,0 +1,187 @@
+\begin{thebibliography}{10}
+
+\bibitem{Chung2016}
+Joon~Son Chung and Andrew Zisserman.
+\newblock Lip reading in the wild.
+\newblock In Shang{-}Hong Lai, Vincent Lepetit, Ko~Nishino, and Yoichi Sato,
+  editors, {\em Computer Vision - {ACCV} 2016 - 13th Asian Conference on
+  Computer Vision, Taipei, Taiwan, November 20-24, 2016, Revised Selected
+  Papers, Part {II}}, volume 10112 of {\em Lecture Notes in Computer Science},
+  pages 87--103, 2016.
+
+\bibitem{Assael2016}
+Yannis~M. Assael, Brendan Shillingford, Shimon Whiteson, and Nando de~Freitas.
+\newblock Lipnet: Sentence-level lipreading.
+\newblock {\em CoRR}, abs/1611.01599, 2016.
+
+\bibitem{Chung2017}
+Joon~Son Chung, Andrew~W. Senior, Oriol Vinyals, and Andrew Zisserman.
+\newblock Lip reading sentences in the wild.
+\newblock In {\em 2017 {IEEE} Conference on Computer Vision and Pattern
+  Recognition, {CVPR} 2017, Honolulu, HI, USA, July 21-26, 2017}, pages
+  3444--3453. {IEEE} Computer Society, 2017.
+
+\bibitem{Shillingford2018}
+Brendan Shillingford, Yannis~M. Assael, Matthew~W. Hoffman, Thomas Paine,
+  C{\'{\i}}an Hughes, Utsav Prabhu, Hank Liao, Hasim Sak, Kanishka Rao,
+  Lorrayne Bennett, Marie Mulville, Ben Coppin, Ben Laurie, Andrew~W. Senior,
+  and Nando de~Freitas.
+\newblock Large-scale visual speech recognition.
+\newblock {\em CoRR}, abs/1807.05162, 2018.
+
+\bibitem{Tzirakis2019}
+Panagiotis Tzirakis, Athanasios Papaioannou, Alexander Lattas, Michail
+  Tarasiou, Bj{\"{o}}rn~W. Schuller, and Stefanos Zafeiriou.
+\newblock Synthesising 3d facial motion from "in-the-wild" speech.
+\newblock {\em CoRR}, abs/1904.07002, 2019.
+
+\bibitem{Cudeiro2019}
+Daniel Cudeiro, Timo Bolkart, Cassidy Laidlaw, Anurag Ranjan, and Michael
+  Black.
+\newblock Capture, learning, and synthesis of {3D} speaking styles.
+\newblock {\em Computer Vision and Pattern Recognition (CVPR)}, 2019.
+
+\bibitem{Cooke2006}
+Martin Cooke, Jon Barker, Stuart Cunningham, and Xu~Shao.
+\newblock An audio-visual corpus for speech perception and automatic speech
+  recognition.
+\newblock {\em The Journal of the Acoustical Society of America.},
+  120(5):2421--2424, 2006.
+
+\bibitem{Li2017}
+Tianye Li, Timo Bolkart, Michael.~J. Black, Hao Li, and Javier Romero.
+\newblock Learning a model of facial shape and expression from {4D} scans.
+\newblock {\em ACM Transactions on Graphics, (Proc. SIGGRAPH Asia)}, 36(6),
+  2017.
+
+\bibitem{Woodland1995}
+Philip~C. Woodland, C.~J. Leggetter, Julian Odell, Valtcho Valtchev, and
+  Steve~J. Young.
+\newblock The 1994 {HTK} large vocabulary speech recognition system.
+\newblock In {\em 1995 International Conference on Acoustics, Speech, and
+  Signal Processing, {ICASSP} '95, Detroit, Michigan, USA, May 08-12, 1995},
+  pages 73--76. {IEEE} Computer Society, 1995.
+
+\bibitem{King2009}
+Davis E.~King.
+\newblock Dlib-ml: A machine learning toolkit.
+\newblock {\em Journal of Machine Learning Research}, 10:1755--1758, 07 2009.
+
+\bibitem{Liao2013}
+Hank Liao, Erik McDermott, and Andrew~W. Senior.
+\newblock Large scale deep neural network acoustic modeling with
+  semi-supervised training data for youtube video transcription.
+\newblock In {\em 2013 {IEEE} Workshop on Automatic Speech Recognition and
+  Understanding, Olomouc, Czech Republic, December 8-12, 2013}, pages 368--373.
+  {IEEE}, 2013.
+
+\bibitem{Hannun2014}
+Awni~Y. Hannun, Carl Case, Jared Casper, Bryan Catanzaro, Greg Diamos, Erich
+  Elsen, Ryan Prenger, Sanjeev Satheesh, Shubho Sengupta, Adam Coates, and
+  Andrew~Y. Ng.
+\newblock Deep speech: Scaling up end-to-end speech recognition.
+\newblock {\em CoRR}, abs/1412.5567, 2014.
+
+\bibitem{Cho2014}
+Kyunghyun Cho, Bart van Merrienboer, {\c{C}}aglar G{\"{u}}l{\c{c}}ehre, Fethi
+  Bougares, Holger Schwenk, and Yoshua Bengio.
+\newblock Learning phrase representations using {RNN} encoder-decoder for
+  statistical machine translation.
+\newblock {\em CoRR}, abs/1406.1078, 2014.
+
+\bibitem{Lewis2010}
+J.~P. {Lewis} and K.~{Anjyo}.
+\newblock Direct manipulation blendshapes.
+\newblock {\em IEEE Computer Graphics and Applications}, 30(4):42--50, July
+  2010.
+
+\bibitem{Karras2017a}
+Tero Karras, Timo Aila, Samuli Laine, Antti Herva, and Jaakko Lehtinen.
+\newblock Audio-driven facial animation by joint end-to-end learning of pose
+  and emotion.
+\newblock {\em {ACM} Trans. Graph.}, 36(4):94:1--94:12, 2017.
+
+\bibitem{Goodfellow2014}
+Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
+  Sherjil Ozair, Aaron Courville, and Yoshua Bengio.
+\newblock Generative adversarial nets.
+\newblock In Z.~Ghahramani, M.~Welling, C.~Cortes, N.~D. Lawrence, and K.~Q.
+  Weinberger, editors, {\em Advances in Neural Information Processing Systems
+  27}, pages 2672--2680. Curran Associates, Inc., 2014.
+
+\bibitem{Radford2016}
+Alec Radford, Luke Metz, and Soumith Chintala.
+\newblock Unsupervised representation learning with deep convolutional
+  generative adversarial networks.
+\newblock In Yoshua Bengio and Yann LeCun, editors, {\em 4th International
+  Conference on Learning Representations, {ICLR} 2016, San Juan, Puerto Rico,
+  May 2-4, 2016, Conference Track Proceedings}, 2016.
+
+\bibitem{Zhang2018}
+Han Zhang, Ian~J. Goodfellow, Dimitris~N. Metaxas, and Augustus Odena.
+\newblock Self-attention generative adversarial networks.
+\newblock {\em CoRR}, abs/1805.08318, 2018.
+
+\bibitem{Gulrajani2017}
+Ishaan Gulrajani, Faruk Ahmed, Mart{\'{\i}}n Arjovsky, Vincent Dumoulin, and
+  Aaron~C. Courville.
+\newblock Improved training of wasserstein gans.
+\newblock {\em CoRR}, abs/1704.00028, 2017.
+
+\bibitem{Ioffe2015}
+Sergey Ioffe and Christian Szegedy.
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock In Francis~R. Bach and David~M. Blei, editors, {\em Proceedings of
+  the 32nd International Conference on Machine Learning, {ICML} 2015, Lille,
+  France, 6-11 July 2015}, volume~37 of {\em {JMLR} Workshop and Conference
+  Proceedings}, pages 448--456. JMLR.org, 2015.
+
+\bibitem{Arjovsky2017}
+Mart{\'{\i}}n Arjovsky, Soumith Chintala, and L{\'{e}}on Bottou.
+\newblock Wasserstein {GAN}.
+\newblock {\em CoRR}, abs/1701.07875, 2017.
+
+\bibitem{Mirza2014}
+Mehdi Mirza and Simon Osindero.
+\newblock Conditional generative adversarial nets.
+\newblock {\em CoRR}, abs/1411.1784, 2014.
+
+\bibitem{Zhu2017}
+Jun{-}Yan Zhu, Taesung Park, Phillip Isola, and Alexei~A. Efros.
+\newblock Unpaired image-to-image translation using cycle-consistent
+  adversarial networks.
+\newblock {\em CoRR}, abs/1703.10593, 2017.
+
+\bibitem{Vougioukas2018}
+K.~Vougioukas, S.~Petridis, and M.~Pantic.
+\newblock {End-to-End Speech-Driven Facial Animation with Temporal GANs}.
+\newblock {\em arXiv e-prints}, May 2018.
+
+\bibitem{Karras2017b}
+Tero Karras, Timo Aila, Samuli Laine, and Jaakko Lehtinen.
+\newblock Progressive growing of gans for improved quality, stability, and
+  variation.
+\newblock {\em CoRR}, abs/1710.10196, 2017.
+
+\bibitem{Vaswani2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In Isabelle Guyon, Ulrike von Luxburg, Samy Bengio, Hanna~M. Wallach,
+  Rob Fergus, S.~V.~N. Vishwanathan, and Roman Garnett, editors, {\em Advances
+  in Neural Information Processing Systems 30: Annual Conference on Neural
+  Information Processing Systems 2017, 4-9 December 2017, Long Beach, CA,
+  {USA}}, pages 6000--6010, 2017.
+
+\bibitem{Xu2015}
+Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron~C. Courville, Ruslan
+  Salakhutdinov, Richard~S. Zemel, and Yoshua Bengio.
+\newblock Show, attend and tell: Neural image caption generation with visual
+  attention.
+\newblock In Francis~R. Bach and David~M. Blei, editors, {\em Proceedings of
+  the 32nd International Conference on Machine Learning, {ICML} 2015, Lille,
+  France, 6-11 July 2015}, volume~37 of {\em {JMLR} Workshop and Conference
+  Proceedings}, pages 2048--2057. JMLR.org, 2015.
+
+\end{thebibliography}

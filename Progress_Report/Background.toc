@@ -1,0 +1,17 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.2}
+\contentsline {section}{\numberline {2}Lip Reading}{1}{section.3}
+\contentsline {subsection}{\numberline {2.1}Datasets}{1}{subsection.4}
+\contentsline {subsubsection}{\numberline {2.1.1}Controlled Conditions Datasets}{1}{subsubsection.5}
+\contentsline {subsubsection}{\numberline {2.1.2}In The Wild Datasets}{2}{subsubsection.6}
+\contentsline {subsection}{\numberline {2.2}3D Datasets}{2}{subsection.7}
+\contentsline {subsection}{\numberline {2.3}Lip Reading Models}{3}{subsection.8}
+\contentsline {section}{\numberline {3}3D Facial Modelling}{3}{section.9}
+\contentsline {subsection}{\numberline {3.1}Blendshapes}{4}{subsection.10}
+\contentsline {section}{\numberline {4}Data Generation}{4}{section.11}
+\contentsline {subsection}{\numberline {4.1}Audio Driven Data Generation}{4}{subsection.12}
+\contentsline {subsection}{\numberline {4.2}Adversarial Trained Generative Methods}{5}{subsection.13}
+\contentsline {subsubsection}{\numberline {4.2.1}Stability Improvements of GANs Networks}{6}{subsubsection.15}
+\contentsline {subsubsection}{\numberline {4.2.2}Architectural Developments}{7}{subsubsection.20}
+\contentsline {section}{\numberline {5}Current Work and Future Work}{8}{section.21}
+\contentsline {section}{References}{9}{section*.22}
