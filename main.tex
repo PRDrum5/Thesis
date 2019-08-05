@@ -46,18 +46,26 @@ Comment this out if not needed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %--- table of contents
-\fancyhead[RE,LO]{\sffamily {Table of Contents}}
+\fancyhead[R,LO]{\sffamily {Table of Contents}}
 \tableofcontents 
 
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \pagenumbering{arabic}
 \setcounter{page}{1}
-\fancyhead[LE,RO]{\slshape \rightmark}
-\fancyhead[LO,RE]{\slshape \leftmark}
+\fancyhead[L,RO]{\slshape \rightmark}
+\fancyhead[LO,R]{\slshape \leftmark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
+Introduction
+
+Visual speech prediction, often referred to as lip reading, is a very difficult task, partly due to ambiguities between phonemes such as '\textit{p}' and '\textit{b}', which look the same but sound different.
+Current methods of addressing this problem focus on training deep learning models using 2D temporal data of people speaking with the relevant video frames labelled with the correct spoken text \cite{Chung2016, Assael2016, Chung2017, Shillingford2018}.
+There currently do not exist any models which attempt to address this problem with the use of 3D temporal datasets made up of head scans of subjects, capturing depth and thus, more information of the mouth which may be of use to the models.
+However, there currently exists a severe lack of availability of such datasets due to the complexity and hardware requirements in capturing such data.
+Currently their exists two publicly available datasets: LRW-3D \cite{Tzirakis2019} and the VOCASET \cite{Cudeiro2019}, both of which are relatively small in comparison to the models used in current lip reading models.
+To first attempt this problem, new datasets which capture 3D temporal models of subjects heads speaking must be established by the community.
+As well as capturing new data, expanding existing datasets with generated synthetic data with the use of generative adversarial networks may assist in the solution to this problem.
 
 \begin{itemize}
 
@@ -70,26 +78,56 @@ Comment this out if not needed.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\section{Background}
+Literature Review
 
+%\input{lit_review}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+Facial Modelling Preliminaries
+
+TODO
+Move to own file
+
+\subsection{3D Facial Modelling}
+Unlike 2D video where the subject is captured from a single angle without any depth information, 3D models cannot be captured with a single camera.
+In most instances, 3D head scans are captured with the use of a multi-camera rig with multiple cameras capturing video simultaneously.
+The number and type of camera can vary from system to system, but the principle remains consistent.
+All cameras must be synchronised to capture footage at the same time, with the same frame rate.
+This is inherently a more complex system than 2D video capture as is therefore more expensive, limiting the accessibility of such systems.  
+Once the images have been captured, the footage must be processed in order to produce a facial mesh of the subject \cite{Li2017}.
+
+\subsubsection{Blendshapes}
+A facial mesh is made up of a point cloud of vertices and vertex connections.
+Depending on the mesh capture pipeline, the number of vertices may vary, but even a low resolution mesh may contain several thousand vertices.
+Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand.
+Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}, by reducing the number of parameters, the model becomes more manageable to control.
+One method of producing model blendshapes is with principle component analysis (PCA).
+By applying PCA on a set of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set while reducing the number of model parameters substantial.
+%\input{pca}
+%\input{procrustes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+Deep Learning Preliminaries
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\section{Contribution}
+Methods
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\section{Experimental Results}
+Discussion
 
-\input{procrustes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\section{Conclusion}
+Conclusions
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% bibliography
 \newpage
 \bibliographystyle{unsrt}
