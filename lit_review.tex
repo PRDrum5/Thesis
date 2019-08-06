@@ -8,8 +8,7 @@
 
 \chapter{Literature Review}
 
-TO-DO
-Add introduction to lit review
+\textcolor{red}{\textbf{TO-DO: Add introduction to lit review}}
 
 \section{Current Lip Reading Models and Datasets}
 
@@ -39,7 +38,7 @@ Both of datasets are captured and processed with the same pipeline (Figure \ref{
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.8\textwidth]{figures/lrw_pipeline.png}
+        \includegraphics[width=0.95\textwidth]{figures/lrw_pipeline.png}
     \caption{LRW Dataset Pipeline \cite{Chung2016}}\label{fig:LRW_Pipeline}
 \end{figure}
 
@@ -50,15 +49,22 @@ Secondly, face detection and tracking are used so that the frame can be cropped 
 To achieve this, a histogram of oriented gradients based (HOG-based) detection algorithm \cite{King2009} is used on all video frames to detect faces, see left hand side of Figure \ref{fig:LRW_Face_Detection}.
 A Kanade-Lucas-Tomasi (KLT) feature tracker is also applied to the frames, where both the HOG and KLT overlap (see centre of Figure \ref{fig:LRW_Face_Detection}), it is assumed to be tracking the face correctly.
 To identify mouth position, facial landmarks are then used using an ensemble of regression trees method from \cite{Kazemi2014}, see the right of Figure \ref{fig:LRW_Face_Detection}.
-As multiple faces can appear at any one time, it is assumed that the speaker will be the only subject with a moving mouth.
-Assuming that the lip movements fall within a frequency range, the Fourier transform is applied to the openness of the mouth defined by the distance between top and bottom lip from the facial landmarks.
-A support vector machine (SVM) is then trained on the frequency spectrum to classify who is speaking in each frame.
-The frames are then cropped around the relevant speaker.
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.8\textwidth]{figures/lrw_face_detection.png}
+        \includegraphics[width=0.99\textwidth]{figures/lrw_face_detection.png}
     \caption{LRW Face Detection and Tracking \cite{Chung2016}}\label{fig:LRW_Face_Detection}
+\end{figure}
+
+As multiple faces can appear at any one time, it is assumed that the speaker will be the only subject with a moving mouth.
+Assuming that the lip movements fall within a frequency range, the Fourier transform is applied to the openness of the mouth defined by the distance between top and bottom lip from the facial landmarks.
+A support vector machine (SVM) is then trained on the frequency spectrum to classify who is speaking in each frame.
+The frames are then cropped around the relevant speaker, an example of a sample from the dataset is shown in Figure \ref{fig:LRW_One_Second}.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.99\textwidth]{figures/lrw_one_second.png}
+    \caption{LRW Dataset Sample: 24 frames of a subject saying \textit{`about'} \cite{Chung2016}}\label{fig:LRW_One_Second}
 \end{figure}
 
 LSVSR is a dataset published by DeepMind and Google which makes use of the huge amount of videos on YouTube \cite{Shillingford2018}, resulting in a total length of 3886 hours of training data.
@@ -76,15 +82,51 @@ The dataset had also not been officially published at the time of this report.
 
 The second is the VOCASET \cite{Cudeiro2019}, an unlabelled dataset captured from 6 male and 6 female subjects.
 Each subject was recorded speaking 40 sequences, each ranging from 3 to 5 seconds, resulting in a total time of 30 minutes.
-The recorded 3D meshes are registered to the FLAME model \cite{Li2017}, a statistical 3D facial mesh with around 5000 vertices.
+The recorded 3D meshes are registered to the FLAME model \cite{Li2017}, a statistical 3D facial mesh with around 5000 vertices, an example sample from the dataset can be seen in Figure \ref{fig:VOCASET_example}.
 Unlike the LRW-3D dataset, the sequences are grammatically correct sentences, chosen to maximise phonetic diversity.
 This makes the VOCASET appropriate for creating a model for sentence-level lip reading, similarly to LRW-3D, 30 minutes of training data is likely to be a limiting factor when training a deep learning model.
 
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{figures/voca_exp/vocaset_exp1.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{figures/voca_exp/vocaset_exp2.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{figures/voca_exp/vocaset_exp3.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{figures/voca_exp/vocaset_exp4.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.19\textwidth}
+        \includegraphics[width=\textwidth]{figures/voca_exp/vocaset_exp5.png}
+    \end{subfigure}
+    \caption{VOCASET Example Frames \cite{Cudeiro2019}}\label{fig:VOCASET_example}
+\end{figure}
+
 It should be noted that neither of these datasets were captured for the purpose of lip reading, but for synthesising realistic statistical facial models driven from an audio input, and thus there are no transcriptions for VOCASET.
-The transcriptions can be obtained with an Audio Speech Recognition (ASR) method such as DeepSpeech \cite{Hannun2014} and then alignment would have to be performed to the datasets before using the data to train lip reading models.
+The transcriptions could be obtained with an Audio Speech Recognition (ASR) method such as DeepSpeech \cite{Hannun2014} and then alignment would have to be performed to the datasets before using the data to train lip reading models.
 
 \subsection{Lip Reading Models}
-Chung et al \cite{Chung2016} used a convolutional model based on the VGG-M architecture which produced character level distributions with the LRW dataset, these distributions are then processed by a language model for text prediction.
+In \cite{Chung2016} Chung et al used a multiple towers convolutional model based on the VGG-M architecture for multi-label classification to classify a video clip to one of the five hundred labels in the LRW dataset.
+The model architecture (Figure \ref{fig:LRW_Multiple_Towers}) first processes each frame separately with a shared convolutional layer to extract features from each frame.
+These features are down-sampled with a pooling layer before being concatenated into a single high channel feature map.
+A one dimensional convolutional layer then reduces the channels of this feature map before being processed by subsequent convolutional and pooling layers.
+The final layer of the model is passed through a softmax activation function \textcolor{red}{\textbf{(TO-DO add reference to softmax function)}} to predict one of the 500 word labels.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/lrw_multiple_towers.png}
+    \caption{LRW Multiple Towers Convolutional Neural Network Model \cite{Chung2016}}\label{fig:LRW_Multiple_Towers}
+\end{figure}
+
+Chung et al suggest that the multiple towers model is effective due to the delay in time domain operations until after the first convolutional layer which allows for tolerance to registration errors in the dataset.
+
+As well as measuring the performance of the model on total prediction accuracy, \cite{Chung2016} also use character-level edit distance, measured as the minimum number of characters required to be changed in the predicted label to obtain the ground truth.
+
+>>>>>>>>>>>>>>>>>>>>>>>>
 
 The LipNet model \cite{Assael2016} was produced to be able to predict sentence-level lip reading of varied length, while previous work by \cite{Chung2016} predicted on a word level.
 The model used spatiotemporal convolutions to process multiple frames of video at once followed by a recurrent layer using Gated Recurrent Units (GRU) \cite{Cho2014}.
