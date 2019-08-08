@@ -90,26 +90,6 @@ Literature Review
 \newpage
 Facial Modelling Preliminaries
 
-TODO
-Move to own file
-
-\section{3D Facial Modelling}
-Unlike 2D video where the subject is captured from a single angle without any depth information, 3D models cannot be captured with a single camera.
-In most instances, 3D head scans are captured with the use of a multi-camera rig with multiple cameras capturing video simultaneously.
-The number and type of camera can vary from system to system, but the principle remains consistent.
-All cameras must be synchronised to capture footage at the same time, with the same frame rate.
-This is inherently a more complex system than 2D video capture as is therefore more expensive, limiting the accessibility of such systems.  
-Once the images have been captured, the footage must be processed in order to produce a facial mesh of the subject \cite{Li2017}.
-
-\subsection{Blendshapes}
-A facial mesh is made up of a point cloud of vertices and vertex connections.
-Depending on the mesh capture pipeline, the number of vertices may vary, but even a low resolution mesh may contain several thousand vertices.
-Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand.
-Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}, by reducing the number of parameters, the model becomes more manageable to control.
-One method of producing model blendshapes is with principle component analysis (PCA).
-By applying PCA on a set of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set while reducing the number of model parameters substantial.
-%\input{pca}
-%\input{procrustes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
