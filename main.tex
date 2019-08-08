@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[12pt]{report}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -67,6 +67,10 @@ Currently their exists two publicly available datasets: LRW-3D \cite{Tzirakis201
 To first attempt this problem, new datasets which capture 3D temporal models of subjects heads speaking must be established by the community.
 As well as capturing new data, expanding existing datasets with generated synthetic data with the use of generative adversarial networks may assist in the solution to this problem.
 
+
+In an attempt to add variation to sampled generated from a model, a Generative Adversarial Network is proposed which can be trained end-to-end from audio inputs to drive a 3D template mesh.
+This shall be achieved by initially using the 
+
 \begin{itemize}
 
     \item What is the problem?
@@ -89,7 +93,7 @@ Facial Modelling Preliminaries
 TODO
 Move to own file
 
-\subsection{3D Facial Modelling}
+\section{3D Facial Modelling}
 Unlike 2D video where the subject is captured from a single angle without any depth information, 3D models cannot be captured with a single camera.
 In most instances, 3D head scans are captured with the use of a multi-camera rig with multiple cameras capturing video simultaneously.
 The number and type of camera can vary from system to system, but the principle remains consistent.
@@ -97,7 +101,7 @@ All cameras must be synchronised to capture footage at the same time, with the s
 This is inherently a more complex system than 2D video capture as is therefore more expensive, limiting the accessibility of such systems.  
 Once the images have been captured, the footage must be processed in order to produce a facial mesh of the subject \cite{Li2017}.
 
-\subsubsection{Blendshapes}
+\subsection{Blendshapes}
 A facial mesh is made up of a point cloud of vertices and vertex connections.
 Depending on the mesh capture pipeline, the number of vertices may vary, but even a low resolution mesh may contain several thousand vertices.
 Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand.

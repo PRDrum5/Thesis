@@ -1,18 +1,19 @@
-\documentclass[12pt]{report}
-
-% some macros
-\input{notation}
-\input{includes}
-
-\begin{document}
+%\documentclass[12pt]{report}
+%
+%% some macros
+%\input{notation}
+%\input{includes}
+%
+%\begin{document}
 
 \chapter{Literature Review}
 
-\textcolor{red}{\textbf{TO-DO: Add introduction to lit review}}
+This section shall discuss the currently existing datasets and models relating to visual speech recognition (VSR)
+This shall be explored in both the space of two dimensional images and three dimensional scans of speaking subjects, the current successes in these fields and the current issues which are faced in progressing these areas of research forwards.
 
 \section{Current Lip Reading Models and Datasets}
 
-In recent years the problem of visual speech recognition (VSR), also know as lip reading, has seen huge advances due to the availability of new datasets and the use of Deep Learning models \cite{Chung2016, Chung2017, Shillingford2018}.
+In recent years the problem of VSR, also know as lip reading, has seen huge advances due to the availability of new datasets and the use of Deep Learning models \cite{Chung2016, Chung2017, Shillingford2018}.
 This section shall discuss the progresses which have already been made in this field and the datasets publicly available on which to train such models.
 Current lip reading models, to the best of the author's knowledge, all make use of 2D temporal data such as videos by evaluating the frames of the video, using this information to make a prediction of the word, or words, which were spoken in the sequence.
 
@@ -177,8 +178,6 @@ The model used is similar to that used in \cite{Karras2017a}, firstly extracting
 Unlike the model used in \cite{Karras2017a}, the model used in \cite{Tzirakis2019} is trained to drive learnt blendshapes as opposed to vertex positions.
 This reduces the number of output parameters of the model substantially in comparison to that used by Karras et al while reducing the potential expressions possible to be produced by the model.
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 Similar to \cite{Tzirakis2019}, the VOCA model \cite{Cudeiro2019} synthesises video sequences of 3D models speaking given an audio input.
 The VOCASET dataset discussed in section \ref{3D Datasets}, was captured with the intention of training this model to be independent of the speaker, hence a large range of speakers are used within the dataset.
 The model is comprised of three sections: audio feature extraction, a feature encoder and a decoder to drive a template facial mesh from the FLAME model \cite{Li2017}.
@@ -186,7 +185,17 @@ The audio feature extraction makes use of the pre-trained Mozilla implementation
 The DeepSpeech model takes audio as an input and returns the unnormalised log-probabilities for an alphabet of the 26 standard characters, a space, apostrophe and blank character for time slices in the audio input.
 The encoder is a convolutional network which is conditioned on the speakers identity, such that the latent space of speaker styles can later be explored on new audio inputs.
 Finally, the decoder is made up of a fully connected layer with a linear activation function is used to output the displacements of the 5023 vertices in the template face.
+However, as the model is conditioned with the label of which speaker the input data is from, the model does not truly learn to generalise to multiple speakers, but learns each speaker separately, thus not being independent of the speaker.
 
-\bibliographystyle{unsrt}
-\bibliography{ref}
-\end{document}
+\section{Summary of Related Literature}
+Visual speech recognition has seen large improvements in recent years, progressing from word level prediction on a relatively small vocabulary set \cite{Chung2016}, to variable length sequences predicting a sequence at a sentence level with the use of recurrent networks making character level predictions to construct the completed sentence \cite{Shillingford2018}.
+These advances have come in tandem with the increase in the size and variation of the datasets on which to train such models.
+While there currently exist no datasets made up of 3D temporal data which have been constructed with the intention for lip reading, there has been progress in the area of 3D model generation from an audio input.
+A proposed solution to this problem would be to generate synthetic 3D temporal data by using a generative model, allowing a VSR classifier to be trained on the resulting dataset.
+The model by Karras et al. is currently not publicly available due to being researched in collaboration with Nvidia.
+The VOCA model however, is publicly available, although how independent the model truly is of the speakers it was trained on is unclear.
+The VOCA model also has additional dependencies on the DeepSpeech model and thus is not trained fully end-to-end, potentially losing some information which might be of use for driving facial animation.
+
+%\bibliographystyle{unsrt}
+%\bibliography{ref}
+%\end{document}
