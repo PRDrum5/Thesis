@@ -110,7 +110,7 @@ It should be noted that neither of these datasets were captured for the purpose 
 The transcriptions could be obtained with an Audio Speech Recognition (ASR) method such as DeepSpeech \cite{Hannun2014} and then alignment would have to be performed to the datasets before using the data to train lip reading models.
 
 \subsection{Lip Reading Models}
-In \cite{Chung2016} Chung et al used a multiple towers convolutional model based on the VGG-M architecture for multi-label classification to classify a video clip to one of the five hundred labels in the LRW dataset.
+In \cite{Chung2016} Chung et al. used a multiple towers convolutional model based on the VGG-M architecture for multi-label classification to classify a video clip to one of the five hundred labels in the LRW dataset.
 The model architecture (Figure \ref{fig:LRW_Multiple_Towers}) first processes each frame separately with a shared convolutional layer to extract features from each frame.
 These features are down-sampled with a pooling layer before being concatenated into a single high channel feature map.
 A one dimensional convolutional layer then reduces the channels of this feature map before being processed by subsequent convolutional and pooling layers.
@@ -122,7 +122,7 @@ The final layer of the model is passed through a softmax activation function \te
     \caption{LRW Multiple Towers Convolutional Neural Network Model \cite{Chung2016}}\label{fig:LRW_Multiple_Towers}
 \end{figure}
 
-Chung et al suggest that the multiple towers model is effective due to the delay in time domain operations until after the first convolutional layer which allows for tolerance to registration errors in the dataset.
+Chung et al. suggest that the multiple towers model is effective due to the delay in time domain operations until after the first convolutional layer which allows for tolerance to registration errors in the dataset.
 
 As well as measuring the performance of the model on total prediction accuracy, \cite{Chung2016} also use character-level edit distance, measured as the minimum number of characters required to be changed in the predicted label to obtain the ground truth.
 
@@ -130,7 +130,7 @@ The LipNet model \cite{Assael2016} was the first model produced to be able to pr
 The model used spatiotemporal convolutions to process multiple frames of video at once followed by a recurrent layer using Gated Recurrent Units (GRUs) \cite{Cho2014} and made character level predictions.
 The model used the GRID dataset \cite{Cooke2006} due to it being the largest sentence level dataset at the time, on which LipNet achieved the state of the art performance.
 
-As the LRW dataset could not be used to train a model such as LipNet for sentence-level lip reading, but the GRID dataset had limitations in the number of subjects and vocabulary, Chung et al created the LRS dataset \cite{Chung2017}.
+As the LRW dataset could not be used to train a model such as LipNet for sentence-level lip reading, but the GRID dataset had limitations in the number of subjects and vocabulary, Chung et al. created the LRS dataset \cite{Chung2017}.
 The model presented in \cite{Chung2017} was trained on both audio and video and made capable of taking either or both as the model inputs.
 To prevent the model from being dependent on a single input source, the inputs are systematically distorted or removed.
 The video input is passed through convolutional layers, followed by LSTM (Long Short-Term Memory) layers \cite{Cheng2016}, while the audio is converted to Mel-frequency cepstral coefficients (MFCC), then input to LSTM layers.
@@ -148,27 +148,36 @@ To the best of the author's knowledge, there does not currently exist any papers
 This is likely due to the shortage of 3D temporal data due to the difficulties in obtaining such data, on which such models could be trained on.
 
 \section{Data Generation}
-In order to construct a deep learning lip reading model capable of being trained on 3D temporal data, appropriate datasets must be established.
-Current datasets have been captured directly \cite{Tzirakis2019, Cudeiro2019} with the use of multi-camera capture rigs under controlled situations.
-The total duration of both of these datasets is very short in comparison to the video datasets such as LRW, LRS and LSVSR, which is a limiting factor as to the models which could be trained using them.
+In order to construct a deep learning lip reading model capable of being trained on 3D temporal data, appropriate datasets must first be established.
+Existing datasets \cite{Tzirakis2019, Cudeiro2019} discussed in section \ref{3D Datasets} have been captured directly with the use of multi-camera capture rigs under controlled situations.
+The total duration of both of these datasets is very short in comparison to the video datasets such as LRW, LRS and LSVSR, which is a limiting factor to the models which could be trained using them.
 
 As the models also use different mesh models to represent the data that has been captured this also prevents the two datasets being joined directly.
 Unlike video data, there currently lacks a large body of 3D video data which is publicly available, limiting the construction of 3D datasets to directly capturing more 3D scans with multi-camera capture rigs, similar to those used in \cite{Tzirakis2019, Cudeiro2019} and generating synthetic training data.
 
 \subsection{Audio Driven Data Generation}
-Karras et al proposed a method for generating 3D facial animation from audio with the use of a CNN architecture \cite{Karras2017a}.
-The model is actor specific, but is only trained on 3-5 minutes of data of the actor.
-Short range temporal features are first extracted from the audio by a formant analysis network.
-This representation is then analysed by an articulation network which also accepts a learned emotional state of the speaker.
-The output layer drives displacements from a neutral 3d mesh of the actor.
+Karras et al. proposed a method for generating 3D facial animation from audio with the use of a CNN architecture \cite{Karras2017a}, see Figure \ref{fig:Karras_Model}.
+The model is actor specific, but restricting this allowed fro the model to be trained on just 3-5 minutes of data per actor.
+Firstly, a fixed function auto-correlation layer is used to extract a time-varying sequence of speech features from the audio input, named the formant analysis layer.
+Then a five convolutional layers are used to extract short-term animation features from the formant analysis network layer.
+This is then followed by five convolutional layers, with each input concatenated with a learned emotional state representation.
+Finally two linear layers are used to drive vertex positions from a starting mesh of the given actor.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.9\textwidth]{figures/karras_model.png}
+    \caption{Audio Driven Facial Animation Model Proposed by Karras et al. \cite{Karras2017a}}\label{fig:Karras_Model}
+\end{figure}
 
 However, as the model by Karras et al. is not independent of the actor it cannot generalise to new subjects.
 Tzirakis et al. propose a model which is independent of speaker and capture rig \cite{Tzirakis2019}.
 As discussed in section \ref{3D Datasets}, a dataset was constructed of 3D speaking faces using the LRW dataset \cite{Chung2016} for the corpus.
 This allowed Tzirakis et al. to create a model which can synthesise facial motion from audio from the LRW dataset.
 The model used is similar to that used in \cite{Karras2017a}, firstly extracting short term temporal features from the input audio with a convolutional network followed by another convolutional network to analyse the extracted features.
-Unlike the model used in \cite{Karras2017a}, the model used in \cite{Tzirakis2019} is trained to drive learnt blendshapes.
-This reduces the number of output parameters of the model substantially in comparison to that used by Karras et al.
+Unlike the model used in \cite{Karras2017a}, the model used in \cite{Tzirakis2019} is trained to drive learnt blendshapes as opposed to vertex positions.
+This reduces the number of output parameters of the model substantially in comparison to that used by Karras et al while reducing the potential expressions possible to be produced by the model.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 Similar to \cite{Tzirakis2019}, the VOCA model \cite{Cudeiro2019} synthesises video sequences of 3D models speaking given an audio input.
 The VOCASET dataset discussed in section \ref{3D Datasets}, was captured with the intention of training this model to be independent of the speaker, hence a large range of speakers are used within the dataset.
