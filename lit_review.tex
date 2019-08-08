@@ -126,28 +126,25 @@ Chung et al suggest that the multiple towers model is effective due to the delay
 
 As well as measuring the performance of the model on total prediction accuracy, \cite{Chung2016} also use character-level edit distance, measured as the minimum number of characters required to be changed in the predicted label to obtain the ground truth.
 
->>>>>>>>>>>>>>>>>>>>>>>>
-
-The LipNet model \cite{Assael2016} was produced to be able to predict sentence-level lip reading of varied length, while previous work by \cite{Chung2016} predicted on a word level.
-The model used spatiotemporal convolutions to process multiple frames of video at once followed by a recurrent layer using Gated Recurrent Units (GRU) \cite{Cho2014}.
-The model used the GRID dataset \cite{Cooke2006} in which all subjects are recorded under consistent conditions of good lighting and fixed angles.
-LipNet achieved the state of the art performance on the GRID dataset by using an model with increased complexity by incorporating 3D convolution and recurrent units.
+The LipNet model \cite{Assael2016} was the first model produced to be able to predict end-to-end sentence-level lip reading of varied length, while previous work predicted on a word level.
+The model used spatiotemporal convolutions to process multiple frames of video at once followed by a recurrent layer using Gated Recurrent Units (GRUs) \cite{Cho2014} and made character level predictions.
+The model used the GRID dataset \cite{Cooke2006} due to it being the largest sentence level dataset at the time, on which LipNet achieved the state of the art performance.
 
 As the LRW dataset could not be used to train a model such as LipNet for sentence-level lip reading, but the GRID dataset had limitations in the number of subjects and vocabulary, Chung et al created the LRS dataset \cite{Chung2017}.
-The model presented was trained on both audio and video and made capable of taking either or both as the model inputs.
+The model presented in \cite{Chung2017} was trained on both audio and video and made capable of taking either or both as the model inputs.
 To prevent the model from being dependent on a single input source, the inputs are systematically distorted or removed.
-The video input is passed through convolutional layers, followed by LSTM layers, while the audio is converted to Mel-frequency cepstral coefficients (MFCC), then input to LSTM layers.
-The two are combined with then attention mechanism and further LSTM layers and an output fully connected layer with softmax activation for character distributions.
-The model also makes use of curriculum learning by initially training the model on short sequences of single words.
-The length of training sequences are increased throughout training.
+The video input is passed through convolutional layers, followed by LSTM (Long Short-Term Memory) layers \cite{Cheng2016}, while the audio is converted to Mel-frequency cepstral coefficients (MFCC), then input to LSTM layers.
+The two are combined with the attention mechanism and further LSTM layers and an output fully connected layer with softmax activation for character level predictions.
+The model also makes use of curriculum learning by initially training the model on short sequences of single words, before the increasing the length of training sequences throughout training.
 It is stated by \cite{Chung2017} that this accelerates training and reduces overfitting.
 
-In 2018 DeepMind published their V2P model \cite{Shillingford2018} along with the LSVSR dataset which is larger than all previous datasets, containing 3886 hours of training data.
-The model follows a similar architecture to LipNet \cite{Assael2016} but with an increased number of convolutional layers and LSTM layers rather than GRUs.
+In 2018 DeepMind published their V2P (Video to Phonemes) model \cite{Shillingford2018} along with the LSVSR dataset built from content from YouTube. 
+LSVSR greatly surpassed all previous datasets in size and variation, containing 3886 hours of training data.
+The model follows a similar architecture to LipNet \cite{Assael2016} using spatiotemporal convolutional layers followed by recurrent layers, however it used an increased number of convolutional layers and used LSTM layers in place of than GRUs.
 It should be commented that due to the size of the model and dataset dictated the use of 64 GPUs for training to allow a batch size of 128.
 Unlike previous models, the V2P model predicts phonemes as opposed to characters, these phonemes are then processed by a language model for word prediction as with previous models.
 
-To the best of the author's knowledge, currently there do not exist any papers which have explored the use of 3D temporal datasets for the use with lip reading models. 
+To the best of the author's knowledge, there does not currently exist any papers which have explored the use of 3D temporal datasets for the use with lip reading models. 
 This is likely due to the shortage of 3D temporal data due to the difficulties in obtaining such data, on which such models could be trained on.
 
 \section{Data Generation}
