@@ -8,13 +8,19 @@
 
 \chapter{Generative Adversarial Network Preliminaries}
 
-\subsection{Adversarial Trained Generative Methods}
 A recent development in generating synthetic data samples is the use of generative adversarial networks \cite{Goodfellow2014}.
 The concept behind generative adversarial networks (GANs) is two have two machine learning models; a generator and a discriminator.
 The task of the generator is to produce samples from an unknown high order probability distribution which correctly resemble samples from the distribution defined by training data.
 The generator achieves this by transforming a random sample from a known probability distribution, such as a Gaussian distribution as used in \cite{Goodfellow2014}, to a sample from the unknown distribution.
 This is achieved by finding the function which maps between the two distributions.
-The discriminator however, attempts to correctly learn to discriminate between the real and the fake generated samples.
+The discriminator however, attempts to correctly learn to discriminate between the real and the generated samples.
+
+\section{Background Theory}
+
+The original loss function (\ref{eq:gans_loss}) proposed by Ian Goodfellow forms a min-max game, where the loss of the generator is attempting to be minimised by having the discriminator label all the generated samples as real.
+While the loss of the discriminator is maximised by correctly classifying real and fake samples.
+Here $\bm{x}$ represent the real data samples from an unknown probability distribution $p_{data}$ and $\bm{z}$ represents a random noise sample from a known distribution.
+The two networks are trained in an alternating fashion until the discriminator achieves an accuracy of 50\% on real and generated samples, effectively making binary guesses between the two.
 
 \begin{equation} \label{eq:gans_loss}
     \min_{G} \max_{D} V(G, D) = \E{\bm{x} \sim p_{data}(\bm{x})} [\log D(\bm{x})]
@@ -22,17 +28,13 @@ The discriminator however, attempts to correctly learn to discriminate between t
 \end{equation}
 \quad
 
-\noindent The original loss function (\ref{eq:gans_loss}) proposed by Ian Goodfellow forms a min-max game, where the loss of the generator is attempting to be minimised by having the discriminator label all the generated samples as real.
-While the loss of the discriminator is maximised by correctly classifying real and fake samples.
-The two networks are trained in an alternating fashion until the discriminator achieves an accuracy of 50\%, effectively making binary guesses between real and generated samples.
-
 GANs however, are difficult to train for two main reasons.
 Firstly, the equation (\ref{eq:gans_loss}) is challenging as it provides small gradients while generated samples are poor as discussed in \cite{Goodfellow2014}, making training difficult.
 Progress in developing new loss functions is discussed in section \ref{Stability_to_GANs}
 Secondly, early networks must also be balanced with a similar model capacity to prevent one from getting too much better than the other, preventing the other from improving.
 Various architectural changes have improved this issue \cite{Radford2016, Zhang2018}, although it seems to be closely tied to the loss function being used \cite{Gulrajani2017}.
 
-\subsubsection{Stability Improvements of GANs Networks} \label{Stability_to_GANs}
+\subsection{Stability Improvements of GANs Networks} \label{Stability_to_GANs}
 There have been a large number of papers presenting new techniques with differing levels of success and training stability, a small handful of key papers which provided large advances in the generative adversarial training model shall be discussed here.
 A primary research focus around GANs has been in finding new loss functions on which to train the model to improve stability and performance.
 The original loss function proposed in the original paper \cite{Goodfellow2014} identifies an issue with equation (\ref{eq:gans_loss}) in that the gradient back propagated to the generator when the generated samples are poor, is very low as shown in figure \ref{fig:Goodfellow_plot}.
@@ -44,7 +46,7 @@ The original loss function proposed in the original paper \cite{Goodfellow2014} 
 \end{figure}
 \quad
 
-\noindent This in turn makes it very challenging to improve the performance of the generator.
+This in turn makes it very challenging to improve the performance of the generator.
 The suggested improvement made in \cite{Goodfellow2014} is rather than to maximise the the number of generated samples which the discriminator incorrectly classifies, but to minimise the number of generator samples the discriminator correctly classifies, described in equation (\ref{eq:gans_loss2}).
 Figure \ref{fig:Goodfellow_plot} shows how this results in the gradient propagated back to the generator is far larger when the generated samples are poor.
 
@@ -72,7 +74,7 @@ In an attempt to stabilize the training of GANs models, the Wasserstein or 'Eart
 \end{equation}
 \quad
 
-\noindent The WGAN model uses a critic as opposed to a discriminator, this is due to the fact that the discriminator is no longer a binary classifier, but being used to critique the real and generated samples. 
+The WGAN model uses a critic as opposed to a discriminator, this is due to the fact that the discriminator is no longer a binary classifier, but being used to critique the real and generated samples. 
 As the Wasserstein function is continuous and differentiable, the critic can be trained until optimality, and \cite{Arjovsky2017} argues that it should be.
 As the critic is trained to optimality it does not saturate, but converges to a linear function.
 This provides the generator with a gradient which is more reliable, resulting in the generator learning consistently.
@@ -91,9 +93,9 @@ The use of gradient penalty is proposed in \cite{Gulrajani2017} in order to sati
 \end{equation}
 \quad
 
-\noindent Using the Wasserstein loss function with gradient penalty enforces the Lipschtiz condition and allows highly complex architectures to be trained successfully, including those with residual units \cite{Gulrajani2017}.
+Using the Wasserstein loss function with gradient penalty enforces the Lipschtiz condition and allows highly complex architectures to be trained successfully, including those with residual units \cite{Gulrajani2017}.
 
-\subsubsection{Architectural Developments}
+\subsection{Architectural Developments}
 Mirza et al. showed that GANs could be conditioned on additional inputs to the generator network as the noise component \cite{Mirza2014}.
 This has allowed facilitated other uses of GANs such as image to image translation for style transfer \cite{Zhu2017}.
 Vougioukas et al. used a temporal model to generate a sequence of video frames given an image of a subject and an audio sequence of spoken text to synthesise the subject speaking \cite{Vougioukas2018}.
