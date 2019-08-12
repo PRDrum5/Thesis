@@ -56,3 +56,5 @@ RMSprop
 LeCun
 Tanh
 learnable
+Max
+downsample

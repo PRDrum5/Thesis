@@ -43,6 +43,15 @@ Commonly zero padding is applied, such that the image in padded with zeros aroun
 In order to prevent the models from becoming too deep and to limit the number of trainable parameters in a model, it is desirable to reduce the output feature map size.
 To achieve this, pooling layers are commonly used, commonly either Max Pooling or Average Pooling.
 
+Pooling layers apply a kernel over feature maps in a similar way to a convolutional layer, but apply a fixed function to the inputs rather than using learned parameters.
+A Max Pooling layer will output the maximum value from each position, and discard the remaining values.
+A Average Pooling layer will take the mean average of the values at each position.
+
+An alternate method of reducing the size of the output feature maps is by increasing the stride of the convolutional layers, such that the kernel isn't applied at every position, but may skip positions.
+Provided that the kernel size is larger than the stride of the convolutions, the whole feature map will still be covered.
+One possible advantage of this is that the kernel values are learnt such that the model will be able to extract the most useful information given that the stride is not one for the layer.
+By using a layer which learns given that strided convolutions allows the model to learn to downsample feature maps in the manner which retains the most useful information.
+
 \section{Activation Functions}
 In order to add non-linearities to the model, activation functions are applied after each layer of models.
 This non-linearity enables complex high order functions to be approximated by the network.
@@ -54,8 +63,38 @@ The sigmoid function, expressed by equation (\ref{eq:sigmoid})
     \sigma(x) = \frac{1}{1 + e^{-x}}
 \end{equation}
 
+\begin{figure}[h!]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/sigmoid.png}
+    \caption{Sigmoid Function}\label{fig:Sigmoid}
+\end{figure}
+
 \subsection{Tanh}
+\begin{equation}\label{eq:tanh}
+    \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{equation}
+
+\begin{figure}[h!]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/tanh.png}
+    \caption{Tanh Function}\label{fig:Tanh}
+\end{figure}
+
 \subsection{ReLU}
+\begin{equation}\label{eq:relu}
+    relu(x)=\begin{cases}
+      x, & \text{if $x>0$}.\\
+      0, & \text{otherwise}.
+    \end{cases}
+  \end{equation}
+
+\begin{figure}[h!]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/relu.png}
+    \caption{ReLU Function}\label{fig:ReLU}
+\end{figure}
+
+\subsection{Softmax}
 
 \section{Optimisation Algorithms}
 \subsection{Stochastic Gradient Descent}
