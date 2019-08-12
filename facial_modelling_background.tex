@@ -1,10 +1,10 @@
-\documentclass[12pt]{report}
-
-% some macros
-\input{notation}
-\input{includes}
-
-\begin{document}
+%\documentclass[12pt]{report}
+%
+%% some macros
+%\input{notation}
+%\input{includes}
+%
+%\begin{document}
 
 \chapter{3D Facial Modelling Background}
 
@@ -15,14 +15,14 @@ Data preprocessing involves bringing the data samples into correspondence (also 
 \section{Data Collection and Representation}
 Unlike 2D video where the subject is captured from a single angle without any depth information, 3D models cannot be captured with a single camera.
 In most instances, 3D head scans are captured with the use of a multi-camera rig with multiple cameras capturing video simultaneously.
-The number and type of camera can vary from system to system, but the principle remains consistent.
+The number and type of cameras can vary from system to system, but the principle remains consistent.
 All cameras must be synchronised to capture footage at the same time, with the same frame rate.
 This is inherently a more complex system than 2D video capture as is therefore more expensive, limiting the accessibility of such systems.  
 Once the images have been captured, the footage must be combined in order to produce a 3D model of the subjects head \cite{Li2017}, often referred to as a facial mesh.
 A facial mesh is made up of a point cloud of vertices and vertex connections.
 Depending on the resolution of the system used to capture the data, the number of points which are used to represent the subject can vary, each with $x$, $y$ and $z$ coordinates in space.
 Depending on the mesh capture pipeline, the number of vertices may vary, but even a low resolution mesh may contain several thousand vertices.
-In the example show in Figure \ref{fig:FLAME_Point_Cloud}, the FLAME model \cite{Li2017} uses around 5000 vertex positions, each with an $(x, y, z)$ value, resulting in a total number of 15,000 parameters for a single capture in time.
+In the example shown in Figure \ref{fig:FLAME_Point_Cloud}, the FLAME model \cite{Li2017} uses around 5000 vertex positions, each with an $(x, y, z)$ value, resulting in a total number of 15,000 parameters for a single capture in time.
 While Deep Learning models have been trained to drive all vertex positions from a starting template mesh \cite{Karras2017a}, a simpler representation can be achieved with the use of Blendshapes.
 
 \begin{figure}[h]
@@ -43,18 +43,18 @@ While Deep Learning models have been trained to drive all vertex positions from 
 
 \subsection{Blendshapes}
 Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand and may hinder the performance of a Machine Learning model due to the high dimensionality of the data.
-Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}, by reducing the number of parameters, the model becomes more manageable to control, one method of producing model blendshapes is with the use of Principle Component Analysis (PCA).
-By applying PCA on a dataset of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set while reducing the number of model parameters substantial.
+Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}, by reducing the number of parameters, the model becomes more manageable to control.
+One method of producing model blendshapes is with the use of Principle Component Analysis (PCA).
+By applying PCA on a dataset of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set while reducing the number of model parameters substantially.
 
-\subsection{Background on Principal Component Analysis}
-Given a collection of measured data points in a high dimensional space, it is often desirable to reduce the dimensionality of such data to a lower dimensional latent space, this could be to aid to processing the data or enable visualisation.
+\subsubsection{Principal Component Analysis}
+Given a collection of measured data points in a high dimensional space, it is often desirable to reduce the dimensionality of such data to a lower dimensional latent space, this could be to aid processing the data or enable visualisation.
 In such instances, it is desirable for the mapping to the latent space to maintain as much information from the original data as possible.
 
 PCA aims to reduce the dimensionality of a collection of data points while maximising the variance in the latent space.
 Alternatively, PCA aims to find a mapping from the original data to a new latent space which allow for the original data to be reconstructed with minimal error.
 These two aims are in fact equivalent.
 
-\subsubsection{Theoretical Background}
 Let $\bm{x_i} \in \mathbb{R}^f$ represent a data point in $f$ dimensional space and $\bm{y_i} \in \mathbb{R}^d$ represent the point which $\bm{x_i}$ is transformed to by a linear transformation $\mat{W}$ equation (\ref{eq:pca_transformation}), where $d << f$.
 
 \begin{equation} \label{eq:pca_transformation}
@@ -138,7 +138,7 @@ and,
 
 \bigskip
 By constructing the Lagrangian from equation (\ref{eq:pca_optimum_transformation}) and solving the solution in equation (\ref{eq:pca_solved}) can be obtained.
-From eigendecomposition, $\mat{W}$ has columns of columns of eigenvectors which correspond to the $d$ largest non-zero eigenvalues of the covariance matrix, $\mat{S}_t$.
+From eigendecomposition, $\mat{W}$ has columns of eigenvectors which correspond to the $d$ largest non-zero eigenvalues of the covariance matrix, $\mat{S}_t$.
 
 \begin{equation*}
     L(\mat{W}, \mat{\Lambda}) = \tr[\mat{W}^\top \mat{S}_t \mat{W}] - \tr[\Lambda(\mat{W}^\top \mat{W} - \mat{I})]
@@ -158,21 +158,40 @@ From eigendecomposition, $\mat{W}$ has columns of columns of eigenvectors which 
     \mat{S}_t \mat{W} = \mat{W \Lambda}
 \end{equation}
 
-\subsection{Constructed Blendshapes}
+\subsection{Application of PCA for Blendshapes}
 
+TODO This section may need to be moved to Methods.
 \begin{itemize}
     \item Interpolation along axis, with examples
     \item recovering the shape parameters from existing frames given the blendshape axis.
 \end{itemize}
+
+Once PCA has been applied to a dataset of facial scans, the transformation matrix $\mat{W}$ is known.
+$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated upon.
+These axis are the blendshapes axis and by interpolating along these axis by given amounts, motions of the facial mesh can be expressed in a low dimension.
+The first blendshape axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
+The number of blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive blendshape axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
+This results in realistic reconstruction being able to be achieved with a relatively small number of blendshapes containing the majority of the variation within the dataset.
 
 \section{Facial Mesh Alignment}
 In order to create blendshapes from 3D facial scans, movement within scans should be limited to facial movement with as little head movement as possible.
 If head movement remains within the scans, then this will be reflected in the principal axis produced by Principle Components Analysis (PCA) and as head motion is independent from speech, this is undesirable.
 Initial data capture can aim to minimise subject head movement, however this cannot be completely eliminated.
 To remove head motion from the dataset, the scans can be brought into alignment relative to landmark positions on the face which do not move during speech.
-Such landmarks include the nose, corners of the eyes and cheek bones, as these points which will be stationary during speech.
+Such landmarks include the nose, corners of the eyes and cheek bones, as these points will be stationary during speech.
 By aligning the meshes based on the variation in these points, the head position of the subjects can be constrained while the mouths are not.
 To achieve this, Procrustes Analysis can be used.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/subject2_unaligned.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/subject2_aligned.png}
+    \end{subfigure}
+    \caption{Procrustes Alignment Applied to VOCASET \cite{Cudeiro2019}}\label{fig:VOCASET_Alignment}
+\end{figure}
 
 \subsection{Procrustes Analysis} \label{sec:procrustes_analysis}
 Procrustes Analysis is a statistical shape analysis method used to analyse the differences between two objects \cite{Krzanowski2000}.
@@ -182,7 +201,7 @@ Given matrices $\mat{X} \in \mathbb{R}^{(n\times f)}$ and $\mat{Y} \in \mathbb{R
     D = \sum_{i=1}^{n} \sum_{j=1}^{f} (x_{ij} - y_{ij})^2
 \end{equation}
 
-However, two objects which are mathematically similar can still have a significant difference when they are scaled differently and are in different positions, orientations in space.
+However, two objects which are mathematically similar can still have a significant difference when they are scaled differently and are in different positions and orientations in space.
 In order to compare two objects regardless of these factors, the differences in orientation, scale and spacial position of the objects must be minimised by bringing the objects into optimal alignment.
 
 \subsubsection{Translational Alignment} \label{sec:trans_align}
@@ -201,7 +220,7 @@ Similarly, scaling components can be removed by rescaling the objects by the roo
 \end{equation}
 
 \subsubsection{Rotational Alignment} \label{sec:rot_align}
-In order to align the objects in the same orientation, a rotational matrix which is able to map $\mat{X}$ to $\mat{Y}$ as closely as possible must be found.
+In order to align the objects to the same orientation, a rotational matrix which is able to map $\mat{X}$ to $\mat{Y}$ as closely as possible must be found.
 This is described as the Orthogonal Procrustes problem and can be solved with Singular Value Decomposition (SVD).
 Given matrices $\mat{A}$ and $\mat{B}$, the orthogonal matrix $\mat{R}$ is the matrix which matches $\mat{A}$ to $\mat{B}$ as closely as possible, as described by equation (\ref{eq:orth_proc_prob}), where $\| \cdot \|_F$ is the Fobius norm.
 
@@ -298,11 +317,8 @@ By selecting points which do not contain any movement due to speech or facial ex
 Such positions include the nose, corners of the eyes and cheekbones.
 If the facial scans capture 360 degrees, then points on the back of the subjects head can also be used.
 From this subset of points, the translation, scaling and rotational matrix can be found which aligns these points using the steps described in section \ref{sec:procrustes_analysis} but then applied to the entire object.
+An example of such an application is shown in Figure \ref{fig:VOCASET_Alignment} before and after alignment has been applied.
 
-\begin{itemize}
-    \item add before and after alignment examples.
-\end{itemize}
-
-\bibliographystyle{unsrt}
-\bibliography{ref}
-\end{document}
+%\bibliographystyle{unsrt}
+%\bibliography{ref}
+%\end{document}

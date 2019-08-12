@@ -52,3 +52,7 @@ Fobius
 blendshape
 Perceptron
 CNNs
+RMSprop
+LeCun
+Tanh
+learnable

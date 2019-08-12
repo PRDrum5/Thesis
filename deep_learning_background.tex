@@ -7,12 +7,55 @@
 %\begin{document}
 
 \chapter{Deep Learning Background}
-TODO intro
+TODO add intro
 
-\section{Model Architectures}
-\subsection{Multi Layer Perceptron}
-\subsection{Convolutional Neural Networks}
-\subsection{Activation Functions}
+\section{Convolutional Neural Networks}
+Convolutional Neural Networks (CNNs) are a Machine Learning model architecture which uses a filter, or kernel, convolved over the input to extract features relevant to the given kernel from a small area of the input.
+Multiple kernels are used at each layer of the model to extract multiple features, known as feature maps, from a given input image.
+The CNN architecture is often paired with a downsampling layer to reduce the number of parameters in the model and prevent the model from growing too deep and becoming difficult to train due to vanishing gradients.
+An activation function is applied to the output feature map from each convolutional layer to add non-linearities to the model. 
+
+\subsection{Convolutional Layers}
+Each convolutional layer is made up of a number of learnable kernels which are applied the the entire input image by sliding the kernels across the width and height of the image taking the dot product of the kernel and the current receptive field of the kernel for all channels of the input image, this is demonstrated in Figure \ref{fig:Conv_Layer}.
+Each kernel is able to capture spatially relevant information about the current receptive field and pass this to the subsequent layers of the model.
+During training these kernels are optimised to capture the most useful information for the task at hand.
+The number of kernels used at each layer determines the number of feature maps produced, each of which are stacked as channels.
+As each kernel is applied to the whole input image, the same learned parameters for each kernel are applied to the whole image, with each kernel extracting specific information.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.5\textwidth]{figures/conv_layer.png}
+    \caption{Convolutional Layer}\label{fig:Conv_Layer}
+\end{figure}
+
+\subsection{Layer Output Sizes}
+An issue with convolutional layers is that the output image in slightly smaller than the input image as the kernel cannot be applied over the edge of the image.
+For a given kernel size, the output image size can be calculated with equation (\ref{eq:conv_output}), where $H_{in}$ and $H_{out}$ represent in input and output sizes along one dimension, $k$ represents the size of the kernel along that dimension, $p$ is the padding applied to the input image and $s$ is the stride at which the kernel is applied to the image.
+
+\begin{equation} \label{eq:conv_output}
+    H_{out} = \frac{H_{in} + 2p - k}{s} + 1
+\end{equation}
+
+Padding can be applied to the image to increase the size of the input such that the output image is of the same size.
+Commonly zero padding is applied, such that the image in padded with zeros around its border.
+
+\subsubsection{Reducing Layer Output Size}
+In order to prevent the models from becoming too deep and to limit the number of trainable parameters in a model, it is desirable to reduce the output feature map size.
+To achieve this, pooling layers are commonly used, commonly either Max Pooling or Average Pooling.
+
+\section{Activation Functions}
+In order to add non-linearities to the model, activation functions are applied after each layer of models.
+This non-linearity enables complex high order functions to be approximated by the network.
+
+\subsection{Sigmoid}
+The sigmoid function, expressed by equation (\ref{eq:sigmoid}) 
+
+\begin{equation}\label{eq:sigmoid}
+    \sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation}
+
+\subsection{Tanh}
+\subsection{ReLU}
 
 \section{Optimisation Algorithms}
 \subsection{Stochastic Gradient Descent}
