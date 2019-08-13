@@ -55,12 +55,14 @@ By using a layer which learns given that strided convolutions allows the model t
 \section{Activation Functions}
 In order to add non-linearities to the model, activation functions are applied after each layer of models.
 This non-linearity enables complex high order functions to be approximated by the network.
+There exist many activation functions, but this section shall focus on those which have been used in the models proposed in the \textcolor{red}{\textbf{(TODO add link to methods section)}} section.
+Activation functions are often selected based on the range of their output values, in cases where this is unimportant it is common to use the Rectified Linear Unit (ReLU) function as it provides strong gradients, which aids in the prevention of vanishing gradients in deep network models.
 
 \subsection{Sigmoid}
-The sigmoid function, expressed by equation (\ref{eq:sigmoid}) 
+The sigmoid function, expressed by equation (\ref{eq:sigmoid}) is a logistic function 
 
 \begin{equation}\label{eq:sigmoid}
-    \sigma(x) = \frac{1}{1 + e^{-x}}
+    sigmoid(x) = \frac{1}{1 + e^{-x}}
 \end{equation}
 
 \begin{figure}[h!]
@@ -82,17 +84,32 @@ The sigmoid function, expressed by equation (\ref{eq:sigmoid})
 
 \subsection{ReLU}
 \begin{equation}\label{eq:relu}
-    relu(x)=\begin{cases}
+    ReLU(x)=\begin{cases}
       x, & \text{if $x>0$}.\\
       0, & \text{otherwise}.
     \end{cases}
-  \end{equation}
+\end{equation}
+
+\begin{equation}\label{eq:lrelu}
+    ReLU(x)=\begin{cases}
+      x, & \text{if $x>0$}.\\
+      lx, & \text{otherwise}.
+    \end{cases}
+\end{equation}
 
 \begin{figure}[h!]
     \centering
-        \includegraphics[width=0.7\textwidth]{figures/relu.png}
-    \caption{ReLU Function}\label{fig:ReLU}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/relu.png}
+        \subcaption{ReLU Function}\label{fig:ReLU}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/lrelu.png}
+        \subcaption{LeakyReLU Function}\label{fig:LeakyReLU}
+    \end{subfigure}
+    \caption{ReLU Activation Functions}\label{fig:relus}
 \end{figure}
+
 
 \subsection{Softmax}
 
