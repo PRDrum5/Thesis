@@ -56,49 +56,18 @@ By using a layer which learns given that strided convolutions allows the model t
 In order to add non-linearities to the model, activation functions are applied after each layer of models.
 This non-linearity enables complex high order functions to be approximated by the network.
 There exist many activation functions, but this section shall focus on those which have been used in the models proposed in the \textcolor{red}{\textbf{(TODO add link to methods section)}} section.
-Activation functions are often selected based on the range of their output values, in cases where this is unimportant it is common to use the Rectified Linear Unit (ReLU) function as it provides strong gradients, which aids in the prevention of vanishing gradients in deep network models.
+Activation functions are often selected based on the range of their output values, in cases where this is unimportant it is common to use the Rectified Linear Unit (ReLU) function as it provides strong gradients, which aids in the prevention of vanishing gradients in deep network models, \cite{Goodfellow-et-al-2016}.
 
-\subsection{Sigmoid}
-The sigmoid function, expressed by equation (\ref{eq:sigmoid}) is a logistic function 
-
-\begin{equation}\label{eq:sigmoid}
-    sigmoid(x) = \frac{1}{1 + e^{-x}}
-\end{equation}
-
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
-        \includegraphics[width=0.7\textwidth]{figures/sigmoid.png}
-    \caption{Sigmoid Function}\label{fig:Sigmoid}
-\end{figure}
-
-\subsection{Tanh}
-\begin{equation}\label{eq:tanh}
-    \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
-\end{equation}
-
-\begin{figure}[h!]
-    \centering
-        \includegraphics[width=0.7\textwidth]{figures/tanh.png}
-    \caption{Tanh Function}\label{fig:Tanh}
-\end{figure}
-
-\subsection{ReLU}
-\begin{equation}\label{eq:relu}
-    ReLU(x)=\begin{cases}
-      x, & \text{if $x>0$}.\\
-      0, & \text{otherwise}.
-    \end{cases}
-\end{equation}
-
-\begin{equation}\label{eq:lrelu}
-    ReLU(x)=\begin{cases}
-      x, & \text{if $x>0$}.\\
-      lx, & \text{otherwise}.
-    \end{cases}
-\end{equation}
-
-\begin{figure}[h!]
-    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/sigmoid.png}
+        \subcaption{Sigmoid Function}\label{fig:Sigmoid}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/tanh.png}
+        \subcaption{Tanh Function}\label{fig:Tanh}
+    \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \includegraphics[width=\textwidth]{figures/relu.png}
         \subcaption{ReLU Function}\label{fig:ReLU}
@@ -107,20 +76,111 @@ The sigmoid function, expressed by equation (\ref{eq:sigmoid}) is a logistic fun
         \includegraphics[width=\textwidth]{figures/lrelu.png}
         \subcaption{LeakyReLU Function}\label{fig:LeakyReLU}
     \end{subfigure}
-    \caption{ReLU Activation Functions}\label{fig:relus}
+    \caption{Activation Functions}\label{fig:activations}
 \end{figure}
 
+\subsection{Sigmoid}
+The Sigmoid function, expressed by equation (\ref{eq:sigmoid}) and shown in Figure \ref{fig:Sigmoid} is a logistic function which maps all real values to values within the range of 0 and 1.
+A potential issue with the Sigmoid function is that the gradient at all points on the curve are small, with a maximum gradient of just 0.25 where $x = 0$.
+
+\begin{equation}\label{eq:sigmoid}
+    \sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation}
+
+\subsection{Tanh}
+The Tanh function, expressed by equation (\ref{eq:tanh}) and shown in Figure \ref{fig:Tanh} is related to the Sigmoid function by equation (\ref{eq:sig_tanh})
+The Tanh function maps all real values to the range of -1 and 1.
+While the Tanh function has stronger gradients than the Sigmoid function, the gradients are still close to zero for most input values of $x$.
+
+\begin{equation}\label{eq:tanh}
+    \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+\end{equation}
+
+\begin{equation}\label{eq:sig_tanh}
+    \tanh(x) = 2\sigma(2x) - 1
+\end{equation}
+
+\subsection{ReLU}
+The ReLU function (Figure \ref{fig:ReLU}) is a non-linear function with strong gradient values for all input values of $x$ above zero.
+Unlike the Sigmoid and Tanh function, the ReLU function is not differentiable everywhere due to the function not being continuous.
+The gradient at the point where $x = 0$ is often treated as zero by library implementations to avoid this issue.
+
+\begin{equation}\label{eq:relu}
+    \text{ReLU}(x)=\begin{cases}
+      x, & \text{if $x>0$}.\\
+      0, & \text{otherwise}.
+    \end{cases}
+\end{equation}
+
+While the ReLU function has a positive gradient where $x > 0$, the gradient is 0 where $x < 0$.
+Another proposed activation function is the LeakyReLU function (Figure \ref{fig:LeakyReLU}) described by equation (\ref{eq:lrelu}) where $l$ is a selected parameter.
+The LeakyReLU function multiplies the input value $x$ by some parameter $l$, where $l < 1$, such that $x$ is attenuated.
+
+\begin{equation}\label{eq:lrelu}
+    \text{LeakyReLU}(x)=\begin{cases}
+      x, & \text{if $x>0$}.\\
+      lx, & \text{otherwise}.
+    \end{cases}
+\end{equation}
 
 \subsection{Softmax}
+The Softmax function is commonly used in classification problems in which a model aims to classify an input value $\bm{x}$ as one of $N$ labels.
+The Softmax function, expressed by equation (\ref{eq:softmax}), converts the input $\bm{x}$ into a normalised probability distribution over the $N$ labels, the label with the highest likelihood is interpreted as the model's prediction. 
+Such models are commonly trained with the Negative Log Likelihood loss function (see Section \ref{nll}).
 
-\section{Optimisation Algorithms}
-\subsection{Stochastic Gradient Descent}
-\subsection{Adam}
-\subsection{RMSprop}
+\begin{equation}\label{eq:softmax}
+    \text{Softmax}(x_i) = \frac{e^{x_i}}{\sum_j^N e^{x_j}}
+\end{equation}
 
 \section{Loss Functions}
-\subsection{Negative Log Likelihood}
+\subsection{Negative Log Likelihood} \label{nll}
 \subsection{Mean Squared Error?}
+
+\section{Optimisation Algorithms}
+With the aim of finding the model parameter values which minimise the loss function of the model, Gradient Descent algorithms are commonly used to find such parameters.
+Given a loss function $L(x)$ which is to be minimised, where $x$ represent the model parameters, the value of $x$ is iteratively updated by calculating the gradient of $L(x)$ for the current parameters and updating the parameters as described by equation (\ref{eq:gradient_descent}).
+$\epsilon$ is the learning rate for the algorithm which determines the step size made at each update.
+Too large a step size and the update may overshoot the optimum value, too small a step size may result in a model which takes an impractical length of time to train. 
+It's is often useful in practice to begin with a learning rate which is able to make large steps, then to reduce the learning rate $\epsilon$ as the model trains.
+
+\textcolor{red}{\textbf{(TODO add graphical examples)}}
+
+\begin{equation}\label{eq:gradient_descent}
+   x^\prime = x - \epsilon \nabla_x L(x)
+\end{equation}
+
+\subsection{Stochastic Gradient Descent}
+Stochastic Gradient Descent (SGD) takes a minibatch of $m$ samples from an  data generating independent and identically distributed (i.i.d) distribution, and calculates the average gradient with which the update rule described by equation (\ref{eq:SGD}) is applied.
+The use of minibatches results in an approximation of the true gradient as the whole dataset is not evaluated before making an update, just a small subset of the dataset.
+This can have the affect of adding regularisation to the learning procedure, particularly with smaller batch sizes \cite{Goodfellow-et-al-2016}.
+The SGD update rule for a loss function $L(.)$ and model $f(\bm{x}_i; \bm{\theta})$ can be defined by equation (\ref{eq:SGD}):
+
+\begin{equation*}
+    \bm{g} = \frac{1}{m} \nabla_\theta \sum_i^m L(f(\bm{x}_i; \bm{\theta}), y_i)
+\end{equation*}
+
+\begin{equation}\label{eq:SGD}
+    \bm{\theta}^\prime = \bm{\theta} - \epsilon \bm{g}
+\end{equation}
+
+where $\bm{g}$ represents the approximation of the gradient, $\bm{\theta}$ represent model parameters and $\bm{x}_i$ represent $m$ sample making up the minibatch $\{\bm{x}_1, \dots, \bm{x}_m\}$ and corresponding target values $\bm{y}_i$.
+
+\subsection{Momentum}
+In order the accelerate the training of models and find the global minimum faster momentum is often used with optimisation algorithms.
+In addition to the gradient term, a velocity term is also calculated as an accumulation of decaying moving average values from previous gradient approximation \cite{Goodfellow-et-al-2016}.
+The result of this is that the optimisation will continue to move in the direction which it has been moving, aiding in the preventing of the model becoming stuck in local minimum.
+Figure \ref{fig:Momentum} demonstrates how momentum may accelerate the optimisation process.
+Here the black arrows represent the gradient evaluated at each point, while the red line shows the path taken with momentum.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.3\textwidth]{figures/momentum.png}
+    \caption{SGD with Momentum \cite{Goodfellow-et-al-2016}}\label{fig:Momentum}
+\end{figure}
+
+\subsubsection{Adaptive Learning Algorithms}
+Such algorithms as RMSprop and Adam exist which are built upon the principles of the SGD algorithm with the addition of momentum but adapt their learning rates or momentum values based on a history of previous gradient values.
+These aid in finding the global minimum for the loss function at hand.
 
 \section{Generative Adversarial Networks}
 

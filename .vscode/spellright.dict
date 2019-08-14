@@ -58,3 +58,7 @@ Tanh
 learnable
 Max
 downsample
+lx
+minibatch
+SGD
+minibatches
