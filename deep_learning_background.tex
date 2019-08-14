@@ -123,18 +123,14 @@ The LeakyReLU function multiplies the input value $x$ by some parameter $l$, whe
     \end{cases}
 \end{equation}
 
-\subsection{Softmax}
+\subsection{Softmax} \label{softmax}
 The Softmax function is commonly used in classification problems in which a model aims to classify an input value $\bm{x}$ as one of $N$ labels.
 The Softmax function, expressed by equation (\ref{eq:softmax}), converts the input $\bm{x}$ into a normalised probability distribution over the $N$ labels, the label with the highest likelihood is interpreted as the model's prediction. 
-Such models are commonly trained with the Negative Log Likelihood loss function (see Section \ref{nll}).
+Such models are commonly trained with the Negative Log Likelihood loss function, by applying the log to the output of the softmax function.
 
 \begin{equation}\label{eq:softmax}
     \text{Softmax}(x_i) = \frac{e^{x_i}}{\sum_j^N e^{x_j}}
 \end{equation}
-
-\section{Loss Functions}
-\subsection{Negative Log Likelihood} \label{nll}
-\subsection{Mean Squared Error?}
 
 \section{Optimisation Algorithms}
 With the aim of finding the model parameter values which minimise the loss function of the model, Gradient Descent algorithms are commonly used to find such parameters.
