@@ -179,7 +179,13 @@ The model used is similar to that used in \cite{Karras2017a}, firstly extracting
 Unlike the model used in \cite{Karras2017a}, the model used in \cite{Tzirakis2019} is trained to drive learnt blendshapes as opposed to vertex positions.
 This reduces the number of output parameters of the model substantially in comparison to that used by Karras et al while reducing the potential expressions possible to be produced by the model.
 
-Similar to \cite{Tzirakis2019}, the VOCA model \cite{Cudeiro2019} synthesises video sequences of 3D models speaking given an audio input.
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.9\textwidth]{figures/voca_model.png}
+    \caption{The VOCA Model \cite{Cudeiro2019}}\label{fig:VOCA_model}
+\end{figure}
+
+Similar to \cite{Tzirakis2019}, the VOCA model \cite{Cudeiro2019} synthesises video sequences of 3D models speaking given an audio input, see Figure \ref{fig:VOCA_model}.
 The VOCASET dataset discussed in section \ref{3D Datasets}, was captured with the intention of training this model to be independent of the speaker, hence a large range of speakers are used within the dataset.
 The model is comprised of three sections: audio feature extraction, a feature encoder and a decoder to drive a template facial mesh from the FLAME model \cite{Li2017}.
 The audio feature extraction makes use of the pre-trained Mozilla implementation of the DeepSpeech model, based on the paper by Hannun et al. \cite{Hannun2014}.

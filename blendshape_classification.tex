@@ -1,0 +1,58 @@
+%\documentclass[12pt]{report}
+%
+%% some macros
+%\input{notation}
+%\input{includes}
+%
+%\begin{document}
+
+\externaldocument{lit_review}
+
+\chapter{Blendshape Classification}
+
+This chapter shall discuss the problem of word level classification from blendshape parameters obtained from a dataset created with the VOCA model \cite{Cudeiro2019} processing audio from the LRW dataset \cite{Chung2016}.
+Classification is performed with a Convolutional Neural Network architecture on 500 labels.
+The model architecture, how performance is assessed and how the model has been tuned to maximise performance on a held out validation set is also discussed. 
+
+\section{Problem Definition}
+As with traditional lip reading problems, the end goal of VSR models using 3D temporal data is to correctly classify variable length input sequences at a sentence level.
+However, before this problem can be tackled, the simpler problem of word level classification should be first approached to ensure that this is possible, before moving on to more advanced problems.
+If word level classification cannot be achieved, it may be concluded that there is not a sufficient amount of information encoded in 3D temporal models for more complex problems to be solved with the current set of assumptions.
+
+These assumptions include:
+\begin{enumerate}
+    \item Provided an appropriate dataset of 3D temporal facial scans of subjects speaking, a set of blendshape parameters which realistically represent the motions of speech can be found. \label{assumption:class_1}
+    \item The blendshape parameters represent an encoding from which a classification model is able to make word level predictions from. \label{assumption:class_2}
+\end{enumerate}
+
+\section{Generation of a 3D Lip Reading Dataset}
+In order to train any model, an appropriate dataset must exist upon which the model can be trained.
+An appropriate dataset for word level prediction from blendshape parameters would consist of:
+\begin{itemize}
+   \item A large enough vocabulary that single instances of words with unique phonemes do not exist as this would allow classification of these words too simple.
+   \item Facial mesh recordings for all samples in the dataset, all of with brought into alignment to remove movement not related to speech.
+   \item Principal blendshape axis which can be shown to contain useful interpolation for speech.
+   \item The blendshape parameters corresponding to each sample for the given blendshape axis.
+\end{itemize}
+
+As discussed in section \ref{3D Datasets}, currently there exists no public datasets which have been created for the purpose of lip reading. 
+In addition to this, the datasets which contain 3D temporal data of speaking facial scans are either not public in the case of Karras's model \cite{Karras2017a} or are unlabelled and too small to train a model effectively as is the case with the VOCASET \cite{Cudeiro2019}.
+Both of these datasets also contain a large vocabulary, with too few samples of words.
+The VOCASET dataset could be labelled with the use of an automatic speech recognition model such as DeepSpeech as suggested in section \ref{3D Datasets}, however as the dataset was constructed to contain as much variation in speech sounds, so a degree of word repetition would offer little benefit.
+
+In order to tackle the issue of an appropriate dataset not existing, two solutions exist.
+The ideal solution would be to capture subjects speaking words from a corpus using a 3D capture equipment, this solution was not a viable option for this project due to the specialised equipment required and the data processing required after data capture had been performed.
+Another means of constructing the dataset would be to generate the data with an existing model which can convert an appropriate audio dataset to a series of facial meshes from which blendshape axis can be constructed and parameters recovered.
+
+
+\section{Data Preprocessing}
+
+\section{Model Architecture}
+
+\section{Results}
+
+\section{Discussion}
+
+%\bibliographystyle{unsrt}
+%\bibliography{ref}
+%\end{document}
