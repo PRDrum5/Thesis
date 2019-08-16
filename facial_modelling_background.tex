@@ -41,13 +41,13 @@ While Deep Learning models have been trained to drive all vertex positions from 
     \caption{Point Cloud Representation of FLAME Model \cite{Li2017}}\label{fig:FLAME_Point_Cloud}
 \end{figure}
 
-\subsection{Blendshapes}
+\subsection{Blendshapes} \label{blendshapes}
 Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand and may hinder the performance of a Machine Learning model due to the high dimensionality of the data.
 Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}, by reducing the number of parameters, the model becomes more manageable to control.
 One method of producing model blendshapes is with the use of Principle Component Analysis (PCA).
 By applying PCA on a dataset of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set while reducing the number of model parameters substantially.
 
-\subsubsection{Principal Component Analysis}
+\subsubsection{Principal Component Analysis} \label{sec:pca}
 Given a collection of measured data points in a high dimensional space, it is often desirable to reduce the dimensionality of such data to a lower dimensional latent space, this could be to aid processing the data or enable visualisation.
 In such instances, it is desirable for the mapping to the latent space to maintain as much information from the original data as possible.
 
@@ -157,21 +157,6 @@ From eigendecomposition, $\mat{W}$ has columns of eigenvectors which correspond 
 \begin{equation} \label{eq:pca_solved}
     \mat{S}_t \mat{W} = \mat{W \Lambda}
 \end{equation}
-
-\subsection{Application of PCA for Blendshapes}
-
-TODO This section may need to be moved to Methods.
-\begin{itemize}
-    \item Interpolation along axis, with examples
-    \item recovering the shape parameters from existing frames given the blendshape axis.
-\end{itemize}
-
-Once PCA has been applied to a dataset of facial scans, the transformation matrix $\mat{W}$ is known.
-$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated upon.
-These axis are the blendshapes axis and by interpolating along these axis by given amounts, motions of the facial mesh can be expressed in a low dimension.
-The first blendshape axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
-The number of blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive blendshape axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
-This results in realistic reconstruction being able to be achieved with a relatively small number of blendshapes containing the majority of the variation within the dataset.
 
 \section{Facial Mesh Alignment}
 In order to create blendshapes from 3D facial scans, movement within scans should be limited to facial movement with as little head movement as possible.

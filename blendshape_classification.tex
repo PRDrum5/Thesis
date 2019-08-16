@@ -7,6 +7,8 @@
 %\begin{document}
 
 \externaldocument{lit_review}
+\externaldocument{facial_modelling_background}
+\externaldocument{appendix}
 
 \chapter{Blendshape Classification}
 
@@ -35,15 +37,131 @@ An appropriate dataset for word level prediction from blendshape parameters woul
    \item The blendshape parameters corresponding to each sample for the given blendshape axis.
 \end{itemize}
 
-As discussed in section \ref{3D Datasets}, currently there exists no public datasets which have been created for the purpose of lip reading. 
-In addition to this, the datasets which contain 3D temporal data of speaking facial scans are either not public in the case of Karras's model \cite{Karras2017a} or are unlabelled and too small to train a model effectively as is the case with the VOCASET \cite{Cudeiro2019}.
-Both of these datasets also contain a large vocabulary, with too few samples of words.
-The VOCASET dataset could be labelled with the use of an automatic speech recognition model such as DeepSpeech as suggested in section \ref{3D Datasets}, however as the dataset was constructed to contain as much variation in speech sounds, so a degree of word repetition would offer little benefit.
+As discussed in section \ref{3D Datasets}, currently there exists no public datasets which have been created for the purpose of lip reading from 3D temporal data.
+In addition to this, the datasets which have not been created with the purpose of lip reading but do contain 3D temporal data of speaking facial scans, are either not public in the case of Karras's model \cite{Karras2017a} or are unlabelled and too small to train a model effectively as is the case with the VOCASET \cite{Cudeiro2019}.
+Both of these datasets also contain a large vocabulary, with too few samples of each word.
+The VOCASET dataset could be labelled with the use of an automatic speech recognition model such as DeepSpeech as suggested in section \ref{3D Datasets}, however as the dataset was constructed to contain as much variation in speech sounds, so a degree of word repetition would offer little benefit, hence the lack of consistent word repetition.
 
 In order to tackle the issue of an appropriate dataset not existing, two solutions exist.
-The ideal solution would be to capture subjects speaking words from a corpus using a 3D capture equipment, this solution was not a viable option for this project due to the specialised equipment required and the data processing required after data capture had been performed.
+The ideal solution would be to capture subjects speaking words from a set corpus using a 3D capture equipment, this solution was not a viable option for this project due to the specialised equipment required and the data processing required after data capture had been performed.
 Another means of constructing the dataset would be to generate the data with an existing model which can convert an appropriate audio dataset to a series of facial meshes from which blendshape axis can be constructed and parameters recovered.
+This can be achieved by processing audio from the LRW dataset \cite{Cheng2016} though the VOCA model \cite{Cudeiro2019}.
+The VOCA model claims to be able to generate realistic 3D facial motion from audio, as lip reading is notoriously difficult for humans, this is difficult to validate.
+Assuming that the VOCA model does in fact generate realistic facial motion, the LRW dataset allows for a 3D dataset to be generated with a set corpus of the 500 words contained in the LRW dataset.
 
+55,000 audio samples are taken from the LRW dataset with a uniform distribution of all labels, resulting in 110 samples for each label.
+Audio samples from the LRW dataset are from ``in the wild'' scenarios \cite{Cheng2016}, meaning that there is background noise and audio in the clip.
+An sample of the word ``\textit{ABOUT}'' will contain the word ``\textit{ABOUT}'' within the audio sample, but will contain other speech either side of the clip.
+Figure \ref{fig:LRW_About} shows such a sample labelled as ``\textit{ABOUT}'' in which the phrase ``talking about fair'' is spoken.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/about.png}
+    \caption{Audio Sample from LRW \cite{Cheng2016} ``Talking About Fair''}\label{fig:LRW_About}
+\end{figure}
+
+The full LRW dataset contains 1000 training samples for each label, however due to the size of the VOCA model, processing 55000 samples (11\% of the full dataset) took roughly 8 days to process with the GPU acceleration of a Nvidia Tesla M60.
+This is due to the size of the VOCA model, which incorporates the DeepSpeech model as a means of audio feature extraction.
+In parallel to the generation of the 3D temporal data from the VOCA model, blendshape parameters were recovered as the facial scans were produced.
+No significant decrease in speed the speed of data generation was observed running these tasks in parallel.
+
+\subsection{Blendshape Axis Creation}
+Ideally, all 55000 samples would be collected and the PCA would be performed on this to construct the blendshape axis.
+However, due to disk space limitations a complete dataset of 55000 facial scans could not be collected at once due to the size of the generated facial meshes as this would total 2.365 million generated facial mesh data samples, each of which occupying around 185KB, requiring a total of 440GB of disc space.
+To perform PCA on the generated facial meshes for blendshape axis (see section \ref{blendshapes}), the first 5000 facial mesh sequences were generated totalling 83 minutes of data and 215000 individual facial mesh data samples. 
+Once PCA has been applied to a dataset of facial scans, the transformation matrix $\mat{W}$ is known.
+$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated upon.
+These axis are the blendshapes axis and by interpolating along these axis by given amounts, motions of the facial mesh can be expressed in a low dimension.
+The first blendshape axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
+The number of blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive blendshape axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
+This results in realistic reconstruction being able to be achieved with a relatively small number of blendshapes containing the majority of the variation within the dataset.
+Examples of the First and Second Blendshape Axis from the first 5000 samples are shown in Figures \ref{fig:Blendshape_axis_1} and \ref{fig:Blendshape_axis_2} respectively, further examples can be viewed in the Appendix: Figure \ref{fig:Blendshape_axis_3}, \ref{fig:Blendshape_axis_4}.
+These are constructed by interpolating along each axis individually by a fixed step amount.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/1/00001.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/1/00002.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/1/00003.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/1/00004.png}
+    \end{subfigure}
+    \caption{First Blendshape Axis Interpolation }\label{fig:Blendshape_axis_1}
+\end{figure}
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/2/00001.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/2/00002.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/2/00003.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\textwidth}
+        \includegraphics[width=\textwidth]{figures/blendshape_interp/2/00004.png}
+    \end{subfigure}
+    \caption{Second Blendshape Axis Interpolation}\label{fig:Blendshape_axis_2}
+\end{figure}
+
+\subsection{Blendshape Parameter Recovery}
+Given a template mesh $\mat{M} \in \mathbb{R}^{(N \times 1)}$ upon which to interpolate from, where $N$ represents the number of vertex points in the facial mesh, each of which have an $x, y$ and $z$ coordinate value and Blendshape Axis $\mat{W} \in \mathbb{R}^{(N \times d)}$ as described in section \ref{sec:pca}, representing the axis along which the template mesh $\mat{M}$ can be interpolated.
+
+\begin{equation*}
+    \mat{M} = \begin{bmatrix} 
+                x_{1}, &
+                y_{1}, &
+                z_{1}, &
+                \dots, &
+                x_{n}, &
+                y_{n}, &
+                z_{n}
+               \end{bmatrix}^\top,
+    \quad
+    N = 3n,
+    \quad
+    \mat{M} \in \mathbb{R}^{N\times 1}
+\end{equation*}
+\begin{equation*}
+    \mat{W} = [
+               \bm{w_1}, \dots, \bm{w_d}
+              ],
+    \quad
+    \mat{W} \in \mathbb{R}^{(N \times d)}
+    \quad
+    \bm{w_i} = \begin{bmatrix} 
+                x_{1}, &
+                y_{1}, &
+                z_{1}, &
+                \dots, &
+                x_{n}, &
+                y_{n}, &
+                z_{n}
+    \end{bmatrix}^\top
+\end{equation*}
+
+Given subsequent frames $\mat{M}^{\prime}$ which deviate the facial mesh from $\mat{M}$, $\mat{M}^{\prime}$ can be expressed by equation \ref{eq:mesh_interp}, where $\bm{\Lambda}$ is a vector containing Blendshape parameters.
+
+\begin{equation}\label{eq:mesh_interp}
+    \mat{M}^{\prime} = \mat{M} + \mat{W} \mat{\Lambda}
+\end{equation}
+\quad
+\begin{equation*}
+    \mat{\Lambda} = \begin{bmatrix}
+        \lambda_1, &
+        \dots, &
+        \lambda_d
+    \end{bmatrix}^\top
+\end{equation*}
+
+find lambda with pseudo-inverse...
 
 \section{Data Preprocessing}
 
