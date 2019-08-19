@@ -18,11 +18,11 @@ In most instances, 3D head scans are captured with the use of a multi-camera rig
 The number and type of cameras can vary from system to system, but the principle remains consistent.
 All cameras must be synchronised to capture footage at the same time, with the same frame rate.
 This is inherently a more complex system than 2D video capture as is therefore more expensive, limiting the accessibility of such systems.  
-Once the images have been captured, the footage must be combined in order to produce a 3D model of the subjects head \cite{Li2017}, often referred to as a facial mesh.
+Once the images have been captured, the footage must be combined in order to produce a 3D model of the subject's head \cite{Li2017}, often referred to as a facial mesh.
 A facial mesh is made up of a point cloud of vertices and vertex connections.
 Depending on the resolution of the system used to capture the data, the number of points which are used to represent the subject can vary, each with $x$, $y$ and $z$ coordinates in space.
 Depending on the mesh capture pipeline, the number of vertices may vary, but even a low resolution mesh may contain several thousand vertices.
-In the example shown in Figure \ref{fig:FLAME_Point_Cloud}, the FLAME model \cite{Li2017} uses around 5000 vertex positions, each with an $(x, y, z)$ value, resulting in a total number of 15,000 parameters for a single capture in time.
+In the example shown in Figure \ref{fig:FLAME_Point_Cloud}, the FLAME model \cite{Li2017} uses around 5000 vertex positions, each with an $(x, y, z)$ value, resulting in a total of 15,000 parameters for a single capture in time.
 While Deep Learning models have been trained to drive all vertex positions from a starting template mesh \cite{Karras2017a}, a simpler representation can be achieved with the use of Blendshapes.
 
 \begin{figure}[h]
@@ -43,12 +43,12 @@ While Deep Learning models have been trained to drive all vertex positions from 
 
 \subsection{Blendshapes} \label{blendshapes}
 Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand and may hinder the performance of a Machine Learning model due to the high dimensionality of the data.
-Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}, by reducing the number of parameters, the model becomes more manageable to control.
+Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}; by reducing the number of parameters, the model becomes more manageable to control.
 One method of producing model blendshapes is with the use of Principle Component Analysis (PCA).
-By applying PCA on a dataset of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set while reducing the number of model parameters substantially.
+By applying PCA on a dataset of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set whilst reducing the number of model parameters substantially.
 
 \subsubsection{Principal Component Analysis} \label{sec:pca}
-Given a collection of measured data points in a high dimensional space, it is often desirable to reduce the dimensionality of such data to a lower dimensional latent space, this could be to aid processing the data or enable visualisation.
+Given a collection of measured data points in a high dimensional space, it is often desirable to reduce the dimensionality of such data to a lower dimensional latent space, in order to aid processing the data or enable visualisation.
 In such instances, it is desirable for the mapping to the latent space to maintain as much information from the original data as possible.
 
 PCA aims to reduce the dimensionality of a collection of data points while maximising the variance in the latent space.
@@ -137,7 +137,7 @@ and,
 \end{equation}
 
 \bigskip
-By constructing the Lagrangian from equation (\ref{eq:pca_optimum_transformation}) and solving the solution in equation (\ref{eq:pca_solved}) can be obtained.
+By constructing the Lagrangian from equation (\ref{eq:pca_optimum_transformation}) and solving, the solution in equation (\ref{eq:pca_solved}) can be obtained.
 From eigendecomposition, $\mat{W}$ has columns of eigenvectors which correspond to the $d$ largest non-zero eigenvalues of the covariance matrix, $\mat{S}_t$.
 
 \begin{equation*}
@@ -191,7 +191,7 @@ In order to compare two objects regardless of these factors, the differences in 
 
 \subsubsection{Translational Alignment} \label{sec:trans_align}
 Translational components can be eliminated by having the centroids of the two objects lie at the same position in space.
-This can be easily achieved by subtracting the mean of each objects points from itself such that the centroid now lies at the origin.
+This can be easily achieved by subtracting the mean of each object's points from itself such that the centroid now lies at the origin.
 
 Let $\bar{x}_j = \frac{1}{n} \sum_{i=1}^{n} x_{ij}$ and $\bar{y}_j = \frac{1}{n} \sum_{i=1}^{n} y_{ij}$ where $(j = 1, \dots, f)$ represent the mean of each feature, such that the centroids of the two objects are given by $C_X = (\bar{x}_1, \bar{x}_2, \dots, \bar{x}_f)$ and $C_Y = (\bar{y}_1, \bar{y}_2, \dots, \bar{y}_f)$ respectively.
 By subtracting the mean of $\mat{X}$ and $\mat{Y}$ from themselves, the centroids $C_X$ and $C_Y$ will be in alignment at the origin, minimising the sum of square differences due to translational components.
@@ -296,11 +296,11 @@ As described in section (\ref{sec:trans_align}), the initial objects are transla
 After alignment, the difference is zero as these objects are both similar triangles.
 
 \subsection{Procrustes Analysis for Facial Mesh Alignment}
-The process of Procrustes Analysis described above deals with objects in which all coordinate points are used to find the optimum alignment, however this is inappropriate for facial mesh alignment as not only would the position of the head be aligned to, but as would the motion from speech, of which the aim is to maintain variation.
+The process of Procrustes Analysis described above deals with objects in which all coordinate points are used to find the optimum alignment, however this is inappropriate for facial mesh alignment as not only would the position of the head be aligned to, but so would the motion from speech, of which the aim is to maintain variation.
 However, a subset of points of a pair of objects can be used to align the entire object.
 By selecting points which do not contain any movement due to speech or facial expression, variation in these points can be assumed to be only from head motion.
 Such positions include the nose, corners of the eyes and cheekbones.
-If the facial scans capture 360 degrees, then points on the back of the subjects head can also be used.
+If the facial scans captures 360 degrees, then points on the back of the subject's head can also be used.
 From this subset of points, the translation, scaling and rotational matrix can be found which aligns these points using the steps described in section \ref{sec:procrustes_analysis} but then applied to the entire object.
 An example of such an application is shown in Figure \ref{fig:VOCASET_Alignment} before and after alignment has been applied.
 

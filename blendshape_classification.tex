@@ -24,15 +24,15 @@ If word level classification cannot be achieved, it may be concluded that there 
 These assumptions include:
 \begin{enumerate}
     \item Provided an appropriate dataset of 3D temporal facial scans of subjects speaking, a set of blendshape parameters which realistically represent the motions of speech can be found. \label{assumption:class_1}
-    \item The blendshape parameters represent an encoding from which a classification model is able to make word level predictions from. \label{assumption:class_2}
+    \item The blendshape parameters represent an encoding from which a classification model is able to make word level predictions. \label{assumption:class_2}
 \end{enumerate}
 
 \section{Generation of a 3D Lip Reading Dataset}
 In order to train any model, an appropriate dataset must exist upon which the model can be trained.
 An appropriate dataset for word level prediction from blendshape parameters would consist of:
 \begin{itemize}
-   \item A large enough vocabulary that single instances of words with unique phonemes do not exist as this would allow classification of these words too simple.
-   \item Facial mesh recordings for all samples in the dataset, all of with brought into alignment to remove movement not related to speech.
+   \item A large enough vocabulary that single instances of words with unique phonemes do not exist, as this would allow classification of these words to be too simple.
+   \item Facial mesh recordings for all samples in the dataset, all of which brought into alignment to remove movement not related to speech.
    \item Principal blendshape axis which can be shown to contain useful interpolation for speech.
    \item The blendshape parameters corresponding to each sample for the given blendshape axis.
 \end{itemize}
@@ -60,18 +60,18 @@ Figure \ref{fig:LRW_About} shows such a sample labelled as ``\textit{ABOUT}'' in
     \caption{Audio Sample from LRW \cite{Cheng2016} ``Talking About Fair''}\label{fig:LRW_About}
 \end{figure}
 
-The full LRW dataset contains 1000 training samples for each label, however due to the size of the VOCA model, processing 55000 samples (11\% of the full dataset) took roughly 8 days to process with the GPU acceleration of a Nvidia Tesla M60.
+The full LRW dataset contains 1000 training samples for each label, however due to the size of the VOCA model, processing 55000 samples (11\% of the full dataset) took roughly 8 days to process with the GPU acceleration of an Nvidia Tesla M60.
 This is due to the size of the VOCA model, which incorporates the DeepSpeech model as a means of audio feature extraction.
 In parallel to the generation of the 3D temporal data from the VOCA model, blendshape parameters were recovered as the facial scans were produced.
-No significant decrease in speed the speed of data generation was observed running these tasks in parallel.
+No significant decrease in the speed of data generation was observed running these tasks in parallel.
 
 \subsection{Blendshape Axis Creation}
 Ideally, all 55000 samples would be collected and the PCA would be performed on this to construct the blendshape axis.
 However, due to disk space limitations a complete dataset of 55000 facial scans could not be collected at once due to the size of the generated facial meshes as this would total 2.365 million generated facial mesh data samples, each of which occupying around 185KB, requiring a total of 440GB of disc space.
 To perform PCA on the generated facial meshes for blendshape axis (see section \ref{blendshapes}), the first 5000 facial mesh sequences were generated totalling 83 minutes of data and 215000 individual facial mesh data samples. 
 Once PCA has been applied to a dataset of facial scans, the transformation matrix $\mat{W}$ is known.
-$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated upon.
-These axis are the blendshapes axis and by interpolating along these axis by given amounts, motions of the facial mesh can be expressed in a low dimension.
+$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated.
+These axes are the blendshapes axes and by interpolating along these axes by given amounts, motions of the facial mesh can be expressed in a low dimension.
 The first blendshape axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
 The number of blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive blendshape axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
 This results in realistic reconstruction being able to be achieved with a relatively small number of blendshapes containing the majority of the variation within the dataset.
@@ -112,7 +112,7 @@ These are constructed by interpolating along each axis individually by a fixed s
 \end{figure}
 
 \subsection{Blendshape Parameter Recovery}
-Given a template mesh $\mat{M} \in \mathbb{R}^{(N \times 1)}$ upon which to interpolate from, where $N = 3n$ and $n$ represents the number of vertex points in the facial mesh, each of which have an $x, y$ and $z$ coordinate value and Blendshape Axis $\mat{W} \in \mathbb{R}^{(N \times d)}$ as described in section \ref{sec:pca}, where the $d$ first principal axis have been kept, representing the axis along which the template mesh $\mat{M}$ can be interpolated.
+Given a template mesh $\mat{M} \in \mathbb{R}^{(N \times 1)}$ upon which to interpolate, where $N = 3n$ and $n$ represents the number of vertex points in the facial mesh, each of which have an $x, y$ and $z$ coordinate value and Blendshape Axis $\mat{W} \in \mathbb{R}^{(N \times d)}$ as described in section \ref{sec:pca}, where the $d$ first principal axis have been kept, representing the axis along which the template mesh $\mat{M}$ can be interpolated.
 
 \begin{equation*}
     \mat{M} = \begin{bmatrix} 
@@ -165,36 +165,57 @@ Given subsequent frames $\mat{M}^{\prime}$ which deviate the facial mesh from $\
 \end{equation*}
 
 The blendshape parameters $\lambda_i$ can be found by rearranging equation (\ref{eq:mesh_interp}) and solving for $\bm{\Lambda}$ as shown in equation (\ref{eq:mesh_interp_lambda}).
-The solution to this can be found by finding the pseudo-inverse for the Blendshape Axis $\mat{W}$.
+The solution to this can be found by finding the pseudo-inverse for the Blendshape Axes $\mat{W}$.
 
 \begin{equation}\label{eq:mesh_interp_lambda}
     \mat{\Lambda} = \mat{W}^{-1}(\mat{M}^{\prime} - \mat{M})
 \end{equation}
 
 \section{Data Preprocessing}
-To aid training, the dataset is normalised to a range of [0,1] using equation (\ref{eq:normalise}) where $x_{min}$ and $x_{max}$ are the smallest and largest values in the dataset respectively.
-As each Blendshape Axis is unrelated, normalisation is applied separately per axis (Figure \ref{fig:hist_norm}).
-This is beneficial as the variance in parameters values decreases from the first axis, as can be seen in Figure \ref{fig:hist_unnorm} the histogram plot of the Blendshape Parameters before normalisation.
+To aid training, the dataset is normalised to a range of [0,1] using equation (\ref{eq:normalise}) where $x_{min}$ and $x_{max}$ are the smallest and largest values in the dataset respectively (Figure \ref{fig:hist_norm}).
+While each Blendshape Axis is separate from one another, normalisation should be performed on all parameters as a whole to preserve information on the variation found in each Blendshape Axis relative to one another.
+As described by PCA in section \ref{sec:pca}, the variation in each subsequent principal axis decreases which can be seen in Figure \ref{fig:hist_norm}.
 
 \begin{equation} \label{eq:normalise}
    x^\prime = \frac{x - x_{min}}{x_{max} - x_{min}} 
 \end{equation}
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \includegraphics[width=\textwidth]{figures/shape_params_unnormalised_hist.png}
         \caption{Unnormalised}\label{fig:hist_unnorm}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{figures/shape_params_normalised_seperately_hist.png}
+        \includegraphics[width=\textwidth]{figures/shape_params_normalised_hist.png}
         \caption{Normalised}\label{fig:hist_norm}
     \end{subfigure}
     \caption{Blendshape Parameter Histograms}
 \end{figure}
 
-
 \section{Model Architecture}
+Two model architectures tried.
+
+First based on LRW multiple towers architecture.
+
+Convolve over all shape parameters at each time frame, then convolve over time domain.
+
+Second treats each shape parameter as an input channel and convolves over time from the start.
+
+\subsection{Classification Model 1}
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.9\textwidth]{figures/classifier1.png}
+    \caption{Multiple Towers Classification Architecture}
+\end{figure}
+
+\subsection{Classification Model 2}
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.9\textwidth]{figures/classifier2.png}
+    \caption{Shape Channels Classification Architecture}
+\end{figure}
+
 
 \section{Results}
 

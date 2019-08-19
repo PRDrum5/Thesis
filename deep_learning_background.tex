@@ -16,7 +16,7 @@ The CNN architecture is often paired with a downsampling layer to reduce the num
 An activation function is applied to the output feature map from each convolutional layer to add non-linearities to the model. 
 
 \subsection{Convolutional Layers}
-Each convolutional layer is made up of a number of learnable kernels which are applied the the entire input image by sliding the kernels across the width and height of the image taking the dot product of the kernel and the current receptive field of the kernel for all channels of the input image, this is demonstrated in Figure \ref{fig:Conv_Layer}.
+Each convolutional layer is made up of a number of learnable kernels which are applied to the entire input image by sliding the kernels across the width and height of the image taking the dot product of the kernel and the current receptive field of the kernel for all channels of the input image, as demonstrated in Figure \ref{fig:Conv_Layer}.
 Each kernel is able to capture spatially relevant information about the current receptive field and pass this to the subsequent layers of the model.
 During training these kernels are optimised to capture the most useful information for the task at hand.
 The number of kernels used at each layer determines the number of feature maps produced, each of which are stacked as channels.
@@ -29,34 +29,34 @@ As each kernel is applied to the whole input image, the same learned parameters 
 \end{figure}
 
 \subsection{Layer Output Sizes}
-An issue with convolutional layers is that the output image in slightly smaller than the input image as the kernel cannot be applied over the edge of the image.
-For a given kernel size, the output image size can be calculated with equation (\ref{eq:conv_output}), where $H_{in}$ and $H_{out}$ represent in input and output sizes along one dimension, $k$ represents the size of the kernel along that dimension, $p$ is the padding applied to the input image and $s$ is the stride at which the kernel is applied to the image.
+An issue with convolutional layers is that the output image is slightly smaller than the input image as the kernel cannot be applied over the edge of the image.
+For a given kernel size, the output image size can be calculated with equation (\ref{eq:conv_output}), where $H_{in}$ and $H_{out}$ represent the input and output sizes along one dimension, $k$ represents the size of the kernel along that dimension, $p$ is the padding applied to the input image and $s$ is the stride at which the kernel is applied to the image.
 
 \begin{equation} \label{eq:conv_output}
     H_{out} = \frac{H_{in} + 2p - k}{s} + 1
 \end{equation}
 
 Padding can be applied to the image to increase the size of the input such that the output image is of the same size.
-Commonly zero padding is applied, such that the image in padded with zeros around its border.
+Commonly zero padding is applied, such that the image is padded with zeros around its border.
 
 \subsubsection{Reducing Layer Output Size}
-In order to prevent the models from becoming too deep and to limit the number of trainable parameters in a model, it is desirable to reduce the output feature map size.
+In order to prevent the models from becoming too deep and to limit the number of trainable parameters in models, it is desirable to reduce the output feature map size.
 To achieve this, pooling layers are commonly used, commonly either Max Pooling or Average Pooling.
 
 Pooling layers apply a kernel over feature maps in a similar way to a convolutional layer, but apply a fixed function to the inputs rather than using learned parameters.
 A Max Pooling layer will output the maximum value from each position, and discard the remaining values.
-A Average Pooling layer will take the mean average of the values at each position.
+An Average Pooling layer will take the mean average of the values at each position.
 
 An alternate method of reducing the size of the output feature maps is by increasing the stride of the convolutional layers, such that the kernel isn't applied at every position, but may skip positions.
 Provided that the kernel size is larger than the stride of the convolutions, the whole feature map will still be covered.
 One possible advantage of this is that the kernel values are learnt such that the model will be able to extract the most useful information given that the stride is not one for the layer.
-By using a layer which learns given that strided convolutions allows the model to learn to downsample feature maps in the manner which retains the most useful information.
+By using a layer which learns given the use of strided convolutions, allows the model to learn to downsample feature maps in the manner which retains the most useful information.
 
 \section{Activation Functions}
 In order to add non-linearities to the model, activation functions are applied after each layer of models.
 This non-linearity enables complex high order functions to be approximated by the network.
 There exist many activation functions, but this section shall focus on those which have been used in the models proposed in the \textcolor{red}{\textbf{(TODO add link to methods section)}} section.
-Activation functions are often selected based on the range of their output values, in cases where this is unimportant it is common to use the Rectified Linear Unit (ReLU) function as it provides strong gradients, which aids in the prevention of vanishing gradients in deep network models, \cite{Goodfellow-et-al-2016}.
+Activation functions are often selected based on the range of their output values, but in cases where this is unimportant it is common to use the Rectified Linear Unit (ReLU) function as it provides strong gradients, which aids in the prevention of vanishing gradients in deep network models, \cite{Goodfellow-et-al-2016}.
 
 \begin{figure}[h]
     \centering
@@ -81,7 +81,7 @@ Activation functions are often selected based on the range of their output value
 
 \subsection{Sigmoid}
 The Sigmoid function, expressed by equation (\ref{eq:sigmoid}) and shown in Figure \ref{fig:Sigmoid} is a logistic function which maps all real values to values within the range of 0 and 1.
-A potential issue with the Sigmoid function is that the gradient at all points on the curve are small, with a maximum gradient of just 0.25 where $x = 0$.
+A potential issue with the Sigmoid function is that the gradients at all points on the curve are small, with a maximum gradient of just 0.25 where $x = 0$.
 
 \begin{equation}\label{eq:sigmoid}
     \sigma(x) = \frac{1}{1 + e^{-x}}
@@ -134,7 +134,7 @@ Such models are commonly trained with the Negative Log Likelihood loss function,
 
 \section{Optimisation Algorithms}
 With the aim of finding the model parameter values which minimise the loss function of the model, Gradient Descent algorithms are commonly used to find such parameters.
-Given a loss function $L(x)$ which is to be minimised, where $x$ represent the model parameters, the value of $x$ is iteratively updated by calculating the gradient of $L(x)$ for the current parameters and updating the parameters as described by equation (\ref{eq:gradient_descent}).
+Given a loss function $L(x)$ which is to be minimised, where $x$ represents the model parameters, the value of $x$ is iteratively updated by calculating the gradient of $L(x)$ for the current parameters and updating the parameters as described by equation (\ref{eq:gradient_descent}).
 $\epsilon$ is the learning rate for the algorithm which determines the step size made at each update.
 Too large a step size and the update may overshoot the optimum value, too small a step size may result in a model which takes an impractical length of time to train. 
 It's is often useful in practice to begin with a learning rate which is able to make large steps, then to reduce the learning rate $\epsilon$ as the model trains.
@@ -146,7 +146,7 @@ It's is often useful in practice to begin with a learning rate which is able to 
 \end{equation}
 
 \subsection{Stochastic Gradient Descent}
-Stochastic Gradient Descent (SGD) takes a minibatch of $m$ samples from an  data generating independent and identically distributed (i.i.d) distribution, and calculates the average gradient with which the update rule described by equation (\ref{eq:SGD}) is applied.
+Stochastic Gradient Descent (SGD) takes a minibatch of $m$ samples from a data generating independent and identically distributed (i.i.d) distribution, and calculates the average gradient with which the update rule described by equation (\ref{eq:SGD}) is applied.
 The use of minibatches results in an approximation of the true gradient as the whole dataset is not evaluated before making an update, just a small subset of the dataset.
 This can have the affect of adding regularisation to the learning procedure, particularly with smaller batch sizes \cite{Goodfellow-et-al-2016}.
 The SGD update rule for a loss function $L(.)$ and model $f(\bm{x}_i; \bm{\theta})$ can be defined by equation (\ref{eq:SGD}):
@@ -159,12 +159,12 @@ The SGD update rule for a loss function $L(.)$ and model $f(\bm{x}_i; \bm{\theta
     \bm{\theta}^\prime = \bm{\theta} - \epsilon \bm{g}
 \end{equation}
 
-where $\bm{g}$ represents the approximation of the gradient, $\bm{\theta}$ represent model parameters and $\bm{x}_i$ represent $m$ sample making up the minibatch $\{\bm{x}_1, \dots, \bm{x}_m\}$ and corresponding target values $\bm{y}_i$.
+where $\bm{g}$ represents the approximation of the gradient, $\bm{\theta}$ represents model parameters and $\bm{x}_i$ represents $m$ samples making up the minibatch $\{\bm{x}_1, \dots, \bm{x}_m\}$ and corresponding target values $\bm{y}_i$.
 
 \subsection{Momentum}
-In order the accelerate the training of models and find the global minimum faster momentum is often used with optimisation algorithms.
-In addition to the gradient term, a velocity term is also calculated as an accumulation of decaying moving average values from previous gradient approximation \cite{Goodfellow-et-al-2016}.
-The result of this is that the optimisation will continue to move in the direction which it has been moving, aiding in the preventing of the model becoming stuck in local minimum.
+In order to the accelerate the training of models and find the global minimum faster, momentum is often used with optimisation algorithms.
+In addition to the gradient term, a velocity term is also calculated as an accumulation of decaying moving average values from the previous gradient approximation \cite{Goodfellow-et-al-2016}.
+The result of this is that the optimisation will continue to move in the direction in which it has been moving, aiding in the prevention of the model becoming stuck in local minimum.
 Figure \ref{fig:Momentum} demonstrates how momentum may accelerate the optimisation process.
 Here the black arrows represent the gradient evaluated at each point, while the red line shows the path taken with momentum.
 
@@ -180,16 +180,15 @@ These aid in finding the global minimum for the loss function at hand.
 
 \section{Generative Adversarial Networks}
 
-A recent development in generating synthetic data samples is the use of generative adversarial networks \cite{Goodfellow2014}.
-The concept behind generative adversarial networks (GANs) is two have two machine learning models; a generator and a discriminator.
+A recent development in generating synthetic data samples is the use of generative adversarial networks (GANs) \cite{Goodfellow2014}.
+The concept behind GANs is to have two machine learning models; a generator and a discriminator.
 The task of the generator is to produce samples from an unknown high order probability distribution which correctly resemble samples from the distribution defined by training data.
 The generator achieves this by transforming a random sample from a known probability distribution, such as a Gaussian distribution as used in \cite{Goodfellow2014}, to a sample from the unknown distribution.
 This is achieved by finding the function which maps between the two distributions.
 The discriminator however, attempts to correctly learn to discriminate between the real and the generated samples.
 
-The original loss function (\ref{eq:gans_loss}) proposed by Ian Goodfellow forms a min-max game, where the loss of the generator is attempting to be minimised by having the discriminator label all the generated samples as real.
-While the loss of the discriminator is maximised by correctly classifying real and fake samples.
-Here $\bm{x}$ represent the real data samples from an unknown probability distribution $p_{data}$ and $\bm{z}$ represents a random noise sample from a known distribution.
+The original loss function (\ref{eq:gans_loss}) proposed by Ian Goodfellow \cite{Goodfellow2014} forms a min-max game, where the loss of the generator is attempting to be minimised by having the discriminator label all the generated samples as real, while the loss of the discriminator is maximised by correctly classifying real and fake samples.
+Here $\bm{x}$ represents the real data samples from an unknown probability distribution $p_{data}$ and $\bm{z}$ represents a random noise sample from a known distribution.
 The two networks are trained in an alternating fashion until the discriminator achieves an accuracy of 50\% on real and generated samples, effectively making binary guesses between the two.
 
 \begin{equation} \label{eq:gans_loss}
@@ -199,13 +198,13 @@ The two networks are trained in an alternating fashion until the discriminator a
 \quad
 
 GANs however, are difficult to train for two main reasons.
-Firstly, the equation (\ref{eq:gans_loss}) is challenging as it provides small gradients while generated samples are poor as discussed in \cite{Goodfellow2014}, making training difficult.
+Firstly, the equation (\ref{eq:gans_loss}) is challenging as it provides small gradients while generated samples are poor as discussed in \cite{Goodfellow2014}.
 Progress in developing new loss functions is discussed in section \ref{Stability_to_GANs}
 Secondly, early networks must also be balanced with a similar model capacity to prevent one from getting too much better than the other, preventing the other from improving.
 Various architectural changes have improved this issue \cite{Radford2016, Zhang2018}, although it seems to be closely tied to the loss function being used \cite{Gulrajani2017}.
 
-\subsection{Stability Improvements of GANs Networks} \label{Stability_to_GANs}
-There have been a large number of papers presenting new techniques with differing levels of success and training stability, a small handful of key papers which provided large advances in the generative adversarial training model shall be discussed here.
+\subsection{Stability Improvements of GANs} \label{Stability_to_GANs}
+There have been a large number of papers presenting new techniques with differing levels of success and training stability, a small handful of key papers which provide large advances in the generative adversarial training model shall be discussed here.
 A primary research focus around GANs has been in finding new loss functions on which to train the model to improve stability and performance.
 The original loss function proposed in the original paper \cite{Goodfellow2014} identifies an issue with equation (\ref{eq:gans_loss}) in that the gradient back propagated to the generator when the generated samples are poor, is very low as shown in figure \ref{fig:Goodfellow_plot}.
 
@@ -217,7 +216,7 @@ The original loss function proposed in the original paper \cite{Goodfellow2014} 
 \quad
 
 This in turn makes it very challenging to improve the performance of the generator.
-The suggested improvement made in \cite{Goodfellow2014} is rather than to maximise the the number of generated samples which the discriminator incorrectly classifies, but to minimise the number of generator samples the discriminator correctly classifies, described in equation (\ref{eq:gans_loss2}).
+The suggested improvement made in \cite{Goodfellow2014} is rather than to maximise the number of generated samples which the discriminator incorrectly classifies, instead to minimise the number of generator samples the discriminator correctly classifies, as described in equation (\ref{eq:gans_loss2}).
 Figure \ref{fig:Goodfellow_plot} shows how this results in the gradient propagated back to the generator is far larger when the generated samples are poor.
 
 \begin{equation} \label{eq:gans_loss2}
@@ -228,14 +227,16 @@ Figure \ref{fig:Goodfellow_plot} shows how this results in the gradient propagat
 
 Further stability improvements were proposed in \cite{Radford2016} which allowed deep convolutional generative adversarial networks (DCGANs) to be successfully trained for the first time.
 Radford et al. proposed three main contributions.
-Replace deterministic pooling layers with strided convolutions in both the generator and discriminator networks, allowing the networks to learn their own spatial upsampling and downsampling.
-Remove all fully connected layers used on top of convolutional layers, resulting in a fully convolutional model.
-Apply batch normalisation \cite{Ioffe2015} before the input of each layer.
-This normalises the input to each unit to zero mean and unit variance.
-This assists with training problems due to poor weight initialisation and allows gradients to flow through deeper networks more easily.
-Radford et al. state this to be a critical improvement to allow generator networks to begin learning by preventing all samples from collapsing to a single point. 
+\begin{itemize}
+    \item Replace deterministic pooling layers with strided convolutions in both the generator and discriminator networks, allowing the networks to learn their own spatial upsampling and downsampling.
+    \item Remove all fully connected layers used on top of convolutional layers, resulting in a fully convolutional model.
+    \item Apply batch normalisation \cite{Ioffe2015} before the input of each layer.
+    This normalises the input to each model layer to zero mean and unit variance.
+    Batch normalisation assists with training difficulties due to poor weight initialisation and allows gradients to flow through deeper networks more easily.
+\end{itemize}
+Radford et al. state these to be critical improvements to allow generator networks to begin learning by preventing all samples from collapsing to a single point. 
 
-In an attempt to stabilize the training of GANs models, the Wasserstein or 'Earth Mover Distance' loss function was proposed by Arjovsky et al. \cite{Arjovsky2017} shown in equation (\ref{eq:wgan}) where $\mathcal{D}$ is a set of 1-Lipschtiz functions.
+In an attempt to stabilize the training of GAN models, the Wasserstein or 'Earth Mover Distance' loss function was proposed by Arjovsky et al. \cite{Arjovsky2017} shown in equation (\ref{eq:wgan}) where $\mathcal{D}$ is a set of 1-Lipschtiz functions.
 
 \begin{equation} \label{eq:wgan}
     \min_{G} \max_{D \in \mathcal{D}} W(\Pd{r}, \Pd{g}) =
@@ -244,14 +245,14 @@ In an attempt to stabilize the training of GANs models, the Wasserstein or 'Eart
 \end{equation}
 \quad
 
-The WGAN model uses a critic as opposed to a discriminator, this is due to the fact that the discriminator is no longer a binary classifier, but being used to critique the real and generated samples. 
+The Wasserstein GAN (WGAN) model uses a critic as opposed to a discriminator, this is due to the fact that the discriminator is no longer a binary classifier, but being used to critique the real and generated samples. 
 As the Wasserstein function is continuous and differentiable, the critic can be trained until optimality, and \cite{Arjovsky2017} argues that it should be.
 As the critic is trained to optimality it does not saturate, but converges to a linear function.
 This provides the generator with a gradient which is more reliable, resulting in the generator learning consistently.
-The Wasserstein loss function has been shown to greatly improve training stability by providing consistent gradients throughout training and no longer requiring that the two networks have a balanced model capacity.
+The Wasserstein loss function has been shown to greatly improve training stability by providing consistent gradients throughout training and no longer requires that the two networks have a balanced model capacity.
 
 In order to use the Wasserstein distance as the loss for WGAN, the Lipschtiz condition must be enforced.
-In the WGAN the model weights are clipped to enforce this constraint \cite{Arjovsky2017}, however this is stated to be a non-ideal method of achieving this constraint and calls for future work to be investigate more effective methods.
+In the WGAN the model weights are clipped to enforce this constraint \cite{Arjovsky2017}, however this is stated to be a non-ideal method of achieving the Lipschtiz constraint and calls for future work to investigate more effective methods.
 The use of gradient penalty is proposed in \cite{Gulrajani2017} in order to satisfy this condition more elegantly as described in equation (\ref{eq:wgan_gp}).
 
 \begin{equation} \label{eq:wgan_gp}
@@ -266,18 +267,18 @@ The use of gradient penalty is proposed in \cite{Gulrajani2017} in order to sati
 Using the Wasserstein loss function with gradient penalty enforces the Lipschtiz condition and allows highly complex architectures to be trained successfully, including those with residual units \cite{Gulrajani2017}.
 
 \subsection{Architectural Developments}
-Mirza et al. showed that GANs could be conditioned on additional inputs to the generator network as the noise component \cite{Mirza2014}.
-This has allowed facilitated other uses of GANs such as image to image translation for style transfer \cite{Zhu2017}.
+Mirza et al. showed that GANs could be trained with conditional inputs to the generator network in addition to the noise component \cite{Mirza2014}.
+This has facilitated other uses of GANs such as image to image translation for style transfer \cite{Zhu2017}.
 Vougioukas et al. used a temporal model to generate a sequence of video frames given an image of a subject and an audio sequence of spoken text to synthesise the subject speaking \cite{Vougioukas2018}.
 The model uses two discriminators, one to determine if individual frames are realistic images of the subject's face and a second which evaluates the sequence of video frames to determine if it is realistic.
 The model uses temporal components to examine if the frames of video are consistent in time, preventing sudden jumps in facial position.
 
 Other novel architectures include the progressively growing GAN model \cite{Karras2017b} which is able to generate highly realistic images of faces to a high resolution.
 This is achieved by initially training a shallow model to produce 4x4 pixel images before increasing the depth of the network and training further at a higher resolution.
-By forcing the model to firstly produce and examine low resolution images the model firstly has to be able to synthesise simple low level features effectively, such as facial shape which are common to all samples.
+By forcing the model to firstly produce and examine low resolution images, the model has to be able to synthesise simple low level features effectively, such as facial shape which is common to all samples.
 Once the model can produce these features a higher resolution is used, allowing it to learn more complex features, such as hair and eyes.
 
-The attention mechanism \cite{Vaswani2017} has been shown to be usefully when applied to image data \cite{Xu2015} in order to capture relationships between spatially distant points.
+The attention mechanism \cite{Vaswani2017} has been shown to be useful when applied to image data \cite{Xu2015} in order to capture relationships between spatially distant points.
 As such points are further apart in the image, previously deeper convolutional models were required to allow a large enough receptive field to capture information on these two points.
 Zhang et al. point out that this is a common issue with DCGANs \cite{Radford2016}, where generated samples fail to produce structural patterns, while they do exceedingly well at local textural patterns.
 This is often seen in generated images of animals with realistic fur, but oddly shaped or an incorrect number of limbs.
