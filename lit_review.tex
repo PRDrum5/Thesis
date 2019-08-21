@@ -40,7 +40,7 @@ Both datasets are captured and processed with the same pipeline (Figure \ref{fig
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.95\textwidth]{figures/lrw_pipeline.png}
+        \includegraphics[width=0.95\textwidth]{figures/lit_review/lrw_pipeline.png}
     \caption{LRW Dataset Pipeline \cite{Chung2016}}\label{fig:LRW_Pipeline}
 \end{figure}
 
@@ -54,7 +54,7 @@ To identify mouth position, facial landmarks are then used using an ensemble of 
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.99\textwidth]{figures/lrw_face_detection.png}
+        \includegraphics[width=0.99\textwidth]{figures/lit_review/lrw_face_detection.png}
     \caption{LRW Face Detection and Tracking \cite{Chung2016}}\label{fig:LRW_Face_Detection}
 \end{figure}
 
@@ -65,7 +65,7 @@ The frames are then cropped around the relevant speaker, an example of a sample 
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.99\textwidth]{figures/lrw_one_second.png}
+        \includegraphics[width=0.99\textwidth]{figures/lit_review/lrw_one_second.png}
     \caption{LRW Dataset Sample: 24 frames of a subject saying \textit{`about'} \cite{Chung2016}}\label{fig:LRW_One_Second}
 \end{figure}
 
@@ -112,7 +112,7 @@ Similarly to LRW-3D, 30 minutes of training data is likely to be a limiting fact
 It should be noted that neither of these datasets were captured for the purpose of lip reading, but for synthesising realistic statistical facial models driven from an audio input, and thus there are no transcriptions for VOCASET.
 The transcriptions could be obtained with an Audio Speech Recognition (ASR) method such as DeepSpeech \cite{Hannun2014} and then alignment would have to be performed to the datasets before using the data to train lip reading models.
 
-\subsection{Lip Reading Models}
+\subsection{Lip Reading Models} \label{sec:lip_reading_models}
 In \cite{Chung2016} Chung et al. used a multiple towers convolutional model based on the VGG-M architecture for multi-label classification to classify a video clip to one of the five hundred labels in the LRW dataset.
 The model architecture (Figure \ref{fig:LRW_Multiple_Towers}) first processes each frame separately with a shared convolutional layer to extract features from each frame.
 These features are down-sampled with a pooling layer before being concatenated into a single high channel feature map.
@@ -121,7 +121,7 @@ The final layer of the model is passed through a softmax activation function to 
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.7\textwidth]{figures/lrw_multiple_towers.png}
+        \includegraphics[width=0.7\textwidth]{figures/lit_review/lrw_multiple_towers.png}
     \caption{LRW Multiple Towers Convolutional Neural Network Model \cite{Chung2016}}\label{fig:LRW_Multiple_Towers}
 \end{figure}
 
@@ -168,7 +168,7 @@ Finally two linear layers are used to drive vertex positions from a starting mes
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.9\textwidth]{figures/karras_model.png}
+        \includegraphics[width=0.9\textwidth]{figures/lit_review/karras_model.png}
     \caption{Audio Driven Facial Animation Model Proposed by Karras et al. \cite{Karras2017a}}\label{fig:Karras_Model}
 \end{figure}
 
@@ -182,7 +182,7 @@ This reduces the number of output parameters of the model substantially in compa
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.9\textwidth]{figures/voca_model.png}
+        \includegraphics[width=0.9\textwidth]{figures/lit_review/voca_model.png}
     \caption{The VOCA Model \cite{Cudeiro2019}}\label{fig:VOCA_model}
 \end{figure}
 

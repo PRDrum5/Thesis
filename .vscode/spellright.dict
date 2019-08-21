@@ -62,3 +62,7 @@ lx
 minibatch
 SGD
 minibatches
+dropout
+Conv2D
+Conv1D
+hyperparameters

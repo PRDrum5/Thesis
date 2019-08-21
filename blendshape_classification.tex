@@ -56,7 +56,7 @@ Figure \ref{fig:LRW_About} shows such a sample labelled as ``\textit{ABOUT}'' in
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.7\textwidth]{figures/about.png}
+        \includegraphics[width=0.7\textwidth]{figures/dataset/about.png}
     \caption{Audio Sample from LRW \cite{Cheng2016} ``Talking About Fair''}\label{fig:LRW_About}
 \end{figure}
 
@@ -183,17 +183,20 @@ As described by PCA in section \ref{sec:pca}, the variation in each subsequent p
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{figures/shape_params_unnormalised_hist.png}
+        \includegraphics[width=\textwidth]{figures/dataset/shape_params_unnormalised_hist.png}
         \caption{Unnormalised}\label{fig:hist_unnorm}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
-        \includegraphics[width=\textwidth]{figures/shape_params_normalised_hist.png}
+        \includegraphics[width=\textwidth]{figures/dataset/shape_params_normalised_hist.png}
         \caption{Normalised}\label{fig:hist_norm}
     \end{subfigure}
     \caption{Blendshape Parameter Histograms}
 \end{figure}
 
 \section{Model Architecture}
+
+TODO Rewrite into to this section
+
 Two model architectures tried.
 
 First based on LRW multiple towers architecture.
@@ -202,20 +205,101 @@ Convolve over all shape parameters at each time frame, then convolve over time d
 
 Second treats each shape parameter as an input channel and convolves over time from the start.
 
-\subsection{Classification Model 1}
-\begin{figure}[h]
+\subsection{Multiple Towers Classification Model}
+The first model is based on the Multiple Towers architecture used in \cite{Cheng2016} used for lip reading on 2D temporal data with the LRW dataset described in Section \ref{sec:lip_reading_models}.
+The model first applied a convolutional layer over each frame in the time domain separately, before concatenating the results and convolving in time.
+Max pooling layers are used to reduce the feature map size in the model and an output softmax activation function is used for prediction on the 500 word labels in the LRW dataset.
+The original Multiple Towers architecture can be seen in Figure \ref{fig:LRW_Multiple_Towers} while the architecture adapted from this design for prediction from blendshape parameters is shown in Figure \ref{fig:Blendshape_Multiple_Towers}
+Similar to the original architecture, this model firstly convolves over each set of blendshape parameters for each frame of the 3D model in time.
+This is performed with two 2D convolutional layers which encodes the 4 blendshape parameters per point in time to a single dimension.
+Once this has been reduced to a single dimension the model can use 1D convolutional operations over the time domain with max pooling layers to reduce the size of the feature maps.
+In order to aid training batch normalisation is applied, similarly dropout was used as it was found to aid in preventing overfitting and improved performance on the validation data.
+A detailed breakdown of the model specification can be seen in Table \ref{table:multi_towers_classifier}.
+The model was tuned on the validation data to reduce overfitting which remains present in Figure (TODO add reference to loss plots).
+The hyperparameters selected are shown in Table \ref{table:multi_towers_classifier_hyperparameters}.
+
+\begin{figure}[h!]
     \centering
-        \includegraphics[width=0.9\textwidth]{figures/classifier1.png}
+        \includegraphics[width=0.9\textwidth]{figures/classification/blendshape_multi_tower_arch.png}
     \caption{Multiple Towers Classification Architecture}
-\end{figure}
+\end{figure}\label{fig:Blendshape_Multiple_Towers}
+\quad
 
-\subsection{Classification Model 2}
-\begin{figure}[h]
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | l | l | l | l | l | l |}
+    \hline
+    Layer Type & Kernel & Stride & Batch Norm & Dropout & Activation \\ \hline
+    Conv2D & 3x1 & 1x1 & True & 0.2 & ReLU \\ \hline
+    Conv2D & 3x1 & 1x1 & True & 0.2 & ReLU \\ \hline
+    Conv1D & 3 & 1 & True & 0.2 & ReLU \\ \hline
+    MaxPool & 3 & 2 & - & - & - \\ \hline
+    Conv1D & 3 & 1 & True & 0.2 & ReLU \\ \hline
+    MaxPool & 3 & 2 & - & - & - \\ \hline
+    Conv1D & 3 & 1 & False & 0.0 & ReLU \\ \hline
+    Linear & - & - & False & 0.0 & LogSoftmax \\
+    \hline
+    \end{tabular} 
+    \caption{Multiple Towers Model Architecture}
+\end{table}\label{table:multi_towers_classifier}
+\quad
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | l | l | l | l | l |}
+    \hline
+    Optimisation Algorithm & Learning Rate & Weight Decay & Batch Size \\ \hline
+    RMSprop & 0.0002 & 0.001 & 128 \\
+    \hline
+    \end{tabular} 
+    \caption{Multiple Towers Model Hyperparameters}
+\end{table}\label{table:multi_towers_classifier_hyperparameters}
+
+\subsection{Blendshape Channels Classification Model}
+The second model treats each blendshape axis as a separately input channel and convolves over time throughout the entire model, the model architecture is visualised in Figure \ref{fig:Blendshape_Channel_Classifier}.
+The number of feature maps are gradually increased with the depth of the model before reducing slightly at the last convolutional layer before being passed into a linear layer for word predictions.
+Representing the input blendshape axis as separate channels means that 1D convolution can be applied throughout the model convolving over the time domain in the full depth of the model.
+Full model specification are shown in Table \ref{table:blendshape_channels_classifier}.
+Similar to the Multiple Towers Model, batch normalisation is applied to aid in stabilising the training of the model, while dropout did not improved the performance on the validation data.
+The model was tuned on the validation data to with the hyperparameters shown in Table \ref{table:blendshape_channels_classifier_hyperparameters}.
+
+\begin{figure}[h!]
     \centering
-        \includegraphics[width=0.9\textwidth]{figures/classifier2.png}
-    \caption{Shape Channels Classification Architecture}
-\end{figure}
+        \includegraphics[width=0.9\textwidth]{figures/classification/blendshape_channels_arch.png}
+    \caption{Blendshape Channels Classification Architecture}
+\end{figure} \label{fig:Blendshape_Channel_Classifier}
+\quad
 
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | l | l | l | l | l | l |}
+    \hline
+    Layer Type & Kernel & Stride & Batch Norm & Dropout & Activation \\ \hline
+    Conv1D & 3 & 1 & True & 0.0 & ReLU \\ \hline
+    Conv1D & 3 & 1 & True & 0.0 & ReLU \\ \hline
+    Conv1D & 3 & 1 & True & 0.0 & ReLU \\ \hline
+    MaxPool & 3 & 2 & - & - & - \\ \hline
+    Conv1D & 3 & 1 & True & 0.0 & ReLU \\ \hline
+    Conv1D & 3 & 1 & True & 0.0 & ReLU \\ \hline
+    MaxPool & 2 & 2 & - & - & - \\ \hline
+    Conv1D & 3 & 1 & False & 0.0 & ReLU \\ \hline
+    Linear & - & - & False & 0.0 & LogSoftmax \\
+    \hline
+    \end{tabular} 
+    \caption{Blendshape Channels Model Architecture}
+\end{table}\label{table:blendshape_channels_classifier}
+\quad
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}{ | l | l | l | l | l |}
+    \hline
+    Optimisation Algorithm & Learning Rate & Weight Decay & Batch Size \\ \hline
+    RMSprop & 0.00005 & 0.005 & 128 \\
+    \hline
+    \end{tabular} 
+    \caption{Blendshape Channels Model Hyperparameters}
+\end{table}\label{table:blendshape_channels_classifier_hyperparameters}
 
 \section{Results}
 
