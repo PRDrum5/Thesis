@@ -66,3 +66,6 @@ dropout
 Conv2D
 Conv1D
 hyperparameters
+overfit
+NLL
+Levenshtein
