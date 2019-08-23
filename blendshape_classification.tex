@@ -398,12 +398,9 @@ This can be seen from the continued reduction in training loss while the validat
     \caption{Blendshape Channels Training}\label{fig:channels_training}
 \end{figure}
 
-A direct comparison of the models on the Validation data shows that the Blendshape Channel architecture slightly outperforms the Multiple Towers architecture.
-Evaluation on the Test dataset conclude this to be consistently the case (Table \ref{table:classification_test_accuracy}), while the margin between the two remains small.
-Examining word level classification accuracy (Figure \ref{fig:both_models_word_acc}) shows that both models perform Similarly on all classification labels.
-
-TODO collect data on most frequently incorrect labels.
-Label prediction > 0.2\% is still better than a guess.
+A direct comparison of the models on the Validation data shows that the Blendshape Channel architecture slightly outperforms the Multiple Towers architecture throughout training (Figure \ref{fig:classification_training}).
+The final model accuracy values for each dataset split is shown in Table \ref{table:classification_test_accuracy}.
+Evaluation on the Test data concludes that the Blendshape Channels model is consistent outperforms, while the margin between the two models remains small.
 
 \begin{figure}[h!]
     \centering
@@ -428,6 +425,10 @@ Label prediction > 0.2\% is still better than a guess.
     \caption{Blendshape Classification Models Test Data Accuracy}
 \end{table}\label{table:classification_test_accuracy}
 
+Examining word level classification accuracy on the Test dataset (Figure \ref{fig:both_models_word_acc}) shows that both models perform similarly across all labels.
+A more detailed evaluation of the 1\textsuperscript{st} percentile of the Test dataset shown in Figure \ref{fig:both_models_percentile_word_acc} highlights that the label which was most poorly predicted was the same for both models (\textit{`GOING'}).
+While the second worse predicted label in both cases achieved 9.09\% and 8.33\% for the Multiple Towers and Blendshape Channels models respectively, far higher than the 0.2\% accuracy which would be achieved by a model which makes a purely random guess from 500 labels.
+
 \begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -441,7 +442,30 @@ Label prediction > 0.2\% is still better than a guess.
     \caption{Per Word Test Accuracy}\label{fig:both_models_word_acc}
 \end{figure}
 
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/classification/blendshape_multi_tower_percentile_class_acc.png}
+        \caption{Multiple Towers}\label{fig:multiple_towers_percentile_word_acc}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/classification/blendshape_channel_percentile_class_acc.png}
+        \caption{Blendshape Channels}\label{fig:channels_percentile_word_acc}
+    \end{subfigure}
+    \caption{1\textsuperscript{st} Percentile Per Word Test Accuracy}\label{fig:both_models_percentile_word_acc}
+\end{figure}
+
 \section{Discussion}
+\begin{itemize}
+   \item Both models still overfit 
+   \item Tuning has increased validation performance but further reduction in overfitting training data causes validation performance to suffer.
+   This may be an indication that the data is too similar, this is likely the result of the data source not being as varied as claimed.
+   \item Neither model can be said to be better as results are within a small margin of each other. 
+   \item Both models got the same wrong wrong >> Could look at this word further.
+   \item Both models achieved about 8\% accuracy on all but a single label, 16 times higher than random.
+   \item Further work would incorporate context which could improve results
+   \item Predict at char level
+\end{itemize}
 Both weight decay parameters and dropout were applied to both models, however reductions in the deviation between training and validation losses resulted in an overall worse performance on the validation data.
 This questions the variation in the dataset?
 As mentioned in section \ref{sec:classification_model_arch}, early stopping was applied to both models to halt training once the validation loss has stopped decreasing after ten epochs.
