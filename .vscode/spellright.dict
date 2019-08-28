@@ -69,3 +69,8 @@ hyperparameters
 overfit
 NLL
 Levenshtein
+MFCCs
+Mermelstein
+periodogram
+filterbanks
+filterbank

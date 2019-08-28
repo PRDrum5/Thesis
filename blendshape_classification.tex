@@ -1,16 +1,8 @@
-%\documentclass[12pt]{report}
-%
-%% some macros
-%\input{notation}
-%\input{includes}
-%
-%\begin{document}
-
 \externaldocument{lit_review}
 \externaldocument{facial_modelling_background}
 \externaldocument{appendix}
 
-\chapter{Blendshape Classification}
+\chapter{Blendshape Classification}\label{chap:classification}
 
 This chapter shall discuss the problem of word level classification from blendshape parameters obtained from a dataset created with the VOCA model \cite{Cudeiro2019} processing audio from the LRW dataset \cite{Chung2016}.
 Classification is performed with a Convolutional Neural Network architecture on 500 labels.
@@ -27,7 +19,7 @@ These assumptions include:
     \item The blendshape parameters represent an encoding from which a classification model is able to make word level predictions. \label{assumption:class_2}
 \end{enumerate}
 
-\section{Generation of a 3D Lip Reading Dataset}
+\section{Generation of a 3D Lip Reading Dataset} \label{sec:dataset_gen}
 In order to train any model, an appropriate dataset must exist upon which the model can be trained.
 An appropriate dataset for word level prediction from blendshape parameters would consist of:
 \begin{itemize}
@@ -248,7 +240,7 @@ The first model is based on the Multiple Towers architecture used in \cite{Chung
 This is a CNN architecture which firstly applies a convolutional layer to the input image frames separately before concatenating the output feature maps and proceeding to convolve over the time domain.
 The original Multiple Towers architecture can be seen in Figure \ref{fig:LRW_Multiple_Towers} while the architecture adapted from this design for prediction from blendshape parameters is shown in Figure \ref{fig:Blendshape_Multiple_Towers}
 
-\subsubsection{Model Input}
+\subsubsection{Model Input} \label{sec:classification_inputs}
 The model inputs are in the form of blendshape parameter values for each frame in the motion sequence.
 These represent the interpolation from the template mesh as described in section \ref{sec:blendshape_recovery} for each time frame.
 For a duration of one second there are 43 frames, 4 blendshape parameters per frame and a single channel dimension, such that the input to the model is $\mat{x} \in \mathbb{R}^{1 \times 4 \times 43}$
@@ -469,7 +461,3 @@ While the second worse predicted label in both cases achieved 9.09\% and 8.33\% 
 Both weight decay parameters and dropout were applied to both models, however reductions in the deviation between training and validation losses resulted in an overall worse performance on the validation data.
 This questions the variation in the dataset?
 As mentioned in section \ref{sec:classification_model_arch}, early stopping was applied to both models to halt training once the validation loss has stopped decreasing after ten epochs.
-
-%\bibliographystyle{unsrt}
-%\bibliography{ref}
-%\end{document}
