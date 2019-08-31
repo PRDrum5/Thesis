@@ -174,7 +174,7 @@ To aid training, the dataset is normalised to a range of [0,1] using equation (\
 While each Blendshape Axis is separate from one another, normalisation should be performed on all parameters as a whole to preserve information on the variation found in each Blendshape Axis relative to one another.
 As described by PCA in section \ref{sec:pca}, the variation in each subsequent principal axis decreases which can be seen in Figure \ref{fig:hist_norm}.
 
-\begin{equation} \label{eq:normalise}
+\begin{equation}\label{eq:normalise}
    x^\prime = \frac{x - x_{min}}{x_{max} - x_{min}} 
 \end{equation}
 
@@ -191,7 +191,7 @@ As described by PCA in section \ref{sec:pca}, the variation in each subsequent p
     \caption{Blendshape Parameter Histograms}
 \end{figure}
 
-\section{Assessment of Model Performance}
+\section{Assessment of Model Performance}\label{sec:class_assessment}
 In order to assess the performance of the models in the task of word level classification, several metrics exist which could be used.
 The chosen metrics are the model accuracy and the Levenshtein Distance.
 The accuracy gives a measure of how frequently the model correctly predicts the word while the Levenshtein Distance represents how far the incorrect predictions are from the correct words.
@@ -230,8 +230,8 @@ This can be calculated for each model prediction and the average character-level
         A & B & U & S & E & Add E\\
         \cline{1-5}
     \end{tabular} 
-    \caption{Levenshtein Distance Example}
-\end{figure}\label{fig:levenshtein}
+    \caption{Levenshtein Distance Example}\label{fig:levenshtein}
+\end{figure}
 
 \section{Model Architecture}
 
@@ -270,8 +270,8 @@ The hyperparameters which provided the optimum results on the validation data ar
 \begin{figure}[h!]
     \centering
         \includegraphics[width=0.9\textwidth]{figures/classification/blendshape_multi_tower_arch.png}
-    \caption{Multiple Towers Classification Architecture}
-\end{figure}\label{fig:Blendshape_Multiple_Towers}
+    \caption{Multiple Towers Classification Architecture}\label{fig:Blendshape_Multiple_Towers}
+\end{figure}
 \quad
 
 \begin{table}[h!]
@@ -287,18 +287,18 @@ The hyperparameters which provided the optimum results on the validation data ar
     Conv1D & 64x7 & 3 & 1 & False & 0.0 & ReLU \\ \hline
     Linear & 500 & - & - & False & 0.0 & LogSoftmax \\
     \end{tabular} 
-    \caption{Multiple Towers Model Architecture}
-\end{table}\label{table:multi_towers_classifier}
+    \caption{Multiple Towers Model Architecture}\label{table:multi_towers_classifier}
+\end{table}
 \quad
 
 \begin{table}[h!]
 \centering
     \begin{tabular}{l | r | r | r}
-    \textbf{Optimisation Algorithm} & \textbf{Learning Rate} & \textbf{Weight Decay} & \textbf{Batch Size} \\ \hline
+    \textbf{Optimisation} & \textbf{Learning Rate} & \textbf{Weight Decay} & \textbf{Batch Size} \\ \hline
     RMSprop & 0.0002 & 0.001 & 128 \\
     \end{tabular} 
-    \caption{Multiple Towers Model Hyperparameters}
-\end{table}\label{table:multi_towers_classifier_hyperparameters}
+    \caption{Multiple Towers Model Hyperparameters}\label{table:multi_towers_classifier_hyperparameters}
+\end{table}
 
 
 \subsection{Blendshape Channels Classification Model}
@@ -353,7 +353,7 @@ The model was tuned on the validation data to with the hyperparameters shown in 
 \begin{table}[h!]
 \centering
     \begin{tabular}{l | r | r | r}
-    \textbf{Optimisation Algorithm} & \textbf{Learning Rate} & \textbf{Weight Decay} & \textbf{Batch Size} \\
+    \textbf{Optimisation} & \textbf{Learning Rate} & \textbf{Weight Decay} & \textbf{Batch Size} \\
     \hline
     RMSprop & 0.00005 & 0.005 & 128 \\
     \end{tabular} 

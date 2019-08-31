@@ -208,11 +208,11 @@ The two networks are trained in an alternating fashion until the discriminator a
 
 GANs however, are difficult to train for two main reasons.
 Firstly, the equation (\ref{eq:gans_loss}) is challenging as it provides small gradients while generated samples are poor as discussed in \cite{Goodfellow2014}.
-Progress in developing new loss functions is discussed in section \ref{Stability_to_GANs}
+Progress in developing new loss functions is discussed in section \ref{sec:Stability_to_GANs}
 Secondly, early networks must also be balanced with a similar model capacity to prevent one from getting too much better than the other, preventing the other from improving.
 Various architectural changes have improved this issue \cite{Radford2016, Zhang2018}, although it seems to be closely tied to the loss function being used \cite{Gulrajani2017}.
 
-\subsubsection{Stability Improvements of GANs} \label{Stability_to_GANs}
+\subsubsection{Stability Improvements of GANs} \label{sec:Stability_to_GANs}
 There have been a large number of papers presenting new techniques with differing levels of success and training stability, a small handful of key papers which provide large advances in the generative adversarial training model shall be discussed here.
 A primary research focus around GANs has been in finding new loss functions on which to train the model to improve stability and performance.
 The original loss function proposed in the original paper \cite{Goodfellow2014} identifies an issue with equation (\ref{eq:gans_loss}) in that the gradient back propagated to the generator when the generated samples are poor, is very low as shown in figure \ref{fig:Goodfellow_plot}.
