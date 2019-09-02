@@ -235,7 +235,7 @@ This can be calculated for each model prediction and the average character-level
 
 \section{Model Architecture}
 
-\subsection{Multiple Towers Classification Model}
+\subsection{Multiple Towers Classification Model}\label{sec:multi_towers_model}
 The first model is based on the Multiple Towers architecture used in \cite{Chung2016} used for lip reading on 2D temporal data with the LRW dataset described in Section \ref{sec:lip_reading_models}.
 This is a CNN architecture which firstly applies a convolutional layer to the input image frames separately before concatenating the output feature maps and proceeding to convolve over the time domain.
 The original Multiple Towers architecture can be seen in Figure \ref{fig:LRW_Multiple_Towers} while the architecture adapted from this design for prediction from blendshape parameters is shown in Figure \ref{fig:Blendshape_Multiple_Towers}
@@ -301,7 +301,7 @@ The hyperparameters which provided the optimum results on the validation data ar
 \end{table}
 
 
-\subsection{Blendshape Channels Classification Model}
+\subsection{Blendshape Channels Classification Model}\label{secc:blendshape_channels_model}
 The second model applied to this task is not directly inspired by any existing model architecture.
 Unlike the Multiple Towers Model, this model convolves over the time domain throughout the whole depth of the model and treats each blendshape axis as a separate channel to the input of the model, thus the model shall be referred to as the Blendshape Channels Model.
 As with the previous classification model, NLL is used as a loss function.
