@@ -262,10 +262,10 @@ The Wasserstein loss function has been shown to greatly improve training stabili
 
 In order to use the Wasserstein distance as the loss for WGAN, the Lipschtiz condition must be enforced.
 In the WGAN the model weights are clipped to enforce this constraint \cite{Arjovsky2017}, however this is stated to be a non-ideal method of achieving the Lipschtiz constraint and calls for future work to investigate more effective methods.
-The use of gradient penalty is proposed in \cite{Gulrajani2017} in order to satisfy this condition more elegantly as described in equation (\ref{eq:wgan_gp}).
+The use of gradient penalty is proposed in \cite{Gulrajani2017} in order to satisfy this condition more elegantly by minimising the Critic's loss function as described in equation (\ref{eq:wgan_gp}).
 
 \begin{equation} \label{eq:wgan_gp}
-    \min_{G} \max_{D \in \mathcal{D}} W(\Pd{r}, \Pd{g}) 
+    \textit{L}
         = \E{\bm{\tilde{x}} \sim \Pd{g}} [D(\tilde{{\bm{x}}})]
         - \E{\bm{x} \sim \Pd{r}} [D(\bm{x})]
         + \lambda \E{\bm{\hat{x}} \sim \Pd{\bm{\hat{x}}}} 
