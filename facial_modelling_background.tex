@@ -1,8 +1,10 @@
 \chapter{3D Facial Modelling Background}
 
 This chapter shall discuss the preliminary background theory on 3D Facial Modelling and how this data is processed and represented for use with Deep Learning models.
-In order to avoid representing data as a high dimensional point cloud, a lower dimensional representation of relevant variation in the data can be expressed with Blendshapes, found with Principal Component Analysis (PCA).
-Data preprocessing involves bringing the data samples into correspondence (also referred to as alignment or registration) to remove undesirable variations in the data, this can be achieved with Procrustes Analysis.
+As the data captured by 3D facial scans is made of a high dimensional point cloud, each point having an position in the $x, y$ and $z$ dimension, a lower dimensional representation of the data can be found which retains the variance in the data.
+This can be achieved with the use of Blendshape Axis, found with Principal Component Analysis (PCA).
+In order to remove unwanted variance in the data from facial movement not correlated with speech, such as head movement, the data samples should first be brought into correspondence (also known as alignment or registration) to remove these undesirable variations in the data.
+This is achieved with the use of Procrustes Analysis.
 
 \section{Data Collection and Representation}
 Unlike 2D video where the subject is captured from a single angle without any depth information, 3D models cannot be captured with a single camera.
@@ -36,7 +38,7 @@ While Deep Learning models have been trained to drive all vertex positions from 
 \subsection{Blendshapes} \label{blendshapes}
 Capturing realistic facial motion by modelling the displacements of all of these vertices is impractical when manipulating a model by hand and may hinder the performance of a Machine Learning model due to the high dimensionality of the data.
 Blendshapes attempt to model aspects of realistic facial motion by finding the relations between these vertices and manipulating them simultaneously \cite{Lewis2010}; by reducing the number of parameters, the model becomes more manageable to control.
-One method of producing model blendshapes is with the use of Principle Component Analysis (PCA).
+One method of producing model Blendshapes is with the use of PCA.
 By applying PCA on a dataset of facial meshes, the resulting principle components represent the changes in facial motion which capture the largest amount of variation in the set whilst reducing the number of model parameters substantially.
 
 \subsubsection{Principal Component Analysis} \label{sec:pca}
@@ -151,8 +153,8 @@ From eigendecomposition, $\mat{W}$ has columns of eigenvectors which correspond 
 \end{equation}
 
 \section{Facial Mesh Alignment}
-In order to create blendshapes from 3D facial scans, movement within scans should be limited to facial movement with as little head movement as possible.
-If head movement remains within the scans, then this will be reflected in the principal axis produced by Principle Components Analysis (PCA) and as head motion is independent from speech, this is undesirable.
+In order to create Blendshapes from 3D facial scans, movement within scans should be limited to facial movement with as little head movement as possible.
+If head movement remains within the scans, then this will be reflected in the principal axis produced by PCA and as head motion is independent from speech, this is undesirable.
 Initial data capture can aim to minimise subject head movement, however this cannot be completely eliminated.
 To remove head motion from the dataset, the scans can be brought into alignment relative to landmark positions on the face which do not move during speech.
 Such landmarks include the nose, corners of the eyes and cheek bones, as these points will be stationary during speech.
@@ -174,7 +176,7 @@ In order to compare two objects regardless of these factors, the differences in 
 Translational components can be eliminated by having the centroids of the two objects lie at the same position in space.
 This can be easily achieved by subtracting the mean of each object's points from itself such that the centroid now lies at the origin.
 
-Let $\bar{x}_j = \frac{1}{n} \sum_{i=1}^{n} x_{ij}$ and $\bar{y}_j = \frac{1}{n} \sum_{i=1}^{n} y_{ij}$ where $(j = 1, \dots, f)$ represent the mean of each feature, such that the centroids of the two objects are given by $C_X = (\bar{x}_1, \bar{x}_2, \dots, \bar{x}_f)$ and $C_Y = (\bar{y}_1, \bar{y}_2, \dots, \bar{y}_f)$ respectively.
+Let $\bar{x}_j = \frac{1}{n} \sum_{i=1}^{n} x_{ij}$ and $\bar{y}_j = \frac{1}{n} \sum_{i=1}^{n} y_{ij}$, where $(j = 1, \dots, f)$ represent the mean of each feature, such that the centroids of the two objects are given by $C_X = (\bar{x}_1, \bar{x}_2, \dots, \bar{x}_f)$ and $C_Y = (\bar{y}_1, \bar{y}_2, \dots, \bar{y}_f)$ respectively.
 By subtracting the mean of $\mat{X}$ and $\mat{Y}$ from themselves, the centroids $C_X$ and $C_Y$ will be in alignment at the origin, minimising the sum of square differences due to translational components.
 
 \subsubsection{Scaling Alignment} \label{sec:scale_align}
@@ -289,9 +291,16 @@ An example of such an application is shown in Figure \ref{fig:VOCASET_Alignment}
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{figures/dataset/subject2_unaligned.png}
+        \caption{Before Alignment}
     \end{subfigure}
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{figures/dataset/subject2_aligned.png}
+        \caption{After Alignment}
     \end{subfigure}
     \caption{Procrustes Alignment Applied to VOCASET \cite{Cudeiro2019}}\label{fig:VOCASET_Alignment}
 \end{figure}
+
+\section{Chapter Summary}
+This chapter has provided an overview of the process of PCA and how the calculated principal axis from this analysis can be used as Blendshape Axis, along which a facial model can be interpolated to describe variation in the dataset.
+Secondly, an overview of the background mathematics used to align a dataset made up of 3D facial scans can be brought into correspondence such that all data samples are scaled to the same size at the same position and are aligned to a collection of points which should remain fixed throughout the data.
+This allows for remaining variation in the data to be present in only the desired attributes, such as movement in subjects mouth while removing variation in head movement.

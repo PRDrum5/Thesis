@@ -1,5 +1,10 @@
+\externaldocument{clendshape_classification}
+\externaldocument{generation}
+
 \chapter{Deep Learning Background}
-TODO add intro
+
+This chapter shall discuss the Machine Learning methods and techniques used throughout the practical portion of this report.
+This includes a high level overview of Convolutional Neural Networks, Activation Functions, Loss Functions and Optimisation Algorithms applied.
 
 \section{Convolutional Neural Networks}
 Convolutional Neural Networks (CNNs) are a Machine Learning model architecture which uses a filter, or kernel, convolved over the input to extract features relevant to the given kernel from a small area of the input.
@@ -8,17 +13,11 @@ The CNN architecture is often paired with a downsampling layer to reduce the num
 An activation function is applied to the output feature map from each convolutional layer to add non-linearities to the model. 
 
 \subsection{Convolutional Layers}
-Each convolutional layer is made up of a number of learnable kernels which are applied to the entire input image by sliding the kernels across the width and height of the image taking the dot product of the kernel and the current receptive field of the kernel for all channels of the input image, as demonstrated in Figure \ref{fig:Conv_Layer}.
+Each convolutional layer is made up of a number of learnable kernels which are applied to the entire input image by sliding the kernels across the width and height of the image taking the dot product of the kernel and the current receptive field of the kernel for all channels of the input image.
 Each kernel is able to capture spatially relevant information about the current receptive field and pass this to the subsequent layers of the model.
 During training these kernels are optimised to capture the most useful information for the task at hand.
 The number of kernels used at each layer determines the number of feature maps produced, each of which are stacked as channels.
 As each kernel is applied to the whole input image, the same learned parameters for each kernel are applied to the whole image, with each kernel extracting specific information.
-
-\begin{figure}[h]
-    \centering
-        \includegraphics[width=0.5\textwidth]{figures/dl/conv_layer.png}
-    \caption{Convolutional Layer}\label{fig:Conv_Layer}
-\end{figure}
 
 \subsection{Layer Output Sizes}
 An issue with convolutional layers is that the output image is slightly smaller than the input image as the kernel cannot be applied over the edge of the image.
@@ -47,7 +46,7 @@ By using a layer which learns given the use of strided convolutions, allows the 
 \section{Activation Functions}
 In order to add non-linearities to the model, activation functions are applied after each layer of models.
 This non-linearity enables complex high order functions to be approximated by the network.
-There exist many activation functions, but this section shall focus on those which have been used in the models proposed in the \textcolor{red}{\textbf{(TODO add link to methods section)}} section.
+There exist many activation functions, but this section shall focus on those which have been used in the models proposed in the Chapter \ref{chap:classification} and \ref{chap:generation}.
 Activation functions are often selected based on the range of their output values, but in cases where this is unimportant it is common to use the Rectified Linear Unit (ReLU) function as it provides strong gradients, which aids in the prevention of vanishing gradients in deep network models, \cite{Goodfellow-et-al-2016}.
 
 \begin{figure}[h]
@@ -118,28 +117,50 @@ The LeakyReLU function multiplies the input value $x$ by some parameter $l$, whe
 \subsection{Softmax} \label{softmax}
 The Softmax function is commonly used in classification problems in which a model aims to classify an input value $\bm{x}$ as one of $N$ labels.
 The Softmax function, expressed by equation (\ref{eq:softmax}), converts the input $\bm{x}$ into a normalised probability distribution over the $N$ labels, the label with the highest likelihood is interpreted as the model's prediction. 
-Such models are commonly trained with the Negative Log Likelihood loss function, by applying the log to the output of the softmax function.
+Such models are commonly trained with the Negative Log Likelihood loss function, by applying the log to the output of the Softmax function.
 
 \begin{equation}\label{eq:softmax}
     \text{Softmax}(x_i) = \frac{e^{x_i}}{\sum_j^N e^{x_j}}
 \end{equation}
 
-TODO add LogSoftmax...
+The Negative Log Likelihood loss function can be expressed by equation \ref{eq:nll} where $\mat{x}$ is the prediction from the Softmax function.
 
-TODO add NLL loss function
+\begin{equation}\label{eq:nll}
+    \textit{L}(\mat{x}) = -\log (\mat{x})
+\end{equation}
+
+The Softmax function returns a likelihood value for each label, this can be interpreted as the confidence the model has that the input data values corresponds to each label.
+The range of the Negative Log Likelihood shown in Figure \ref{fig:nll} shows that when the model confidence in the correct label is high, the Negative Log Likelihood tends to zero, while when the confidence is low for the correct label, the loss tends to infinity.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/dl/nll.png}
+    \caption{Negative Log Likelihood Loss}\label{fig:nll}
+\end{figure}
 
 \section{Optimisation Algorithms}
 With the aim of finding the model parameter values which minimise the loss function of the model, Gradient Descent algorithms are commonly used to find such parameters.
 Given a loss function $L(x)$ which is to be minimised, where $x$ represents the model parameters, the value of $x$ is iteratively updated by calculating the gradient of $L(x)$ for the current parameters and updating the parameters as described by equation (\ref{eq:gradient_descent}).
 $\epsilon$ is the learning rate for the algorithm which determines the step size made at each update.
-Too large a step size and the update may overshoot the optimum value, too small a step size may result in a model which takes an impractical length of time to train. 
+Too large a step size and the update may overshoot the optimum value (Figure \ref{fig:high_lr}), too small a step size may result in a model which takes an impractical length of time to train or may fail to find a global minimum entirely (Figure \ref{fig:low_rl}). 
 It's is often useful in practice to begin with a learning rate which is able to make large steps, then to reduce the learning rate $\epsilon$ as the model trains.
-
-\textcolor{red}{\textbf{(TODO add graphical examples)}}
 
 \begin{equation}\label{eq:gradient_descent}
    x^\prime = x - \epsilon \nabla_x L(x)
 \end{equation}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/dl/high_lr.jpeg}
+        \subcaption{Large Learning Rate}\label{fig:high_lr}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/dl/low_lr.jpeg}
+        \subcaption{Small Learning Rate}\label{fig:low_rl}
+    \end{subfigure}
+    \caption{Learning Rates}\label{fig:learning_rates}
+\end{figure}
 
 \subsection{Stochastic Gradient Descent}
 Stochastic Gradient Descent (SGD) takes a minibatch of $m$ samples from a data generating independent and identically distributed (i.i.d) distribution, and calculates the average gradient with which the update rule described by equation (\ref{eq:SGD}) is applied.
@@ -166,7 +187,7 @@ Here the black arrows represent the gradient evaluated at each point, while the 
 
 \begin{figure}[h]
     \centering
-        \includegraphics[width=0.3\textwidth]{figures/dl/momentum.png}
+        \includegraphics[width=0.6\textwidth]{figures/dl/momentum.jpeg}
     \caption{SGD with Momentum \cite{Goodfellow-et-al-2016}}\label{fig:Momentum}
 \end{figure}
 
@@ -174,4 +195,35 @@ Here the black arrows represent the gradient evaluated at each point, while the 
 Such algorithms as RMSprop and Adam exist which are built upon the principles of the SGD algorithm with the addition of momentum but adapt their learning rates or momentum values based on a history of previous gradient values.
 These aid in finding the global minimum for the loss function at hand.
 
-TODO More details on RMSprop
+\subsection{RMSprop}
+While momentum can be used to help reduce oscillations while training, RMSprop goes further by updating the learning rate dependent on each dimension in the loss function.
+Given a pair of weight parameters $b$ and $w$, during training these are improved to find the optimal solution.
+During training the contour plot in Figure \ref{fig:rmsprop} can be seen to oscillating a large amount in the $b$ axis.
+
+\begin{figure}[h]
+    \centering
+        \includegraphics[width=0.7\textwidth]{figures/dl/rmsprop.jpeg}
+    \caption{Incentive Behind RMSprop \cite{Goodfellow-et-al-2016}}\label{fig:rmsprop}
+\end{figure}
+
+To prevent this oscillation the learning rate could be reduced, but it can also be seen that it would be desirable for the learning rate for the $w$ parameter to be increased as the model would converge faster.
+RMSprop is an adaptive learning rate optimisation algorithm which aims to reduce the learning rate for parameters with large gradients and increase the learning rate for those with small gradients \cite{Goodfellow-et-al-2016}. 
+
+This is achieved by keeping an sum of weighted squares of the derivatives of each parameter, where $\beta$ is a tunable hyperparameter:
+\begin{equation*}
+    \begin{aligned}
+        S_{\delta w} &= \beta S_{\delta w} + (1 - \beta) \delta w^2 \\
+        S_{\delta b} &= \beta S_{\delta b} + (1 - \beta) \delta b^2
+    \end{aligned}
+\end{equation*}
+
+The weight parameters are then updated with the root mean square of the weighted sum of the parameter derivative, where $\alpha$ is a tunable hyperparameter.
+\begin{equation}\label{eq:rmsprop}
+    \begin{aligned}
+        w &= w - \alpha \frac{\delta w}{\sqrt{S_{\delta w}}} \\
+        b &= b - \alpha \frac{\delta b}{\sqrt{S_{\delta b}}}
+    \end{aligned}
+\end{equation}
+
+When the gradient of the weight parameter is large, the learning rate for that values is small, while weight parameters with small gradient values are updated with a larger learning rate, as expressed by equation (\ref{eq:rmsprop}).
+

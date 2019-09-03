@@ -1,7 +1,7 @@
 \chapter{Literature Review}
 \externaldocument{deep_learning_background}
 
-This section shall discuss the currently existing datasets and models relating to visual speech recognition (VSR).
+This section shall discuss the currently existing datasets and models relating to VSR.
 This shall be explored in both the space of two dimensional images and three dimensional scans of speaking subjects, the current successes in these fields and the current issues which are faced in progressing these areas of research forwards.
 
 \section{Current Lip Reading Models and Datasets}
@@ -24,7 +24,7 @@ Based on previous work using the coordinate response measure (CRM) \cite{Bolia20
 Aside from the restricted vocabulary size in comparison to more recent datasets, the primary limiting factor of the GRID dataset is that all data was captured directly for the use of the dataset, and so models trained on this dataset have learnt under controlled conditions, something not found in the desired wider applications of VSR.
 
 \subsubsection{In The Wild Datasets}
-To build larger datasets more suited for deep learning models, the following are commonly built with "\textit{in the wild}" data, meaning that the original videos have not been captured with the intention of being used for this dataset, whilst the data collected for the datasets is preprocessed such that it is suited for the task.
+To build larger datasets more suited for deep learning models, the following are commonly built with ``\textit{in the wild}'' data, meaning that the original videos have not been captured with the intention of being used for this dataset, whilst the data collected for the datasets is preprocessed such that it is suited for the task.
 Variations in lighting, angles, speakers and a wide vocabulary are common, this does however make the datasets more challenging to learn from, but the models are no longer as biased to controlled conditions.
 
 LRW and LRS are both comprised of content from BBC broadcasts \cite{Chung2016, Chung2017} allowing for a far larger corpus size of 500 words for LRW and over 6000 words for LRS.
@@ -58,7 +58,7 @@ The frames are then cropped around the relevant speaker, an example of a sample 
 \begin{figure}[h]
     \centering
         \includegraphics[width=0.99\textwidth]{figures/lit_review/lrw_one_second.png}
-    \caption{LRW Dataset Sample: 24 frames of a subject saying \textit{`about'} \cite{Chung2016}}\label{fig:LRW_One_Second}
+    \caption{LRW Dataset Sample: 24 frames of a subject saying \textit{`about'}, figure from \cite{Chung2016}}\label{fig:LRW_One_Second}
 \end{figure}
 
 LSVSR is a dataset published by DeepMind and Google which makes use of the huge amount of videos on YouTube \cite{Shillingford2018}, resulting in a total length of 3886 hours of training data.
@@ -114,7 +114,7 @@ The final layer of the model is passed through a softmax activation function to 
 \begin{figure}[h]
     \centering
         \includegraphics[width=0.7\textwidth]{figures/lit_review/lrw_multiple_towers.png}
-    \caption{LRW Multiple Towers Convolutional Neural Network Model \cite{Chung2016}}\label{fig:LRW_Multiple_Towers}
+    \caption{LRW Multiple Towers Model \cite{Chung2016}}\label{fig:LRW_Multiple_Towers}
 \end{figure}
 
 Chung et al. suggest that the multiple towers model is effective due to the delay in time domain operations until after the first convolutional layer which allows for tolerance to registration errors in the dataset.
