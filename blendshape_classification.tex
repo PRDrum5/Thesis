@@ -5,8 +5,9 @@
 \chapter{Blendshape Classification}\label{chap:classification}
 
 This chapter shall discuss the problem of word level classification from blendshape parameters obtained from a dataset created with the VOCA model \cite{Cudeiro2019} processing audio from the LRW dataset \cite{Chung2016}.
-Classification is performed with a Convolutional Neural Network architecture on 500 labels.
-The model architecture, how performance is assessed and how the model has been tuned to maximise performance on a held out validation set is also discussed. 
+Classification is performed with a two Convolutional Neural Network architectures on 500 labels.
+The two model architectures, how performance is assessed and how the models have been tuned to maximise performance on a held out validation set is also discussed. 
+The final performance of the models is evaluated on the test set and conclusion as to the effectiveness of using blendshape parameters as a means of lip reading is evaluated.
 
 \section{Problem Definition}
 As with traditional lip reading problems, the end goal of VSR models using 3D temporal data is to correctly classify variable length input sequences at a sentence level.
@@ -165,9 +166,9 @@ The solution to this can be found by finding the pseudo-inverse for the Blendsha
 
 \subsection{Dataset Split}
 The dataset consists of 55000 samples.
-This is split into Training, Validation and Test data with 20000/20000/15000 data points respectively.
-When training the model the Training data will be shown to the model, the model will then be evaluated on the Validation data which allows model hyperparameters to be adjusted to improve performance on this dataset.
-To ensure that the model has not been optimised just for the Validation data and can generalise to unseen data, the final performance is reported on the Test data, which is never evaluated on until the model has been tuned to optimum performance on the Validation data.
+This is split into training, validation and test data with 20000/20000/15000 data points respectively.
+When training the model the training data will be shown to the model, the model will then be evaluated on the validation data which allows model hyperparameters to be adjusted to improve performance on this dataset.
+To ensure that the model has not been optimised just for the validation data and can generalise to unseen data, the final performance is reported on the test data, which is never evaluated on until the model has been tuned to optimum performance on the validation data.
 
 \section{Data Preprocessing}
 To aid training, the dataset is normalised to a range of [0,1] using equation (\ref{eq:normalise}) where $x_{min}$ and $x_{max}$ are the smallest and largest values in the dataset respectively (Figure \ref{fig:hist_norm}).
@@ -206,32 +207,6 @@ A model which achieves 90\% accuracy on this dataset may be correctly labelling 
 
 For unbalanced data the F1-Score metric is more useful as this will remain low when a single label class is frequently being incorrectly predicted.
 However, as the dataset this problem is concerned with is balanced, this shall not be discussed.
-
-\subsection{Levenshtein Distance}
-The Levenshtein Distance is a character level distance between two words defined as the minimum number of single character edits required to make the two the same \cite{Levenshtein1966}.
-Single character edits are described as removing a character, substituting for another character and adding a new character.
-In the example shown in Figure \ref{fig:levenshtein}
-This was used by Chung et al. in \cite{Cheng2016}, although it was defined as the character-level edit distance (section \ref{sec:lip_reading_models}).
-This can be calculated for each model prediction and the average character-level edit distance can be found for the model as a whole, or per label.
-
-\begin{figure}[h!]
-\centering
-    \begin{tabular}{c c c c c l }
-        \multicolumn{1}{ c }{} & \\
-        A & B & U & S & E & \\
-        A & B & O & U & T & \\
-        \cline{1-5}
-        & & & & & \multicolumn{1}{l}{\textbf{Operation}} \\
-        \cline{1-5}
-        A & B & U & T & - & Remove O \\
-        \cline{1-5}
-        A & B & U & S & - & Substitute T for S\\
-        \cline{1-5}
-        A & B & U & S & E & Add E\\
-        \cline{1-5}
-    \end{tabular} 
-    \caption{Levenshtein Distance Example}\label{fig:levenshtein}
-\end{figure}
 
 \section{Model Architecture}
 
@@ -360,9 +335,23 @@ The model was tuned on the validation data to with the hyperparameters shown in 
     \caption{Blendshape Channels Model Hyperparameters}
 \end{table}\label{table:blendshape_channels_classifier_hyperparameters}
 
-\section{Results}
-Examining the training losses and validation losses for both models show that despite tuning on the Validation dataset, the model remains to overfit to the Training data considerably.
-This can be seen from the continued reduction in training loss while the validation loss plateaus for both models (Figures \ref{fig:multiple_towers_training}, \ref{fig:channels_training}).
+\section{Discussion of Results}
+Both models achieve an average test accuracy above 50\% shown in Table \ref{table:classification_test_accuracy}.
+It is however that both models remain to overfit to the training data as can be seen in the training losses on the training and validation data as shown in Figures \ref{fig:multiple_towers_training}, \ref{fig:channels_training}.
+The model was tuned on the validation set to optimise the performance and reduce overfitting, this was achieved with weight decay parameters and dropout were applied to both models, however reductions in the deviation between training and validation losses resulted in an overall worse performance on the validation data.
+As mentioned in section \ref{sec:classification_model_arch}, early stopping was applied to both models to halt training once the validation loss has stopped decreasing after ten epochs.
+The optimum performance on the validation data resulted in classification models which remain to overfit to the training data.
+This overfitting to the training data may be an indication to a lack of variation in the data generated by the VOCA model \cite{Cudeiro2019}.
+
+\begin{table}[h!]
+\centering
+    \begin{tabular}{l | l | l | l }
+    & \textbf{Train} & \textbf{Validation} & \textbf{Test} \\ \hline
+    \textbf{Multiple Towers} & 0.7911 & 0.5333 & 0.5276 \\
+    \textbf{Blendshape Channels} & 0.8544 & 0.5504 & 0.5461 \\
+    \end{tabular} 
+    \caption{Blendshape Classification Models Test Data Accuracy}
+\end{table}\label{table:classification_test_accuracy}
 
 \begin{figure}[h!]
     \centering
@@ -390,9 +379,9 @@ This can be seen from the continued reduction in training loss while the validat
     \caption{Blendshape Channels Training}\label{fig:channels_training}
 \end{figure}
 
-A direct comparison of the models on the Validation data shows that the Blendshape Channel architecture slightly outperforms the Multiple Towers architecture throughout training (Figure \ref{fig:classification_training}).
+A direct comparison of the models on the validation data shows that the Blendshape Channel architecture slightly outperforms the Multiple Towers architecture throughout training (Figure \ref{fig:classification_training}).
 The final model accuracy values for each dataset split is shown in Table \ref{table:classification_test_accuracy}.
-Evaluation on the Test data concludes that the Blendshape Channels model is consistent outperforms, while the margin between the two models remains small.
+Evaluation on the test data concludes that the Blendshape Channels model is consistent outperforms, while the margin between the two models remains small.
 
 \begin{figure}[h!]
     \centering
@@ -407,18 +396,11 @@ Evaluation on the Test data concludes that the Blendshape Channels model is cons
     \caption{Model Training Comparison}\label{fig:classification_training}
 \end{figure}
 
-\begin{table}[h!]
-\centering
-    \begin{tabular}{l | l | l | l }
-    & \textbf{Train} & \textbf{Validation} & \textbf{Test} \\ \hline
-    \textbf{Multiple Towers} & 0.7911 & 0.5333 & 0.5276 \\
-    \textbf{Blendshape Channels} & 0.8544 & 0.5504 & 0.5461 \\
-    \end{tabular} 
-    \caption{Blendshape Classification Models Test Data Accuracy}
-\end{table}\label{table:classification_test_accuracy}
-
-Examining word level classification accuracy on the Test dataset (Figure \ref{fig:both_models_word_acc}) shows that both models perform similarly across all labels.
-A more detailed evaluation of the 1\textsuperscript{st} percentile of the Test dataset shown in Figure \ref{fig:both_models_percentile_word_acc} highlights that the label which was most poorly predicted was the same for both models (\textit{`GOING'}).
+Examining word level classification accuracy on the test dataset (Figure \ref{fig:both_models_word_acc}) shows that both models perform similarly across all labels.
+Commonly for a classification task a confusion matrix would be displayed highlighting which labels are predicted as which, highlighting any labels which are commonly mislabelled.
+However as there are 500 labels, this confusion matrix is far too large to be useful for visualisation.
+The main labels of interest are those which are least frequently predicted, thus the 1\textsuperscript{st} percentile of the test dataset is plotted instead, shown in Figure \ref{fig:both_models_percentile_word_acc} 
+This highlights that the most poorly predicted label was the same for both models: (\textit{`GOING'}).
 While the second worse predicted label in both cases achieved 9.09\% and 8.33\% for the Multiple Towers and Blendshape Channels models respectively, far higher than the 0.2\% accuracy which would be achieved by a model which makes a purely random guess from 500 labels.
 
 \begin{figure}[h!]
@@ -447,17 +429,11 @@ While the second worse predicted label in both cases achieved 9.09\% and 8.33\% 
     \caption{1\textsuperscript{st} Percentile Per Word Test Accuracy}\label{fig:both_models_percentile_word_acc}
 \end{figure}
 
-\section{Discussion}
-\begin{itemize}
-   \item Both models still overfit 
-   \item Tuning has increased validation performance but further reduction in overfitting training data causes validation performance to suffer.
-   This may be an indication that the data is too similar, this is likely the result of the data source not being as varied as claimed.
-   \item Neither model can be said to be better as results are within a small margin of each other. 
-   \item Both models got the same wrong wrong >> Could look at this word further.
-   \item Both models achieved about 8\% accuracy on all but a single label, 16 times higher than random.
-   \item Further work would incorporate context which could improve results
-   \item Predict at char level
-\end{itemize}
-Both weight decay parameters and dropout were applied to both models, however reductions in the deviation between training and validation losses resulted in an overall worse performance on the validation data.
-This questions the variation in the dataset?
-As mentioned in section \ref{sec:classification_model_arch}, early stopping was applied to both models to halt training once the validation loss has stopped decreasing after ten epochs.
+The two models, while overfitting to the training data, remain to perform well on the validation and test data, achieving over 50\% mean accuracy on test data.
+Given that there are 500 labels upon which to predict, this is a very strong correlation between the input blendshape parameters and the words predicted.
+The results from the two models are very similar, such that neither can be determined as the superior architecture for this task.
+
+\section{Conclusions}
+This chapter has discussed the use of blendshape parameters as a means of word level prediction.
+Two machine learning models were evaluated, one which reduced the parameter values into a single dimension encoding before convolving over time while the other treated each blendshape parameter as a separate input channel and convolved over the time domain throughout the whole depth of the network.
+While neither architecture can be said to be superior as both achieved similar results, it can be concluded that there exists a very strong correlation between the blendshape parameters obtained from a 3D temporal model of a speaking subject and the models spoken, such that word level prediction was possible.

@@ -364,3 +364,31 @@ Although both the models contain a small handful of word labels which are predic
     \end{subfigure}
     \caption{Classification Class Accuracy for Generated Data}\label{fig:gan_class_acc}
 \end{figure}
+
+While the pretrained classification models did not identify any speech features corresponding to the word labels in the generated samples, this does not definitively mean that the data is completely uncorrelated to the speech, just that the features which the classifiers have learnt to identify are not present.
+to further investigate if there exists some correlation in the data, the two classification models have been retrained on the synthetic data.
+The results however, confirm that there seems to be no correlation across the synthetically generated data.
+Figure \ref{fig:gan_classification_synth_losses} demonstrates for both the Blendshape Channels and Multiple Towers model the models fail to generalise to unseen data completely, only able to learn features related to the training data.
+The prediction accuracy further highlights this in Figure \ref{fig:gan_classification_synth_acc}, as accuracy on the validation data remains at 0.002 throughout training, equivalent to random guessing.
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/gan/classification_losses.png}
+        \caption{Training Losses}\label{fig:gan_classification_synth_losses}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{figures/gan/classification_acc.png}
+        \caption{Training Accuracy}\label{fig:gan_classification_synth_acc}
+    \end{subfigure}
+    \caption{Classification Models Trained on Generated Data}\label{fig:gan_synth_classification}
+\end{figure}
+
+\section{Conclusions}
+This chapter has discussed the use of a GAN model to generate synthetic blendshape parameters given an audio input upon which to drive a model.
+The audio was represented by the use of MFCC values, which was combined with noise as an input to the Generator model.
+The Critic was input with audio in the same MFCC representation on which the Generator was trained and corresponding blendshape parameter values from the original dataset and generated blendshape parameters from the Generator.
+The Critic learnt to distinguish the real pairing of blendshape parameters and audio from the fake successfully, while the Generator attempted to learn to produce realistic blendshape parameters to fool the Critic.
+
+While the generated samples appeared to be correlated with the audio to a human observer, evaluation of the pretrained classification models from Chapter \ref{chap:classification} highlighted that there was no correlation between the generated blendshape parameters and the words spoken in the audio samples.
+This further highlights the difficulties of lip reading as a task for humans while the use of blendshape parameters for prediction is possible for a machine learning model.
