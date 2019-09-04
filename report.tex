@@ -5,7 +5,7 @@
 
 % Definitions for the title page
 
-\newcommand{\reporttitle}{Title}
+\newcommand{\reporttitle}{Lip Reading in 3D}
 \newcommand{\reportauthor}{Peter Robertson}
 \newcommand{\supervisor}{Dr Stefanos Zafeiriou}
 \newcommand{\degreetype}{Computing Science / Machine Learning}
@@ -39,14 +39,21 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-Your abstract.
-
+Lip reading is a skill which is renowned for being challenging for humans, with few individuals being capable of implementing the skill successfully.
+Recent successes have been made in training Machine Learning models to predict speech from video inputs which have been able to outperform human level accuracy.
+Currently however, no models exist which have attempted to use 3D data of facial scans for the use of lip reading.
+In this report lip reading is successfully implemented with the use of 3D facial scans to make predictions on a word level with above 50\% mean test accuracy on 500 labels, forming the baseline for future work to build upon.
+The current lack of datasets suitable for this research is the dominant problem in this field of research.
+In addition to the task of lip reading from 3D facial scans, solving this secondary problem is also attempted.
+As a means to help resolve this issue, the use of Generative Adversarial Networks is investigated as a means of generating 3D facial data corresponding to an audio input.
 \end{abstract}
 
 \cleardoublepage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgements}
-Comment this out if not needed.
+I would like to thank the support of my supervisor; Dr Stefanos Zafeiriou, for his words of advice and guidance in this project.
+
+Secondly I would like to thank the researchers for assisting with support, resources and advice; Athanasios Papaioannou, Evangelos Ververas and Panagiotis Tzirakis.
 
 \clearpage{\pagestyle{empty}\cleardoublepage}
 

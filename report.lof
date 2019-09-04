@@ -1,0 +1,51 @@
+\babel@toc {english}{}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Point Cloud Representation of FLAME Model \cite {Li2017}\relax }}{4}{figure.caption.8}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Procrustes Alignment Applied to VOCASET \cite {Cudeiro2019}\relax }}{9}{figure.caption.30}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Activation Functions\relax }}{13}{figure.caption.39}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Negative Log Likelihood Loss\relax }}{15}{figure.caption.51}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Learning Rates\relax }}{16}{figure.caption.54}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces SGD with Momentum \cite {Goodfellow-et-al-2016}\relax }}{17}{figure.caption.58}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Incentive Behind RMSprop \cite {Goodfellow-et-al-2016}\relax }}{18}{figure.caption.61}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces LRW Dataset Pipeline \cite {Chung2016}\relax }}{20}{figure.caption.68}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces LRW Face Detection and Tracking \cite {Chung2016}\relax }}{21}{figure.caption.69}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces LRW Dataset Sample: 24 frames of a subject saying \textit {`about'}, figure from \cite {Chung2016}\relax }}{21}{figure.caption.70}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces VOCASET Example Frames \cite {Cudeiro2019}\relax }}{22}{figure.caption.72}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces LRW Multiple Towers Model \cite {Chung2016}\relax }}{23}{figure.caption.74}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Audio Driven Facial Animation Model Proposed by Karras et al. \cite {Karras2017a}\relax }}{25}{figure.caption.77}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces The VOCA Model \cite {Cudeiro2019}\relax }}{26}{figure.caption.78}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Goodfellow's Generator Loss Plots \cite {Goodfellow2014}\relax }}{27}{figure.caption.82}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Audio Sample from LRW \cite {Chung2016} ``Talking About Fair''\relax }}{33}{figure.caption.93}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces First Blendshape Axis Interpolation \relax }}{34}{figure.caption.95}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Second Blendshape Axis Interpolation\relax }}{34}{figure.caption.96}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces FLAME Template Mesh \cite {Li2017}\relax }}{36}{figure.caption.100}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Blendshape Parameter Histograms\relax }}{36}{figure.caption.104}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Multiple Towers Classification Architecture\relax }}{39}{figure.caption.112}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Blendshape Channels Classification Architecture\relax }}{40}{figure.caption.118}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Multiple Towers Training\relax }}{41}{figure.caption.123}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Blendshape Channels Training\relax }}{42}{figure.caption.124}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Model Training Comparison\relax }}{42}{figure.caption.125}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Per Word Test Accuracy\relax }}{43}{figure.caption.126}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces 1\textsuperscript {st} Percentile Per Word Test Accuracy\relax }}{43}{figure.caption.127}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Audio Sample Frames\relax }}{47}{figure.caption.133}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Mel Filterbank Processing\relax }}{47}{figure.caption.134}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Discrete Cosine Transformation Processing\relax }}{48}{figure.caption.135}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces MFCC Model Input\relax }}{48}{figure.caption.136}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces GAN Model\relax }}{51}{figure.caption.144}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Generator Model Architecture\relax }}{52}{figure.caption.148}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Critic Architecture\relax }}{53}{figure.caption.151}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Critic Gradient Penalty Training Loss\relax }}{54}{figure.caption.154}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Critic Total Training Losses\relax }}{55}{figure.caption.155}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Training Losses from Critic for Real and Fake Data Samples\relax }}{56}{figure.caption.156}
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Generator Training Losses\relax }}{56}{figure.caption.157}
+\contentsline {figure}{\numberline {6.12}{\ignorespaces Classification Class Accuracy for Generated Data\relax }}{57}{figure.caption.158}
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Classification Models Trained on Generated Data\relax }}{58}{figure.caption.159}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Third Blendshape Axis Interpolation \relax }}{66}{figure.caption.170}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Fourth Blendshape Axis Interpolation\relax }}{66}{figure.caption.171}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Generated Sample - ``AMERICA''\relax }}{67}{figure.caption.173}

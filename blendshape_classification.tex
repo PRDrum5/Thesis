@@ -164,6 +164,14 @@ The solution to this can be found by finding the pseudo-inverse for the Blendsha
     \mat{\Lambda} = \mat{W}^{-1}(\mat{M}^{\prime} - \mat{M})
 \end{equation}
 
+The template mesh used throughout this report is from the FLAME model \cite{Li2017} shown in Figure \ref{fig:FLAME_template}, while visualisation is achieved with the visualisation scripts from the VOCA model \cite{Cudeiro2019} which render the 3D model into a series of images, such as those shown in Figure \ref{fig:Blendshape_axis_1}.
+
+\begin{figure}[h!]
+    \centering
+        \includegraphics[width=0.4\textwidth]{figures/dataset/flame_template.png}
+    \caption{FLAME Template Mesh \cite{Li2017}}\label{fig:FLAME_template}
+\end{figure}
+
 \subsection{Dataset Split}
 The dataset consists of 55000 samples.
 This is split into training, validation and test data with 20000/20000/15000 data points respectively.
@@ -285,8 +293,6 @@ As with the previous classification model, NLL is used as a loss function.
 The model inputs, as before are in the form of Blendshape Parameters values corresponding to frames in the motion sequence.
 Unlike the previous model, each Blendshape Axis is treated as a separate input channel, such that the input data is in the form $\mat{x} \in \mathbb{R}^{4 \times 43}$.
 Treating the Blendshape Axes as separate channels allows the model to extract information from them separately while considering the time domain for each.
-
-TODO, some of this may need to be moved to discussion section.
 
 \subsubsection{Model Architecture}
 The Blendshape Channel model is a CNN architecture convolving over the time domain of the input data throughout the whole depth of the model.
