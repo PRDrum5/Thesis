@@ -6,14 +6,14 @@ In light of this, the steps which can be taken in future work shall be explored 
 \section{Blendshape Classification}\label{sec:class_conc}
 This report aimed to investigate as to whether 3D facial data includes information which is of use for word level speech prediction.
 To achieve this, firstly a lower dimension representation of a 3D facial mesh was constructed with the use of Principal Component Analysis, referred to as the Blendshape Axes.
-Each facial mesh could then be expressed as an interpolation along each Blendshape Axis from a template facial mesh by a given amount, expressed by the Blendshape Parameters.
+Each facial mesh could then be expressed as an interpolation along each Blendshape Axis from a template facial mesh, expressed by the Blendshape Parameters.
 This representation of the 3D facial meshes allows for word level prediction for the 500 labels found in the Lip Reading Words Dataset with a mean test accuracy above 50\% for all model architectures investigated.
-This demonstrates that firstly, there exists a strong correlation in the facial motion and the words spoken and that this low dimension representation of the data effectively captures this data.
+This demonstrates that firstly, there exists a strong correlation in the facial motion and the words spoken and secondly that this low dimension representation of the data effectively captures this data.
 
 \subsection{Future Work}
-The classification models are currently limited to word level prediction of a fixed sequence length and is unable to predict unknown word labels.
+The classification models are currently limited to word level prediction of a fixed sequence length and are unable to predict unknown word labels.
 A future extension of this work would be to build a model which can perform character level prediction of variable sequence length.
-This would allow for the prediction of entire sentences end to end of variable sequence length.
+This would allow for the prediction of entire sentences end to end, of variable sequence length.
 In order to achieve this, a new dataset would have to be constructed containing sequence frames labelled on a character level.
 This could be achieved with the existing dataset used by processing the audio data with a speech recognition system capable of character level prediction per frame, such as the DeepSpeech model.
 
@@ -30,12 +30,12 @@ This data however is limited in the variations of facial animation for given aud
 With the intention of generating realistic facial animation from an audio input while having a larger variations in facial motion such that classification models may learn to generalise better to unseen data.
 
 The model however proved unsuccessful in achieving this goal.
-Generated samples appeared to be correlated with audio samples to human observers, but failed to contain features which are correlated to the words spoken within the audio itself.
+Generated samples appeared to be correlated with audio samples to human observers, but failed to contain features which are correlated to the words spoken within the audio itself when evaluated with the classification models trained beforehand.
 Regardless of the failure of this generative model, generating synthetic data remains an area which should be further pursued while data acquisition of 3D facial scans retains a large barrier to entry.
 
 \subsection{Future Work}
 The generative and classification models in this report were trained on data not directly captured due to the difficulties of obtaining such data with the purpose of lip reading.
-A primary area of work would be to directly obtain such a dataset, this would allow for a better assessment of the use of GAN as a means of generating synthetic data to augment this with.
+A primary area of work would be to directly obtain such a dataset, this would allow for a better assessment of the use of GANs as a means of generating synthetic data to augment this with.
 
 The GAN trained in this report was trained with a Critic used to distinguish between real and fake data samples given an audio input and the real or fake generated Blendshape Parameters.
 An extension of this would be to train the Generator on both the loss from the Critic and a pretrained classification model.
@@ -45,4 +45,4 @@ Given that the current mean test accuracy of the classification models trained i
 
 An alternate method of training the GAN would be to drive the generation from a character level conditional input, as opposed to audio driven conditional input.
 This would require the model to be able to be trained on variable length input sequence, which in turn would require a dataset labelled on a character level as discussed in Section \ref{sec:class_conc}.
-This could be trained either with an audio input on without.
+This could be trained either in combination with an audio input on without.
