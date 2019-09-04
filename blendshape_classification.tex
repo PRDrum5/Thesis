@@ -4,10 +4,10 @@
 
 \chapter{Blendshape Classification}\label{chap:classification}
 
-This chapter shall discuss the problem of word level classification from blendshape parameters obtained from a dataset created with the VOCA model \cite{Cudeiro2019} processing audio from the LRW dataset \cite{Chung2016}.
+This chapter shall discuss the problem of word level classification from Blendshape Parameters obtained from a dataset created with the VOCA model \cite{Cudeiro2019} processing audio from the LRW dataset \cite{Chung2016}.
 Classification is performed with a two Convolutional Neural Network architectures on 500 labels.
 The two model architectures, how performance is assessed and how the models have been tuned to maximise performance on a held out validation set is also discussed. 
-The final performance of the models is evaluated on the test set and conclusion as to the effectiveness of using blendshape parameters as a means of lip reading is evaluated.
+The final performance of the models is evaluated on the test set and conclusion as to the effectiveness of using Blendshape Parameters as a means of lip reading is evaluated.
 
 \section{Problem Definition}
 As with traditional lip reading problems, the end goal of VSR models using 3D temporal data is to correctly classify variable length input sequences at a sentence level.
@@ -16,18 +16,18 @@ If word level classification cannot be achieved, it may be concluded that there 
 
 These assumptions include:
 \begin{enumerate}
-    \item Provided an appropriate dataset of 3D temporal facial scans of subjects speaking, a set of blendshape parameters which realistically represent the motions of speech can be found. \label{assumption:class_1}
-    \item The blendshape parameters represent an encoding from which a classification model is able to make word level predictions. \label{assumption:class_2}
+    \item Provided an appropriate dataset of 3D temporal facial scans of subjects speaking, a set of Blendshape Parameters which realistically represent the motions of speech can be found. \label{assumption:class_1}
+    \item The Blendshape Parameters represent an encoding from which a classification model is able to make word level predictions. \label{assumption:class_2}
 \end{enumerate}
 
 \section{Generation of a 3D Lip Reading Dataset} \label{sec:dataset_gen}
 In order to train any model, an appropriate dataset must exist upon which the model can be trained.
-An appropriate dataset for word level prediction from blendshape parameters would consist of:
+An appropriate dataset for word level prediction from Blendshape Parameters would consist of:
 \begin{itemize}
    \item A large enough vocabulary that single instances of words with unique phonemes do not exist, as this would allow classification of these words to be too simple.
    \item Facial mesh recordings for all samples in the dataset, all of which brought into alignment to remove movement not related to speech.
-   \item Principal blendshape axis which can be shown to contain useful interpolation for speech.
-   \item The blendshape parameters corresponding to each sample for the given blendshape axis.
+   \item Blendshape Axes which can be shown to contain useful interpolation for speech.
+   \item The Blendshape Parameters corresponding to each sample for the given Blendshape axis.
 \end{itemize}
 
 As discussed in section \ref{3D Datasets}, currently there exists no public datasets which have been created for the purpose of lip reading from 3D temporal data.
@@ -37,7 +37,7 @@ The VOCASET dataset could be labelled with the use of an automatic speech recogn
 
 In order to tackle the issue of an appropriate dataset not existing, two solutions exist.
 The ideal solution would be to capture subjects speaking words from a set corpus using a 3D capture equipment, this solution was not a viable option for this project due to the specialised equipment required and the data processing required after data capture had been performed.
-Another means of constructing the dataset would be to generate the data with an existing model which can convert an appropriate audio dataset to a series of facial meshes from which blendshape axis can be constructed and parameters recovered.
+Another means of constructing the dataset would be to generate the data with an existing model which can convert an appropriate audio dataset to a series of facial meshes from which Blendshape axis can be constructed and parameters recovered.
 This can be achieved by processing audio from the LRW dataset \cite{Chung2016} though the VOCA model \cite{Cudeiro2019}.
 The VOCA model claims to be able to generate realistic 3D facial motion from audio, as lip reading is notoriously difficult for humans, this is difficult to validate.
 Assuming that the VOCA model does in fact generate realistic facial motion, the LRW dataset allows for a 3D dataset to be generated with a set corpus of the 500 words contained in the LRW dataset.
@@ -55,19 +55,19 @@ Figure \ref{fig:LRW_About} shows such a sample labelled as ``\textit{ABOUT}'' in
 
 The full LRW dataset contains 1000 training samples for each label, however due to the size of the VOCA model, processing 55000 samples (11\% of the full dataset) took roughly 8 days to process with the GPU acceleration of an Nvidia Tesla M60.
 This is due to the size of the VOCA model, which incorporates the DeepSpeech model as a means of audio feature extraction.
-In parallel to the generation of the 3D temporal data from the VOCA model, blendshape parameters were recovered as the facial scans were produced.
+In parallel to the generation of the 3D temporal data from the VOCA model, Blendshape Parameters were recovered as the facial scans were produced.
 No significant decrease in the speed of data generation was observed running these tasks in parallel.
 
-\subsection{Blendshape Axis Creation}
-Ideally, all 55000 samples would be collected and the PCA would be performed on this to construct the blendshape axis.
+\subsection{Blendshape Axes Creation}
+Ideally, all 55000 samples would be collected and the PCA would be performed on this to construct the Blendshape Axis.
 However, due to disk space limitations a complete dataset of 55000 facial scans could not be collected at once due to the size of the generated facial meshes as this would total 2.365 million generated facial mesh data samples, each of which occupying around 185KB, requiring a total of 440GB of disc space.
-To perform PCA on the generated facial meshes for blendshape axis (see section \ref{blendshapes}), the first 5000 facial mesh sequences were generated totalling 83 minutes of data and 215000 individual facial mesh data samples. 
+To perform PCA on the generated facial meshes for Blendshape Axis (see section \ref{blendshapes}), the first 5000 facial mesh sequences were generated totalling 83 minutes of data and 215000 individual facial mesh data samples. 
 Once PCA has been applied to a dataset of facial scans, the transformation matrix $\mat{W}$ is known.
 $\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated.
-These axes are the blendshapes axes and by interpolating along these axes by given amounts, motions of the facial mesh can be expressed in a low dimension.
-The first blendshape axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
-The number of blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive blendshape axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
-This results in realistic reconstruction being able to be achieved with a relatively small number of blendshapes containing the majority of the variation within the dataset.
+These axes are the Blendshapes Axes and by interpolating along these axes by given amounts, motions of the facial mesh can be expressed in a low dimension.
+The first Blendshape Axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
+The number of Blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive Blendshape Axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
+This results in realistic reconstruction being able to be achieved with a relatively small number of Blendshapes containing the majority of the variation within the dataset.
 Examples of the First and Second Blendshape Axis from the first 5000 samples are shown in Figures \ref{fig:Blendshape_axis_1} and \ref{fig:Blendshape_axis_2} respectively, further examples can be viewed in the Appendix: Figure \ref{fig:Blendshape_axis_3}, \ref{fig:Blendshape_axis_4}.
 These are constructed by interpolating along each axis individually by a fixed step amount.
 
@@ -143,7 +143,7 @@ Given a template mesh $\mat{M} \in \mathbb{R}^{(N \times 1)}$ upon which to inte
     \end{bmatrix}^\top
 \end{equation*}
 
-Given subsequent frames $\mat{M}^{\prime}$ which deviate the facial mesh from $\mat{M}$, $\mat{M}^{\prime}$ can be expressed by equation \ref{eq:mesh_interp}, where $\bm{\Lambda}$ is a vector containing Blendshape parameters.
+Given subsequent frames $\mat{M}^{\prime}$ which deviate the facial mesh from $\mat{M}$, $\mat{M}^{\prime}$ can be expressed by equation \ref{eq:mesh_interp}, where $\bm{\Lambda}$ is a vector containing Blendshape Parameters.
 
 \begin{equation}\label{eq:mesh_interp}
     \mat{M}^{\prime} = \mat{M} + \mat{W} \mat{\Lambda}
@@ -157,7 +157,7 @@ Given subsequent frames $\mat{M}^{\prime}$ which deviate the facial mesh from $\
     \end{bmatrix}^\top
 \end{equation*}
 
-The blendshape parameters $\lambda_i$ can be found by rearranging equation (\ref{eq:mesh_interp}) and solving for $\bm{\Lambda}$ as shown in equation (\ref{eq:mesh_interp_lambda}).
+The Blendshape Parameters $\lambda_i$ can be found by rearranging equation (\ref{eq:mesh_interp}) and solving for $\bm{\Lambda}$ as shown in equation (\ref{eq:mesh_interp_lambda}).
 The solution to this can be found by finding the pseudo-inverse for the Blendshape Axes $\mat{W}$.
 
 \begin{equation}\label{eq:mesh_interp_lambda}
@@ -213,12 +213,12 @@ However, as the dataset this problem is concerned with is balanced, this shall n
 \subsection{Multiple Towers Classification Model}\label{sec:multi_towers_model}
 The first model is based on the Multiple Towers architecture used in \cite{Chung2016} used for lip reading on 2D temporal data with the LRW dataset described in Section \ref{sec:lip_reading_models}.
 This is a CNN architecture which firstly applies a convolutional layer to the input image frames separately before concatenating the output feature maps and proceeding to convolve over the time domain.
-The original Multiple Towers architecture can be seen in Figure \ref{fig:LRW_Multiple_Towers} while the architecture adapted from this design for prediction from blendshape parameters is shown in Figure \ref{fig:Blendshape_Multiple_Towers}
+The original Multiple Towers architecture can be seen in Figure \ref{fig:LRW_Multiple_Towers} while the architecture adapted from this design for prediction from Blendshape Parameters is shown in Figure \ref{fig:Blendshape_Multiple_Towers}
 
 \subsubsection{Model Input} \label{sec:classification_inputs}
-The model inputs are in the form of blendshape parameter values for each frame in the motion sequence.
+The model inputs are in the form of Blendshape Parameter values for each frame in the motion sequence.
 These represent the interpolation from the template mesh as described in section \ref{sec:blendshape_recovery} for each time frame.
-For a duration of one second there are 43 frames, 4 blendshape parameters per frame and a single channel dimension, such that the input to the model is $\mat{x} \in \mathbb{R}^{1 \times 4 \times 43}$
+For a duration of one second there are 43 frames, 4 Blendshape Parameters per frame and a single channel dimension, such that the input to the model is $\mat{x} \in \mathbb{R}^{1 \times 4 \times 43}$
 
 \subsubsection{Loss Function}
 The model is trained with the Negative Log Likelihood (NLL) on 500 class labels for each of the labels in the dataset.
@@ -226,7 +226,7 @@ The model makes word level predictions with the LogSoftmax activation function a
 
 \subsubsection{Model Architecture} \label{sec:classification_model_arch}
 Similar to the architecture proposed by Chung et al. \cite{Chung2016}, the first convolutional layers do not convolve over the time domain by using 3x1 kernels which do not have a receptive field across the time domain.
-These two layers reduce the input shape from $[1 \times 4 \times 43]$ to $[512 \times 1 \times 43]$, encoding the 4 blendshape parameters into a single value across multiple channels, allowing the single dimension to be collapsed and 1D convolutional layers to be used for subsequent layers.
+These two layers reduce the input shape from $[1 \times 4 \times 43]$ to $[512 \times 1 \times 43]$, encoding the 4 Blendshape Parameters into a single value across multiple channels, allowing the single dimension to be collapsed and 1D convolutional layers to be used for subsequent layers.
 
 The Multiple Towers architecture used by Chung et al. featured max pooling layers to reduce the size of feature maps.
 As a linear layer is to be used at the final layer of the model to facilitate label prediction with a LogSoftmax activation function, it is desirable to reduce the size of the feature maps to prevent the linear layer having too many parameters as this becomes difficult to train and can lead to overfitting.
@@ -278,13 +278,13 @@ The hyperparameters which provided the optimum results on the validation data ar
 
 \subsection{Blendshape Channels Classification Model}\label{secc:blendshape_channels_model}
 The second model applied to this task is not directly inspired by any existing model architecture.
-Unlike the Multiple Towers Model, this model convolves over the time domain throughout the whole depth of the model and treats each blendshape axis as a separate channel to the input of the model, thus the model shall be referred to as the Blendshape Channels Model.
+Unlike the Multiple Towers Model, this model convolves over the time domain throughout the whole depth of the model and treats each Blendshape Axis as a separate channel to the input of the model, thus the model shall be referred to as the Blendshape Channels Model.
 As with the previous classification model, NLL is used as a loss function.
 
 \subsubsection{Model Input}
-The model inputs, as before are in the form of blendshape parameters values corresponding to frames in the motion sequence.
-Unlike the previous model, each blendshape axis is treated as a separate input channel, such that the input data is in the form $\mat{x} \in \mathbb{R}^{4 \times 43}$.
-Treating the blendshape axes as separate channels allows the model to extract information from them separately while considering the time domain for each.
+The model inputs, as before are in the form of Blendshape Parameters values corresponding to frames in the motion sequence.
+Unlike the previous model, each Blendshape Axis is treated as a separate input channel, such that the input data is in the form $\mat{x} \in \mathbb{R}^{4 \times 43}$.
+Treating the Blendshape Axes as separate channels allows the model to extract information from them separately while considering the time domain for each.
 
 TODO, some of this may need to be moved to discussion section.
 
@@ -430,10 +430,10 @@ While the second worse predicted label in both cases achieved 9.09\% and 8.33\% 
 \end{figure}
 
 The two models, while overfitting to the training data, remain to perform well on the validation and test data, achieving over 50\% mean accuracy on test data.
-Given that there are 500 labels upon which to predict, this is a very strong correlation between the input blendshape parameters and the words predicted.
+Given that there are 500 labels upon which to predict, this is a very strong correlation between the input Blendshape Parameters and the words predicted.
 The results from the two models are very similar, such that neither can be determined as the superior architecture for this task.
 
 \section{Conclusions}
-This chapter has discussed the use of blendshape parameters as a means of word level prediction.
-Two machine learning models were evaluated, one which reduced the parameter values into a single dimension encoding before convolving over time while the other treated each blendshape parameter as a separate input channel and convolved over the time domain throughout the whole depth of the network.
-While neither architecture can be said to be superior as both achieved similar results, it can be concluded that there exists a very strong correlation between the blendshape parameters obtained from a 3D temporal model of a speaking subject and the models spoken, such that word level prediction was possible.
+This chapter has discussed the use of Blendshape Parameters as a means of word level prediction.
+Two machine learning models were evaluated, one which reduced the parameter values into a single dimension encoding before convolving over time while the other treated each Blendshape Parameter as a separate input channel and convolved over the time domain throughout the whole depth of the network.
+While neither architecture can be said to be superior as both achieved similar results, it can be concluded that there exists a very strong correlation between the Blendshape Parameters obtained from a 3D temporal model of a speaking subject and the models spoken, such that word level prediction was possible.

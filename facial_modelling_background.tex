@@ -2,7 +2,7 @@
 
 This chapter shall discuss the preliminary background theory on 3D Facial Modelling and how this data is processed and represented for use with Deep Learning models.
 As the data captured by 3D facial scans is made of a high dimensional point cloud, each point having an position in the $x, y$ and $z$ dimension, a lower dimensional representation of the data can be found which retains the variance in the data.
-This can be achieved with the use of Blendshape Axis, found with Principal Component Analysis (PCA).
+This can be achieved with the use of Blendshape Axes, found with Principal Component Analysis (PCA).
 In order to remove unwanted variance in the data from facial movement not correlated with speech, such as head movement, the data samples should first be brought into correspondence (also known as alignment or registration) to remove these undesirable variations in the data.
 This is achieved with the use of Procrustes Analysis.
 
@@ -301,6 +301,6 @@ An example of such an application is shown in Figure \ref{fig:VOCASET_Alignment}
 \end{figure}
 
 \section{Chapter Summary}
-This chapter has provided an overview of the process of PCA and how the calculated principal axis from this analysis can be used as Blendshape Axis, along which a facial model can be interpolated to describe variation in the dataset.
+This chapter has provided an overview of the process of PCA and how the calculated principal axes from this analysis can be used as Blendshape Axes, along which a facial model can be interpolated to describe variation in the dataset.
 Secondly, an overview of the background mathematics used to align a dataset made up of 3D facial scans can be brought into correspondence such that all data samples are scaled to the same size at the same position and are aligned to a collection of points which should remain fixed throughout the data.
 This allows for remaining variation in the data to be present in only the desired attributes, such as movement in subjects mouth while removing variation in head movement.

@@ -26,7 +26,7 @@ As a means to increase the variation in speaking style in existing audio drive g
 The resulting generative model should be able to replicate the results of the VOCA model, but with increased variation in speaking styles due to the noise input component.
 
 \section{Model Inputs}
-The generative model is to be driven from an audio input of audio samples from the LRW dataset which were used as inputs to the VOCA model to generate the dataset of blendshape parameters.
+The generative model is to be driven from an audio input of audio samples from the LRW dataset which were used as inputs to the VOCA model to generate the dataset of Blendshape Parameters.
 Audio data in the time domain has a high number of samples per second to allow all frequencies observable by human hearing to be captured.
 Human hearing can commonly hear up to 20kHz, which results in a sample rate of at least 40kHz to meet the Nyquist sampling rate, which states that the sample rate must be at least twice the desired maximum observable frequency to accurately represent the signal at this frequency.
 40,000 samples for a single second is however, is a large number of samples and an inefficient data representation.
@@ -107,7 +107,7 @@ This results in an model input MFCC $\mat{x} \in \mathbb{R}^{12 \times 43}$, vis
 \end{figure}
 
 \subsection{Blendshape Inputs}
-The Generator aims to produce realistic blendshape parameters for the input audio signal, thus the input to the Critic must be the true blendshape parameter values and the `fake' generated blendshape parameters.
+The Generator aims to produce realistic Blendshape Parameters for the input audio signal, thus the input to the Critic must be the true Blendshape Parameter values and the `fake' generated Blendshape Parameters.
 These values are the same as were input to the Blendshape Classification models discussed in Section \ref{sec:classification_inputs}: $\mat{y} \in \mathbb{R}^{4 \times 43}$.
 The reader is directed to this section for further details.
 
@@ -124,20 +124,20 @@ In addition to audio represented in the form of MFCCs, the Generator is also inp
 \section{Data Preprocessing}
 As with the classification models, data inputs to the model are normalised within the range [0,1], the normalised MFCC input is shown in Figure \ref{fig:mfcc_norm_input}.
 This normalisation makes training both the critic and the generator easier as the range of values which the model will observe is reduced while preserving the statistical properties of the data.
-As the generated blendshape parameters are within the range [0,1] the Sigmoid activation function can be used at the output layer of the model, rather than a linear output with an infinite range.
+As the generated Blendshape Parameters are within the range [0,1] the Sigmoid activation function can be used at the output layer of the model, rather than a linear output with an infinite range.
 
 \section{Assessment of Model Performance} \label{sec:gan_assessment}
 Assessing the performance of GAN is less straightforward than other machine learning models.
 For example, in a supervised learning scenario, a classification model can be assessed on the accuracy of predictions or f-score on a test set in addition to the model loss on these predictions, as discussed in Section \ref{sec:class_assessment}.
 As GAN describe an unsupervised learning scenario, assessment metrics are less clear and problem specific.
-In this problem, the aim of the Generator is to find a mapping from an audio signal represented by a series of MFCCs, to a series of blendshape parameters which the Critic considers to be a correct match.
-The Critic's goal is to be able to judge pairings of MFCCs and blendshape parameters as a realistic match.
+In this problem, the aim of the Generator is to find a mapping from an audio signal represented by a series of MFCCs, to a series of Blendshape Parameters which the Critic considers to be a correct match.
+The Critic's goal is to be able to judge pairings of MFCCs and Blendshape Parameters as a realistic match.
 
-A realistic pairing of audio and blendshape parameters would meet the following conditions:
+A realistic pairing of audio and Blendshape Parameters would meet the following conditions:
 \begin{itemize}
     \item Movement would appear realistic to a human observer.
     \item Movement would appear correlated to the speech in the audio signal to a human observer.
-    \item Speech would be correlated, such that a pretrained blendshape classifier would be able to make some degree of successful predictions from the parameters.
+    \item Speech would be correlated, such that a pretrained Blendshape classifier would be able to make some degree of successful predictions from the parameters.
 \end{itemize}
 
 The first two conditions are difficult to evaluate in a quantitative manner as this is a matter of opinion from the observer.
@@ -146,10 +146,10 @@ Subjects who cannot lip read could be used, however this is unreliable as in man
 With the absence of audio, the 'realism' of the animation movement is also difficult to determine.
 While aspects of animation which easily make generated data identifiable are sudden movements and shaking in the animation which would not be apparent in real speech, a series of parameter values which produce a smooth animation may easily fool observers.
 
-A quantitative metric which can be evaluated is the performance of generated samples on the pretrained blendshape classifiers, the architecture and performance of which is discussed in Chapter \ref{chap:classification}.
-As the Generator aims to find the mapping between the input audio signal and blendshape parameters, if successful, the generated blendshape parameters should have properties similar to those of the original data which would allow for correct classification.
+A quantitative metric which can be evaluated is the performance of generated samples on the pretrained Blendshape classifiers, the architecture and performance of which is discussed in Chapter \ref{chap:classification}.
+As the Generator aims to find the mapping between the input audio signal and Blendshape Parameters, if successful, the generated Blendshape Parameters should have properties similar to those of the original data which would allow for correct classification.
 
-Given that the success of the Generator is dependent upon producing blendshape parameters which the critic cannot distinguish from real samples, the primary metric which shall be used is the losses on the validation set from both the Critic and the Generator during training.
+Given that the success of the Generator is dependent upon producing Blendshape Parameters which the critic cannot distinguish from real samples, the primary metric which shall be used is the losses on the validation set from both the Critic and the Generator during training.
 Training of the Generator will be complete when the Critic can no longer distinguish between real and fake samples.
 Will this occurs the Critic losses have settled at 0.
 
@@ -167,13 +167,13 @@ A high level diagram of the GAN model is shown by Figure \ref{fig:gan_model}.
     \caption{GAN Model}\label{fig:gan_model}
 \end{figure} 
 
-The Critic is trained on a corresponding pair of MFCC values and blendshape parameters.
-The goal of the Critic is to be able to identify a correct pairing from the dataset and a false pairing consisting of MFCC values and a fake series of blendshape parameters generated by the Generator.
+The Critic is trained on a corresponding pair of MFCC values and Blendshape Parameters.
+The goal of the Critic is to be able to identify a correct pairing from the dataset and a false pairing consisting of MFCC values and a fake series of Blendshape Parameters generated by the Generator.
 The Critic returns a score value within the range of [-1, 1], where data inputs which it regards as realistic are larger, while parings which is regards as fake are smaller.
 For each minibatch in a training epoch the Critic is shown a batch of real data values $\mat{x}$ and the Generator creates a batch of fake data values $\mat{\tilde{x}}$.
 The Critic evaluates this data and returns a score for both the real and fake data.
 In addition to the loss from the Critic score on real and fake data samples, the gradient penalty term is calculated, this term is to be minimised to meet the Lipschtiz condition, \cite{Gulrajani2017}.
-This is found by evaluating the score of the Critic on a new data sample taken at random along the interpolation between the real and fake blendshape parameters, $\mat{\hat{x}}$.
+This is found by evaluating the score of the Critic on a new data sample taken at random along the interpolation between the real and fake Blendshape Parameters, $\mat{\hat{x}}$.
 The gradient penalty term $\mat{k}$ can then be found with equation (\ref{eq:grad_penalty}) with the interpolated value, where $\lambda$ is a tunable hyperparameter.
 
 \begin{equation}\label{eq:grad_penalty}
@@ -182,7 +182,7 @@ The gradient penalty term $\mat{k}$ can then be found with equation (\ref{eq:gra
 \end{equation}
 
 The Generator takes inputs of MFCC values and noise from a uniform distribution, these are concatenated together and processed as a single input.
-The Generator then attempts to map this input into blendshape parameter values which the Critic evaluated to a low loss value. 
+The Generator then attempts to map this input into Blendshape Parameter values which the Critic evaluated to a low loss value. 
 During training, the samples produced by the Generator are assessed by the Critic.
 The Generator aims to have the samples it produces labelled as realistic, such that the Critic returns a high value.
 
@@ -205,9 +205,9 @@ For this reason, the Critic is trained more frequently then the Generator, in th
 \end{table}
 
 \subsection{Generator}
-The Generator aims to transform noise from a uniform distribution into realistic blendshape parameters given the conditional input of MFCC values for a given audio sample.
+The Generator aims to transform noise from a uniform distribution into realistic Blendshape Parameters given the conditional input of MFCC values for a given audio sample.
 Five channels of noise are sampled with the same shape as in MFCC input and the two are concatenated along the channel dimension, such that the input data is $\mat{z} \in \mathbb{R}^{6 \times 12 \times 43}$.
-The Generator model architecture is a fully convolutional network which takes the input values $\mat{z}$ and transforms this into blendshape parameters $\mat{\tilde{x}} \in \mathbb{R}^{4 \times 43}$.
+The Generator model architecture is a fully convolutional network which takes the input values $\mat{z}$ and transforms this into Blendshape Parameters $\mat{\tilde{x}} \in \mathbb{R}^{4 \times 43}$.
 
 \begin{figure}[h!]
     \centering
@@ -216,11 +216,11 @@ The Generator model architecture is a fully convolutional network which takes th
 \end{figure}
 
 The model (shown in Figure \ref{fig:gan_gen_arch}) consists of five convolutional layers, the detailed specification of which is shown in Table \ref{table:gan_gen_arch}.
-The first pads the input along the time domain as the output dimension along the time domain is to be the same as in input, corresponding to separate frames of blendshape parameters, without padding this dimension would be reduced due to convolution operations.
+The first pads the input along the time domain as the output dimension along the time domain is to be the same as in input, corresponding to separate frames of Blendshape Parameters, without padding this dimension would be reduced due to convolution operations.
 This is a significant amount of padding to be applied to a single layer, however when a padding values of one was applied to all layers this resulted obvious artifacts at the beginning and end of the generated sequence, while this produces no such artifacts.
-The first layer has a high number of filter channels to extract the largest possible amount of information from in input data, following layers reduce the number of channels to compress this information into the final output layer which has 4 channels, one for each blendshape parameter.
+The first layer has a high number of filter channels to extract the largest possible amount of information from in input data, following layers reduce the number of channels to compress this information into the final output layer which has 4 channels, one for each Blendshape Parameter.
 
-The model uses ReLU activate functions for all hidden layers and the Sigmoid activation function at the output layer to achieve blendshape parameters in the range [0, 1].
+The model uses ReLU activate functions for all hidden layers and the Sigmoid activation function at the output layer to achieve Blendshape Parameters in the range [0, 1].
 The output layer also uses a larger kernel size than the hidden layers, which all use a kernel size of 3.
 When a small kernel was used at the output layer there existed a large amount of of jitter in the output parameters, increasing the output kernel seems to eliminate this and produce animation with smoother motion.
 The role of this output layer is not to extract useful information for subsequent layers to use, but to generate the output values.
@@ -242,9 +242,9 @@ A larger kernel increases to receptive field of this layer on the feature maps f
 \subsection{Critic}
 The Critic aims to distinguish real data samples from the training dataset from data samples from the Generator.
 The high level overview of the model architecture is shown in Figure \ref{fig:gan_critic_arch} and listed in detail in Table \ref{table:gan_critic_arch}.
-Inputs to the Critic are comprised of MFCC values and blendshape parameters, both of which have different dimension sizes, but share a common time dimension. 
-There are 12 MFCC filter values and 4 blendshape parameter per time instance.
-In order to concatenate these values together, the blendshape parameter values are treated as a separate channel and duplicated 12 times, such that the blendshape parameters are expressed as $\mat{b} \in \mathbb{R}^{4 \times 12 \times 43}$.
+Inputs to the Critic are comprised of MFCC values and Blendshape Parameters, both of which have different dimension sizes, but share a common time dimension. 
+There are 12 MFCC filter values and 4 Blendshape Parameter per time instance.
+In order to concatenate these values together, the Blendshape Parameter values are treated as a separate channel and duplicated 12 times, such that the Blendshape Parameters are expressed as $\mat{b} \in \mathbb{R}^{4 \times 12 \times 43}$.
 This is then concatenated with the MFCC values $\mat{m} \in \mathbb{R}^{1 \times 12 \times 43}$, into the input values $\mat{x} \in \mathbb{R}^{5 \times 12 \times 43}$.
 
 \begin{figure}[h!]
@@ -255,9 +255,9 @@ This is then concatenated with the MFCC values $\mat{m} \in \mathbb{R}^{1 \times
 
 The Critic model consists of three sections, the first two are built of convolutional layers using the LeakyReLU activation function while the last the output layer, a linear layer using the Tanh activation function.
 the first three layers are two dimensional convolutional layers which do not convolve over the time domain, just the height dimension.
-This allows the model to find an efficient encoding of the input audio and blendshape parameters.
+This allows the model to find an efficient encoding of the input audio and Blendshape Parameters.
 The number of filters is increased throughout this encoding stage as opposed to extracting a large number of filters initially as was the case with the Generator.
-The reasoning behind this is that the initial input contains a great deal of repetition due to the blendshape parameters being duplicated into the same shape as the MFCC values.
+The reasoning behind this is that the initial input contains a great deal of repetition due to the Blendshape Parameters being duplicated into the same shape as the MFCC values.
 
 The second section aims to convolve over the time domain, as the singleton dimension can now be collapsed, one dimension convolutional layers can now be used to achieve this.
 The section consists of three convolutional layers, each of which have a stride of two and a decreasing kernel size across the three layers.
@@ -292,7 +292,7 @@ The first condition of the Critic is that the Lipschtiz condition is met, enforc
 
 Secondly, the total losses of the Critic as described by equation (\ref{eq:wgan_gp}) are shown in Figure \ref{fig:gan_total_critic_losses}.
 Due to the high initial value of the gradient penalty term, the initial terms have not been plotted for this plot and subsequent plots to aid visualisation.
-The Generator and Critic both aim to have as low a loss as possible, a negative Generator loss is an indication that the fake samples are being scored incorrectly by the Critic as it considers the fake blendshape parameters as a correct pairing for the incoming MFCC values, as described by equation (\ref{eq:wgan}).
+The Generator and Critic both aim to have as low a loss as possible, a negative Generator loss is an indication that the fake samples are being scored incorrectly by the Critic as it considers the fake Blendshape Parameters as a correct pairing for the incoming MFCC values, as described by equation (\ref{eq:wgan}).
 While a negative loss on the total loss of the Critic is an indication that on average the real data samples are being given a higher score than the fake samples.
 From Figure \ref{fig:gan_total_critic_losses} it can be seen that throughout the whole training process the Critic correctly scores real and fake input data.
 However, as the loss from the Critic is a summation of multiple terms, this plot alone does not display all information about the model.
@@ -385,10 +385,10 @@ The prediction accuracy further highlights this in Figure \ref{fig:gan_classific
 \end{figure}
 
 \section{Conclusions}
-This chapter has discussed the use of a GAN model to generate synthetic blendshape parameters given an audio input upon which to drive a model.
+This chapter has discussed the use of a GAN model to generate synthetic Blendshape Parameters given an audio input upon which to drive a model.
 The audio was represented by the use of MFCC values, which was combined with noise as an input to the Generator model.
-The Critic was input with audio in the same MFCC representation on which the Generator was trained and corresponding blendshape parameter values from the original dataset and generated blendshape parameters from the Generator.
-The Critic learnt to distinguish the real pairing of blendshape parameters and audio from the fake successfully, while the Generator attempted to learn to produce realistic blendshape parameters to fool the Critic.
+The Critic was input with audio in the same MFCC representation on which the Generator was trained and corresponding Blendshape Parameter values from the original dataset and generated Blendshape Parameters from the Generator.
+The Critic learnt to distinguish the real pairing of Blendshape Parameters and audio from the fake successfully, while the Generator attempted to learn to produce realistic Blendshape Parameters to fool the Critic.
 
-While the generated samples appeared to be correlated with the audio to a human observer, evaluation of the pretrained classification models from Chapter \ref{chap:classification} highlighted that there was no correlation between the generated blendshape parameters and the words spoken in the audio samples.
-This further highlights the difficulties of lip reading as a task for humans while the use of blendshape parameters for prediction is possible for a machine learning model.
+While the generated samples appeared to be correlated with the audio to a human observer, evaluation of the pretrained classification models from Chapter \ref{chap:classification} highlighted that there was no correlation between the generated Blendshape Parameters and the words spoken in the audio samples.
+This further highlights the difficulties of lip reading as a task for humans while the use of Blendshape Parameters for prediction is possible for a machine learning model.
