@@ -1,4 +1,3 @@
-%\documentclass[12pt]{report}
 \documentclass[12pt,a4paper,twoside]{report}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,7 +44,7 @@ Currently however, no models exist which have attempted to use 3D data of facial
 In this report lip reading is successfully implemented with the use of 3D facial scans to make predictions on a word level with above 50\% mean test accuracy on 500 labels, forming the baseline for future work to build upon.
 The current lack of datasets suitable for this research is the dominant problem in this field of research.
 In addition to the task of lip reading from 3D facial scans, solving this secondary problem is also attempted.
-As a means to help resolve this issue, the use of Generative Adversarial Networks is investigated as a means of generating 3D facial data corresponding to an audio input.
+To resolve this issue, the use of Generative Adversarial Networks is investigated as a means of generating 3D facial data corresponding to an audio input.
 \end{abstract}
 
 \cleardoublepage
@@ -59,7 +58,6 @@ Secondly I would like to thank the researchers for assisting with support, resou
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %--- table of contents
-%\fancyhead[R,LO]{\sffamily {Table of Contents}}
 \tableofcontents 
 \listoffigures
 \listoftables
@@ -68,13 +66,9 @@ Secondly I would like to thank the researchers for assisting with support, resou
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \pagenumbering{arabic}
 \setcounter{page}{1}
-%\lhead[<even output>]{<odd output>}
-%\rhead[<even output>]{<odd output>}
-%\fancyhead[L,RO]{\slshape \rightmark}
-%\fancyhead[LE,R]{\slshape \leftmark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\linenumbers
+%\linenumbers
 \input{introduction.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -5,7 +5,7 @@
 \chapter{Blendshape Classification}\label{chap:classification}
 
 This chapter shall discuss the problem of word level classification from Blendshape Parameters obtained from a dataset created with the VOCA model \cite{Cudeiro2019} processing audio from the LRW dataset \cite{Chung2016}.
-Classification is performed with a two Convolutional Neural Network architectures on 500 labels.
+Classification is performed with two Convolutional Neural Network architectures on 500 labels.
 The two model architectures, how performance is assessed and how the models have been tuned to maximise performance on a held out validation set is also discussed. 
 The final performance of the models is evaluated on the test set and conclusion as to the effectiveness of using Blendshape Parameters as a means of lip reading is evaluated.
 
@@ -31,9 +31,9 @@ An appropriate dataset for word level prediction from Blendshape Parameters woul
 \end{itemize}
 
 As discussed in section \ref{3D Datasets}, currently there exists no public datasets which have been created for the purpose of lip reading from 3D temporal data.
-In addition to this, the datasets which have not been created with the purpose of lip reading but do contain 3D temporal data of speaking facial scans, are either not public in the case of Karras's model \cite{Karras2017a} or are unlabelled and too small to train a model effectively as is the case with the VOCASET \cite{Cudeiro2019}.
+In addition to this, the datasets which have not been created with the purpose of lip reading which do contain 3D temporal data of speaking facial scans, are either not public in the case of Karras's model \cite{Karras2017a} or are unlabelled and too small to train a model effectively as is the case with the VOCASET \cite{Cudeiro2019}.
 Both of these datasets also contain a large vocabulary, with too few samples of each word.
-The VOCASET dataset could be labelled with the use of an automatic speech recognition model such as DeepSpeech as suggested in section \ref{3D Datasets}, however as the dataset was constructed to contain as much variation in speech sounds, so a degree of word repetition would offer little benefit, hence the lack of consistent word repetition.
+The VOCASET dataset could be labelled with the use of an automatic speech recognition model such as DeepSpeech as suggested in section \ref{3D Datasets}, however as the dataset was constructed to contain as much variation in speech sounds, a degree of word repetition would offer little benefit, hence the lack of consistent word repetition.
 
 In order to tackle the issue of an appropriate dataset not existing, two solutions exist.
 The ideal solution would be to capture subjects speaking words from a set corpus using a 3D capture equipment, this solution was not a viable option for this project due to the specialised equipment required and the data processing required after data capture had been performed.
@@ -44,7 +44,7 @@ Assuming that the VOCA model does in fact generate realistic facial motion, the 
 
 55,000 audio samples are taken from the LRW dataset with a uniform distribution of all labels, resulting in 110 samples for each label.
 Audio samples from the LRW dataset are from ``in the wild'' scenarios \cite{Chung2016}, meaning that there is background noise and audio in the clip.
-An sample of the word ``\textit{ABOUT}'' will contain the word ``\textit{ABOUT}'' within the audio sample, but will contain other speech either side of the clip.
+A sample of the word ``\textit{ABOUT}'' will contain the word ``\textit{ABOUT}'' within the audio sample, but will contain other speech either side of the clip.
 Figure \ref{fig:LRW_About} shows such a sample labelled as ``\textit{ABOUT}'' in which the phrase ``talking about fair'' is spoken.
 
 \begin{figure}[h]
@@ -53,7 +53,7 @@ Figure \ref{fig:LRW_About} shows such a sample labelled as ``\textit{ABOUT}'' in
     \caption{Audio Sample from LRW \cite{Chung2016} ``Talking About Fair''}\label{fig:LRW_About}
 \end{figure}
 
-The full LRW dataset contains 1000 training samples for each label, however due to the size of the VOCA model, processing 55000 samples (11\% of the full dataset) took roughly 8 days to process with the GPU acceleration of an Nvidia Tesla M60.
+The full LRW dataset contains 1000 training samples for each label, however due to the size of the VOCA model, processing 55000 samples (11\% of the full dataset) took roughly 8 days with the GPU acceleration of an Nvidia Tesla M60.
 This is due to the size of the VOCA model, which incorporates the DeepSpeech model as a means of audio feature extraction.
 In parallel to the generation of the 3D temporal data from the VOCA model, Blendshape Parameters were recovered as the facial scans were produced.
 No significant decrease in the speed of data generation was observed running these tasks in parallel.
@@ -63,7 +63,7 @@ Ideally, all 55000 samples would be collected and the PCA would be performed on 
 However, due to disk space limitations a complete dataset of 55000 facial scans could not be collected at once due to the size of the generated facial meshes as this would total 2.365 million generated facial mesh data samples, each of which occupying around 185KB, requiring a total of 440GB of disc space.
 To perform PCA on the generated facial meshes for Blendshape Axis (see section \ref{blendshapes}), the first 5000 facial mesh sequences were generated totalling 83 minutes of data and 215000 individual facial mesh data samples. 
 Once PCA has been applied to a dataset of facial scans, the transformation matrix $\mat{W}$ is known.
-$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which can be interpolated.
+$\mat{W}$ has columns of eigenvectors corresponding to eigenvalues, each of these eigenvectors represents the principal axis upon which interpolated can be performed.
 These axes are the Blendshapes Axes and by interpolating along these axes by given amounts, motions of the facial mesh can be expressed in a low dimension.
 The first Blendshape Axis corresponds to the largest eigenvalue, as that axis contains the largest amount of variation amongst the dataset.
 The number of Blendshapes which can be created will be limited by the number of positive non-zero eigenvalues found from PCA, however as each successive Blendshape Axis corresponds to a decreasingly small eigenvalue, the amount of variation in each successive axis decreases. 
@@ -105,7 +105,7 @@ These are constructed by interpolating along each axis individually by a fixed s
 \end{figure}
 
 \subsection{Blendshape Parameter Recovery} \label{sec:blendshape_recovery}
-Given a template mesh $\mat{M} \in \mathbb{R}^{(N \times 1)}$ upon which to interpolate, where $N = 3n$ and $n$ represents the number of vertex points in the facial mesh, each of which have an $x, y$ and $z$ coordinate value and Blendshape Axis $\mat{W} \in \mathbb{R}^{(N \times d)}$ as described in section \ref{sec:pca}, where the $d$ first principal axis have been kept, representing the axis along which the template mesh $\mat{M}$ can be interpolated.
+Given a template mesh $\mat{M} \in \mathbb{R}^{(N \times 1)}$ upon which to interpolate, where $N = 3n$ and $n$ represents the number of vertex points in the facial mesh, each of which have an $x, y$ and $z$ coordinate value and Blendshape Axis $\mat{W} \in \mathbb{R}^{(N \times d)}$ as described in section \ref{sec:pca}, where the $d$ first principal axes have been kept, representing the axis along which the template mesh $\mat{M}$ can be interpolated.
 
 \begin{equation*}
     \mat{M} = \begin{bmatrix} 
@@ -210,7 +210,7 @@ The accuracy of a model is the ratio between the number of predicted labels made
 Accuracy is an appropriate metric in the instance when the dataset is balanced, that is to say that there are an equal number of all labels in the dataset.
 
 If the dataset is unbalanced, the accuracy of a model is less informative.
-For example, in the scenario where there is a dataset with two labels \textit{A} and \textit{B} with the data being unbalanced such that label \textit{A} occurs 9 times for frequently than label \textit{B}.
+For example, in the scenario where there is a dataset with two labels \textit{A} and \textit{B} with the data being unbalanced such that label \textit{A} occurs 9 times more frequently than label \textit{B}.
 A model which achieves 90\% accuracy on this dataset may be correctly labelling all data 90\% of the time, or it may be labelling all data samples as label \textit{A} without learning anything about the dataset and achieving the same accuracy.
 
 For unbalanced data the F1-Score metric is more useful as this will remain low when a single label class is frequently being incorrectly predicted.
@@ -233,7 +233,7 @@ The model is trained with the Negative Log Likelihood (NLL) on 500 class labels 
 The model makes word level predictions with the LogSoftmax activation function applied to the final layer of the model.
 
 \subsubsection{Model Architecture} \label{sec:classification_model_arch}
-Similar to the architecture proposed by Chung et al. \cite{Chung2016}, the first convolutional layers do not convolve over the time domain by using 3x1 kernels which do not have a receptive field across the time domain.
+Similar to the architecture proposed by Chung et al. \cite{Chung2016}, the first convolutional layers do not convolve over the time domain by using 3x1 kernels.
 These two layers reduce the input shape from $[1 \times 4 \times 43]$ to $[512 \times 1 \times 43]$, encoding the 4 Blendshape Parameters into a single value across multiple channels, allowing the single dimension to be collapsed and 1D convolutional layers to be used for subsequent layers.
 
 The Multiple Towers architecture used by Chung et al. featured max pooling layers to reduce the size of feature maps.
@@ -241,7 +241,7 @@ As a linear layer is to be used at the final layer of the model to facilitate la
 Max pooling layers reduce the size of feature maps in the network, only retaining the information which is of the most use to the model.
 
 In order to aid in the training of the model, batch normalisation is applied after convolutional layers in all cases except for the final convolutional layer.
-Similarly, dropout was applied to all but the final convolution layer in order to assist the model from overfitting the training data.
+Similarly, dropout is applied to all but the final convolution layer in order to assist the model from overfitting the training data.
 During training, the model suffered from significant overfitting to the training data, dropout was applied and assist in the prevention of this.
 In addition to dropout, weight decay was also used to improve performance on the validation data.
 Early stopping was used to prevent the model learning to overfit further on the training data.
@@ -290,7 +290,7 @@ Unlike the Multiple Towers Model, this model convolves over the time domain thro
 As with the previous classification model, NLL is used as a loss function.
 
 \subsubsection{Model Input}
-The model inputs, as before are in the form of Blendshape Parameters values corresponding to frames in the motion sequence.
+The model inputs, as before are in the form of Blendshape Parameter values corresponding to frames in the motion sequence.
 Unlike the previous model, each Blendshape Axis is treated as a separate input channel, such that the input data is in the form $\mat{x} \in \mathbb{R}^{4 \times 43}$.
 Treating the Blendshape Axes as separate channels allows the model to extract information from them separately while considering the time domain for each.
 
@@ -302,9 +302,9 @@ In order to reduce the length of the feature maps in the model, max pooling laye
 As with the Multiple Towers Model, this forces the model to discard information which is of less importance, while reducing the size of the feature maps.
 
 The final convolutional layer reduces the number of channels in the output feature map in order to reduce the number of parameters in the output linear layer for word level predictions with the LogSoftmax activation function.
-Full model specification are shown in Table \ref{table:blendshape_channels_classifier}.
-Similar to the Multiple Towers Model, batch normalisation is applied to aid in stabilising the training of the model, while dropout did not improved the performance on the validation data.
-The model was tuned on the validation data to with the hyperparameters shown in Table \ref{table:blendshape_channels_classifier_hyperparameters}.
+Full model specification is shown in Table \ref{table:blendshape_channels_classifier}.
+Similar to the Multiple Towers Model, batch normalisation is applied to aid in stabilising the training of the model, while dropout did not improve the performance on the validation data.
+The model was tuned on the validation data with the hyperparameters shown in Table \ref{table:blendshape_channels_classifier_hyperparameters}.
 
 \begin{figure}[h!]
     \centering
@@ -343,11 +343,10 @@ The model was tuned on the validation data to with the hyperparameters shown in 
 
 \section{Discussion of Results}
 Both models achieve an average test accuracy above 50\% shown in Table \ref{table:classification_test_accuracy}.
-It is however that both models remain to overfit to the training data as can be seen in the training losses on the training and validation data as shown in Figures \ref{fig:multiple_towers_training}, \ref{fig:channels_training}.
+It is clear however that both models remain to overfit to the training data as can be seen in the training losses on the training and validation data as shown in Figures \ref{fig:multiple_towers_training}, \ref{fig:channels_training}.
 The model was tuned on the validation set to optimise the performance and reduce overfitting, this was achieved with weight decay parameters and dropout were applied to both models, however reductions in the deviation between training and validation losses resulted in an overall worse performance on the validation data.
-As mentioned in section \ref{sec:classification_model_arch}, early stopping was applied to both models to halt training once the validation loss has stopped decreasing after ten epochs.
+As mentioned in section \ref{sec:classification_model_arch}, early stopping was applied to both models to halt training once the validation loss had stopped decreasing after ten epochs.
 The optimum performance on the validation data resulted in classification models which remain to overfit to the training data.
-This overfitting to the training data may be an indication to a lack of variation in the data generated by the VOCA model \cite{Cudeiro2019}.
 
 \begin{table}[h!]
 \centering
@@ -387,7 +386,7 @@ This overfitting to the training data may be an indication to a lack of variatio
 
 A direct comparison of the models on the validation data shows that the Blendshape Channel architecture slightly outperforms the Multiple Towers architecture throughout training (Figure \ref{fig:classification_training}).
 The final model accuracy values for each dataset split is shown in Table \ref{table:classification_test_accuracy}.
-Evaluation on the test data concludes that the Blendshape Channels model is consistent outperforms, while the margin between the two models remains small.
+Evaluation on the test data concludes that the Blendshape Channels model consistently outperforms, while the margin between the two models remains small.
 
 \begin{figure}[h!]
     \centering
@@ -403,7 +402,8 @@ Evaluation on the test data concludes that the Blendshape Channels model is cons
 \end{figure}
 
 Examining word level classification accuracy on the test dataset (Figure \ref{fig:both_models_word_acc}) shows that both models perform similarly across all labels.
-Commonly for a classification task a confusion matrix would be displayed highlighting which labels are predicted as which, highlighting any labels which are commonly mislabelled.
+Commonly for a classification task a confusion matrix would be displayed showing how the model is predicting individual labels.
+This highlights any labels which are commonly mislabelled.
 However as there are 500 labels, this confusion matrix is far too large to be useful for visualisation.
 The main labels of interest are those which are least frequently predicted, thus the 1\textsuperscript{st} percentile of the test dataset is plotted instead, shown in Figure \ref{fig:both_models_percentile_word_acc} 
 This highlights that the most poorly predicted label was the same for both models: (\textit{`GOING'}).
@@ -435,8 +435,8 @@ While the second worse predicted label in both cases achieved 9.09\% and 8.33\% 
     \caption{1\textsuperscript{st} Percentile Per Word Test Accuracy}\label{fig:both_models_percentile_word_acc}
 \end{figure}
 
-The two models, while overfitting to the training data, remain to perform well on the validation and test data, achieving over 50\% mean accuracy on test data.
-Given that there are 500 labels upon which to predict, this is a very strong correlation between the input Blendshape Parameters and the words predicted.
+The two models, while overfitting to the training data, perform well on the validation and test data, achieving over 50\% mean accuracy on test data.
+Given that there are 500 labels upon which to predict, this is a strong correlation between the input Blendshape Parameters and the words predicted.
 The results from the two models are very similar, such that neither can be determined as the superior architecture for this task.
 
 \section{Conclusions}

@@ -3,7 +3,7 @@
 
 \chapter{Audio Driven Blendshape GAN} \label{chap:generation}
 This chapter shall discuss the use of GANs for audio driven facial animation.
-Unlike previous generative models which solve a regression problem to correctly match an audio input to a sequence parameters which describe facial motion, GANs also include an noise input resulting in variations in the output from the same conditional input.
+Unlike previous generative models which solve a regression problem to correctly match an audio input to a sequence of parameters which describe facial motion, GANs also include an noise input resulting in variations in the output from the same conditional input.
 The model outputs will then be assessed on the classification models discussed in Chapter \ref{chap:classification}.
 The GAN is comprised of two neural networks, a Generator and a Critic, which are trained together using the outputs of each network to train the other.
 
@@ -15,7 +15,7 @@ Through the use of these models, a synthetic dataset of 3D temporal facial motio
 This data however is subject to all biases and restrictions the VOCA model is subject to.
 An appropriate dataset would contain a small vocabulary, similar to the LRW dataset of 500 words, all spoken by multiple subjects to capture different speaking styles for the same words captured from `\textit{in the wild}' scenarios.
 
-An appropriate dataset would:
+An appropriate dataset would meet the following conditions:
 \begin{itemize}
     \item A small vocabulary of a similar size to the LRW dataset.
     \item Multiple subjects speaking the same vocabulary to capture different speaking styles for the same words.
@@ -35,12 +35,12 @@ Commonly audio data is converted to the frequency domain which allows for a far 
 \subsection{Mel-frequency Cepstral Coefficients}
 Common implementations of machine learning models which use audio as in input, focused on speech, have used Mel-frequency cepstral coefficients (MFCCs) to represent audio, \cite{Holmberg2006, Milner2007, Murty2006}.
 MFCCs were inspired by human anatomy and speech, invented by Davis and Mermelstein in 1980 \cite{Davis1980}.
-Human speech is naturally filtered by the shape of the shape of the mouth and vocal tract.
+Human speech is naturally filtered by the shape of the mouth and vocal tract.
 This envelope can be well represented by the short time power spectrum.
 A large amount of information is contained within an audio sample in the time domain, much of which does not contain meaningful information.
 By filtering the audio sample in the frequency domain to this envelope, information useful to speech detection is maintained while other information is discarded.
 
-Firstly the assumption that over a short time frame, the audio signal does not statistically vary greatly.
+The first assumption is that over a short time frame, the audio signal does not statistically vary greatly.
 This assumption allows the signal to be split into short frames which can be processed separately.
 An example of the audio frames is show in Figure \ref{fig:mfcc_audio_frames}.
 
@@ -73,7 +73,7 @@ The log of each summation is then taken as humans do not perceive loudness on a 
     \caption{Mel Filterbank Processing}\label{fig:mfcc_filterbank_processing}
 \end{figure}
 
-Lastly, the Discrete Cosine Transformation is applied to the each filterbank energy, this is performed to decorrelate the filterbanks are they are highly correlated due to the overlap in the Mel filters, the resulting representation is shown in Figure \ref{fig:mfcc_dct}.
+Lastly, the Discrete Cosine Transformation is applied to each filterbank energy, this is performed to decorrelate the filterbanks as they are highly correlated due to the overlap in the Mel filters, the resulting representation is shown in Figure \ref{fig:mfcc_dct}.
 This represents the MFCC values for a single audio frame for 8 Mel filterbanks.
 
 \begin{figure}[h!]
@@ -90,7 +90,7 @@ This represents the MFCC values for a single audio frame for 8 Mel filterbanks.
 \end{figure}
 
 The model inputs use a total of 12 filterbanks over the span of one second audio clips.
-This results in an model input MFCC $\mat{x} \in \mathbb{R}^{12 \times 43}$, visualised in Figure \ref{fig:mfcc_model_input}.
+This results in a model input MFCC $\mat{x} \in \mathbb{R}^{12 \times 43}$, visualised in Figure \ref{fig:mfcc_model_input}.
 
 \begin{figure}[h!]
     \centering
@@ -126,9 +126,9 @@ This normalisation makes training both the critic and the generator easier as th
 As the generated Blendshape Parameters are within the range [0,1] the Sigmoid activation function can be used at the output layer of the model, rather than a linear output with an infinite range.
 
 \section{Assessment of Model Performance} \label{sec:gan_assessment}
-Assessing the performance of GAN is less straightforward than other machine learning models.
+Assessing the performance of a GAN is less straightforward than other machine learning models.
 For example, in a supervised learning scenario, a classification model can be assessed on the accuracy of predictions or f-score on a test set in addition to the model loss on these predictions, as discussed in Section \ref{sec:class_assessment}.
-As GAN describe an unsupervised learning scenario, assessment metrics are less clear and problem specific.
+As GANs describe an unsupervised learning scenario, assessment metrics are less clear and problem specific.
 In this problem, the aim of the Generator is to find a mapping from an audio signal represented by a series of MFCCs, to a series of Blendshape Parameters which the Critic considers to be a correct match.
 The Critic's goal is to be able to judge pairings of MFCCs and Blendshape Parameters as a realistic match.
 
@@ -150,7 +150,7 @@ As the Generator aims to find the mapping between the input audio signal and Ble
 
 Given that the success of the Generator is dependent upon producing Blendshape Parameters which the critic cannot distinguish from real samples, the primary metric which shall be used is the losses on the validation set from both the Critic and the Generator during training.
 Training of the Generator will be complete when the Critic can no longer distinguish between real and fake samples.
-Will this occurs the Critic losses have settled at 0.
+When this occurs the Critic losses have settled at 0.
 
 \section{Model Architecture}
 The GAN is composed of a Generator and a Critic, trained with the Wasserstein Loss with Gradient Penalty to ensure the Lipschtiz condition, described by equations (\ref{eq:wgan}, \ref{eq:wgan_gp}) respectively for the two models.
@@ -168,7 +168,7 @@ A high level diagram of the GAN model is shown by Figure \ref{fig:gan_model}.
 
 The Critic is trained on a corresponding pair of MFCC values and Blendshape Parameters.
 The goal of the Critic is to be able to identify a correct pairing from the dataset and a false pairing consisting of MFCC values and a fake series of Blendshape Parameters generated by the Generator.
-The Critic returns a score value within the range of [-1, 1], where data inputs which it regards as realistic are larger, while parings which is regards as fake are smaller.
+The Critic returns a score value within the range of [-1, 1], where data inputs which it regards as realistic are larger, while pairings which it regards as fake are smaller.
 For each minibatch in a training epoch the Critic is shown a batch of real data values $\mat{x}$ and the Generator creates a batch of fake data values $\mat{\tilde{x}}$.
 The Critic evaluates this data and returns a score for both the real and fake data.
 In addition to the loss from the Critic score on real and fake data samples, the gradient penalty term is calculated, this term is to be minimised to meet the Lipschtiz condition, \cite{Gulrajani2017}.
@@ -216,14 +216,14 @@ The Generator model architecture is a fully convolutional network which takes th
 
 The model (shown in Figure \ref{fig:gan_gen_arch}) consists of five convolutional layers, the detailed specification of which is shown in Table \ref{table:gan_gen_arch}.
 The first pads the input along the time domain as the output dimension along the time domain is to be the same as in input, corresponding to separate frames of Blendshape Parameters, without padding this dimension would be reduced due to convolution operations.
-This is a significant amount of padding to be applied to a single layer, however when a padding values of one was applied to all layers this resulted obvious artifacts at the beginning and end of the generated sequence, while this produces no such artifacts.
-The first layer has a high number of filter channels to extract the largest possible amount of information from in input data, following layers reduce the number of channels to compress this information into the final output layer which has 4 channels, one for each Blendshape Parameter.
+This is a significant amount of padding to be applied to a single layer, however when a padding values of one was applied to all layers this resulted artifacts at the beginning and end of the generated sequence.
+The first layer has a high number of filter channels to extract the largest possible amount of information from the input data, following layers reduce the number of channels to compress this information into the final output layer which has 4 channels, one for each Blendshape Parameter.
 
 The model uses ReLU activate functions for all hidden layers and the Sigmoid activation function at the output layer to achieve Blendshape Parameters in the range [0, 1].
 The output layer also uses a larger kernel size than the hidden layers, which all use a kernel size of 3.
-When a small kernel was used at the output layer there existed a large amount of of jitter in the output parameters, increasing the output kernel seems to eliminate this and produce animation with smoother motion.
+When a small kernel was used at the output layer there existed a large amount of jitter in the output parameters, increasing the output kernel seems to eliminate this and produce animation with smoother motion.
 The role of this output layer is not to extract useful information for subsequent layers to use, but to generate the output values.
-A larger kernel increases to receptive field of this layer on the feature maps from the previous layer, resulting in reduced variation between subsequent frames and less jitter.
+A larger kernel increases the receptive field of this layer on the feature maps from the previous layer, resulting in reduced variation between subsequent frames and less jitter.
 
 \begin{table}[h!]
 \centering
@@ -252,16 +252,16 @@ This is then concatenated with the MFCC values $\mat{m} \in \mathbb{R}^{1 \times
     \caption{Critic Architecture}\label{fig:gan_critic_arch}
 \end{figure}
 
-The Critic model consists of three sections, the first two are built of convolutional layers using the LeakyReLU activation function while the last the output layer, a linear layer using the Tanh activation function.
-the first three layers are two dimensional convolutional layers which do not convolve over the time domain, just the height dimension.
+The Critic model consists of three sections, the first two are built of convolutional layers using the LeakyReLU activation function while the last output layer, a linear layer using the Tanh activation function.
+The first three layers are two dimensional convolutional layers which do not convolve over the time domain, just the height dimension.
 This allows the model to find an efficient encoding of the input audio and Blendshape Parameters.
 The number of filters is increased throughout this encoding stage as opposed to extracting a large number of filters initially as was the case with the Generator.
 The reasoning behind this is that the initial input contains a great deal of repetition due to the Blendshape Parameters being duplicated into the same shape as the MFCC values.
 
 The second section aims to convolve over the time domain, as the singleton dimension can now be collapsed, one dimension convolutional layers can now be used to achieve this.
 The section consists of three convolutional layers, each of which have a stride of two and a decreasing kernel size across the three layers.
-The first of which uses a kernel size of 5 in order to capture higher level features while the subsequent layers have kernel sizes of 4 and 3 respectively to capture more fine detailed features.
-The final layer is a linear layer which provides the critic score for the input data sample.
+The first layer uses a kernel size of 5 in order to capture higher level features while the subsequent layers have kernel sizes of 4 and 3 respectively to capture more fine detailed features.
+The final layer is a fully connected layer, which provides the critic score for the input data sample.
 The layer uses the Tanh activation function to output a score in the range of [-1, 1].
 
 \begin{table}[h!]
@@ -290,11 +290,11 @@ The first condition of the Critic is that the Lipschtiz condition is met, enforc
 \end{figure} 
 
 Secondly, the total losses of the Critic as described by equation (\ref{eq:wgan_gp}) are shown in Figure \ref{fig:gan_total_critic_losses}.
-Due to the high initial value of the gradient penalty term, the initial terms have not been plotted for this plot and subsequent plots to aid visualisation.
+Due to the high initial value of the gradient penalty term, the initial terms have not been plotted for this or subsequent plots to aid visualisation.
 The Generator and Critic both aim to have as low a loss as possible, a negative Generator loss is an indication that the fake samples are being scored incorrectly by the Critic as it considers the fake Blendshape Parameters as a correct pairing for the incoming MFCC values, as described by equation (\ref{eq:wgan}).
-While a negative loss on the total loss of the Critic is an indication that on average the real data samples are being given a higher score than the fake samples.
-From Figure \ref{fig:gan_total_critic_losses} it can be seen that throughout the whole training process the Critic correctly scores real and fake input data.
+A negative values for the total loss of the Critic is an indication that on average the real data samples are being given a higher score than the fake samples.
 However, as the loss from the Critic is a summation of multiple terms, this plot alone does not display all information about the model.
+From Figure \ref{fig:gan_total_critic_losses} it can be seen that throughout the whole training process the Critic correctly scores real and fake input data.
 
 \begin{figure}[h!]
     \centering
@@ -303,9 +303,9 @@ However, as the loss from the Critic is a summation of multiple terms, this plot
 \end{figure} 
 
 In order to gain a better insight of the Critic and Generator's training losses, the loss on the real and fake data samples can be plotted during the training process.
-The Critic aims to score real samples positively while fake samples negatively, such that the total loss will be negative.
+The Critic aims to score real samples positively and fake samples negatively, such that the total loss will be negative.
 From equation (\ref{eq:wgan_gp}) the first term $\E{\bm{\tilde{x}} \sim \Pd{g}} [D(\tilde{{\bm{x}}})]$ describes how the Critic evaluates fake data samples produced by the Generator, this is plotted in Figure \ref{fig:gan_critic_fake}.
-The Generator training losses is also plotted in Figure \ref{fig:gen_train_losses} and can be seen to be a mirror of the Critic's evaluation of generated samples.
+The Generator training losses are also plotted in Figure \ref{fig:gen_train_losses} and can be seen to be a mirror of the Critic's evaluation of generated samples.
 From the two plots the Generator can be seen to be gradually improving throughout training, although the the losses never completely fool the Critic.
 The Critic settles on a consistent loss for real data samples shown in Figure \ref{fig:gan_critic_real} as described by the second term in equation (\ref{eq:wgan_gp}): $- \E{\bm{x} \sim \Pd{r}} [D(\bm{x})]$.
 
@@ -329,25 +329,25 @@ The Critic settles on a consistent loss for real data samples shown in Figure \r
 \end{figure} 
 
 Training settles on the Critic being able to distinguish real samples from fake, although the confidence in these predictions remains low throughout training while the confidence in identifying the fake samples gradually decreases throughout training. 
-While the Generator remains unable to produce samples which completely fool the Critic, the generated results may still inhibit the desired qualities as set out by the assessment conditions in Section \ref{sec:gan_assessment}.
+While the Generator remains unable to produce samples which completely fool the Critic, the generated results may still exhibit the desired qualities as set out by the assessment conditions in Section \ref{sec:gan_assessment}.
 
 Given that the samples generated by the model are video, this is difficult to represent in a report.
-Odd frames from a single generated sample labelled as ``\textit{America}'' is shown in the Appendix \ref{fig:Gen_America}, but this is a poor means of evaluating the first two assessment conditions stated in Section \ref{sec:gan_assessment}.
+Odd frames from a single generated sample labelled as ``\textit{America}'' are shown in the Appendix \ref{fig:Gen_America}, but this is a poor means of evaluating the first two assessment conditions stated in Section \ref{sec:gan_assessment}.
 In light of this, a selection of generated samples is hosted on YouTube under an account held by the Author. 
 Such samples can be found at: \url{https://www.youtube.com/watch?v=zoboRQyqt5Q&t=5s}.
 
 These video samples allow for the evaluation of the first two assessment conditions.
 As stated previously, both of these conditions are open to interpretation by the viewer, however the movement appears to be well correlated with the speech to a human observer.
 The generated samples arguably do not appear to be realistic, falling into the uncanny valley, although the original data from the VOCA model was also criticised for this \cite{Cudeiro2019}, the lack of facial motion around the eyes is a strong indicator.
-This is a quality of which the Generator could not learn due to the lack of movement in this part of the face in the dataset.
+This is a quality from which the Generator could not learn due to the lack of movement in this part of the face in the dataset.
 Eye movements, while being correlated with speech expression, do not contain information as to the words spoken, but rather enhance the meaning and expression, however it was not the intention of this work to capture such detail.
 
 While it can be argued that the first two conditions are met by the Generator, if the lack of overall facial motion is ignored and the `realism' is focused on the animation of the mouth, humans find lip reading to be a highly difficult task.
-Facial motion which is strongly correlated with audio without being correlated with the specific words spoken may easily fool viewers into believe the two sources are a matching pair.
+Facial motion which is strongly correlated with audio without being correlated with the specific words spoken may easily fool viewers that the two sources are a matching pair.
 A quantitative means to measure if there exists a correlation between the facial motion and the spoken words can be evaluated by the use of the pretrained classification models described in Chapter \ref{chap:classification}.
 If the Generator has learnt to correlate speech data encoded by MFCC values to facial motion, the classification models should be able to recognise these features and provide a classification accuracy above the performance of a random assignment of a label; 1/500.
 
-By evaluating the class accuracy on the Multiple Towers Model (Section \ref{sec:multi_towers_model}) and the Blendshape Channel model (Section \ref{secc:blendshape_channels_model}), highlight that there there seems to be very little correlation between the generated samples and the speech motion features identified by the two classifiers (Figure \ref{fig:gan_class_acc}).
+Evaluating the class accuracy on the Multiple Towers Model (Section \ref{sec:multi_towers_model}) and the Blendshape Channel model (Section \ref{secc:blendshape_channels_model}), highlights that there there seems to be very little correlation between the generated samples and the speech motion features identified by the two classifiers (Figure \ref{fig:gan_class_acc}).
 The mean accuracy of both models is close enough to 1/500 to suggest that the Generator has not broadly learnt to produce facial motion correlated to the words spoken.
 Although both the models contain a small handful of word labels which are predicted with an above random accuracy, given that this behaviour is not consistent across many labels, this does not show any strong correlation.
 
@@ -365,9 +365,9 @@ Although both the models contain a small handful of word labels which are predic
 \end{figure}
 
 While the pretrained classification models did not identify any speech features corresponding to the word labels in the generated samples, this does not definitively mean that the data is completely uncorrelated to the speech, just that the features which the classifiers have learnt to identify are not present.
-to further investigate if there exists some correlation in the data, the two classification models have been retrained on the synthetic data.
+To further investigate if there exists some correlation in the data, the two classification models have been retrained on the synthetic data.
 The results however, confirm that there seems to be no correlation across the synthetically generated data.
-Figure \ref{fig:gan_classification_synth_losses} demonstrates for both the Blendshape Channels and Multiple Towers model the models fail to generalise to unseen data completely, only able to learn features related to the training data.
+Figure \ref{fig:gan_classification_synth_losses} demonstrates that both the Blendshape Channels and Multiple Towers models fail to generalise to unseen data completely, only able to learn features related to the training data.
 The prediction accuracy further highlights this in Figure \ref{fig:gan_classification_synth_acc}, as accuracy on the validation data remains at 0.002 throughout training, equivalent to random guessing.
 
 \begin{figure}[h!]

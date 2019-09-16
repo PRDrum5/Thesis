@@ -5,25 +5,24 @@ Primarily communication is achieved though the sound of spoken audio rather than
 However, various methods of addressing the problem exist which focus on training Deep Learning models given 2D temporal data of subjects speaking with either whole video samples labelled to contain a single word \cite{Chung2016}, or labelled at a character level with the corresponding frames of the video \cite{Assael2016, Chung2017, Shillingford2018}.
 
 There currently do not exist any models which attempt to address this problem with the use of 3D temporal datasets made up of head scans of subjects.
-As all previous models have made use of video data, the subjects are recorded from a single point of view with no depth data.
-The loss of this information from the data may contain additional information which may be of use to Machine Learning models.
+As all previous models have made use of video data, the subjects are recorded from a single point of view with no depth data, which may be of use to Machine Learning models.
 Currently there exists a lack in such datasets, this is partly due to the complexity and hardware requirements in capturing such data. 
 With the increasing rise in availability of depth cameras, this situation may change within the short term future, although the use of these devices shall not be discussed in the report.
 
 While there do exist a small number of 3D temporal datasets, LRW-3D \cite{Tzirakis2019} and the VOCASET \cite{Cudeiro2019}, neither of these have been constructed with the intention of lip reading, but for the use of facial animation driven by an audio input.
-To first assess whether this data representation can be used for lip reading, firstly new datasets which capture 3D temporal models of subjects heads speaking must be established by the community.
-Ideally this data would be captured directly, however due to the currently barriers to acquiring such data, other areas of synthetic data generation can be explored to see if they can yield results which resemble directly captured data close enough to be used to further explore the limitations and uses of such 3D temporal data.
+To first assess whether this data representation can be used for lip reading, firstly new datasets which capture 3D temporal models of subjects' heads speaking must be established by the community.
+Ideally this data would be captured directly, however due to the current barriers to acquiring such data, other areas of synthetic data generation can be explored to see if they can yield results which resemble directly captured data close enough to be used to further explore the limitations and uses of such 3D temporal data.
 One area of synthetic data generation which has seen recent success is the use of Generative Adversarial Networks (GANs), which allow unseen data samples to be produced from an unknown distribution representing the real data samples.
 
 Without access to an appropriate dataset, this report shall discuss the acquisition of a 3D temporal dataset consisting of data labelled at a word level with the use of the pretrained VOCA model \cite{Cudeiro2019} and how this data is processed with the use of statistical Principal Component Analysis before being input into Machine Learning models.
 Firstly the use of 3D temporal data as a means of lip reading is successfully investigated through the use of two architecture models, finding that there is in fact a strong correlation between the 3D facial motion of a subject and the words spoken.
-Secondly, the use of using a GAN as a means of generating further 3D temporal data driven by an audio input signal is explored.
+Secondly, the use of a GAN as a means of generating further 3D temporal data driven by an audio input signal is explored.
 The aim of this to see if the same facial motion features which can be detected by the lip reading models can be learnt implicitly by a Generative GAN based approach.
-Finally, the implication of these findings and any future work which can be carried out as an extension of this research are discussed.
+Finally, the implications of these findings and any future work which can be carried out as an extension of this research are discussed.
 
 The potential applications for the research undertaken in this report are primarily to better the currently existing means of speech detection methods.
-In vast majority these are performed on audio speech data, however they perform with reduced accuracy under noisy conditions, one such example would be in the instance of driving an car.
-This environment describes one in which the the noise within the vehicle is high and cannot be reduced due to the safety concerns of removing audio information which may be of use to the driver.
-Speech recognition systems would be desirable in such a situation as it would reduce the likelihood of attention being drawn away from the task of diving to alter the instruments of the car.
-By combining the use of a depth camera placed in front of the driver, the accuracy of speech recognition could be enhanced with the use of sensor fusion from predictions from both an audio recognition and a visual recognition system.
+In the vast majority these are performed on audio speech data, however they perform with reduced accuracy under noisy conditions, one such example would be driving a car.
+In this environment, the noise within the vehicle is high and cannot be reduced due to the safety concerns of removing audio information which may be of use to the driver.
+Speech recognition systems would be desirable in such a situation as it would reduce the likelihood of attention being drawn away from the task of driving to alter the instruments of the car.
+By combining the use of the audio signal with a depth camera placed in front of the driver, the accuracy of speech recognition could be enhanced with the use of sensor fusion from predictions from both the audio recognition and a visual recognition systems.
 This application can be applied in any scenario in which an audio signal contains significant noise or is unobtainable.
